@@ -1,1 +1,1 @@
-# quiz-server-symfony-json-rpc
+# quiz-server-json-rpc-symfony
