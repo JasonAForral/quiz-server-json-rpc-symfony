@@ -1,0 +1,13 @@
+sudo: required
+
+services:
+  - docker
+
+install:
+  - docker-compose build
+
+script:
+  - docker-compose run web composer install --no-interaction
+  - docker-compose run web mkdir -p app/Resources/views/client
+  - docker-compose run web touch app/Resources/views/client/index.html.twig
+  - docker-compose run web bin/phpunit --configuration app
