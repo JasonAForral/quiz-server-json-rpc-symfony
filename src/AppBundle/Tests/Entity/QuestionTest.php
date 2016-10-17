@@ -40,4 +40,34 @@ class QuestionTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($expected, $actual);
     }
+
+    /**
+     * @expectedException TypeError
+     */
+    public function testSetTextAndGetTextArray()
+    {
+        $expected = array();
+
+        $question = new Question();
+        $question->setText(array());
+
+        $actual = $question->getText();
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * @expectedException TypeError
+     */
+    public function testSetTextAndGetTextNumber()
+    {
+        $expected = 4;
+
+        $question = new Question();
+        $question->setText(4);
+
+        $actual = $question->getText();
+
+        $this->assertEquals($expected, $actual);
+    }
 }

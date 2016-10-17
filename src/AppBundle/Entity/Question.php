@@ -13,7 +13,11 @@ class Question
 
     public function setText($text)
     {
-        $this->text = $text;
+        if (is_string($text)) {
+            $this->text = $text;
+        } else {
+            throw new \TypeError();
+        }
     }
 
     public function getText()
