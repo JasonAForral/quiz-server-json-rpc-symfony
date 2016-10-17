@@ -28,4 +28,16 @@ class QuestionTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($expected, $actual);
     }
+
+    public function testSetTextAndGetText2()
+    {
+        $expected = 'string also';
+
+        $question = new Question();
+        $question->setText('string also');
+
+        $actual = $question->getText();
+
+        $this->assertEquals($expected, $actual);
+    }
 }
