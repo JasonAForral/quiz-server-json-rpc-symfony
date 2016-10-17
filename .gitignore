@@ -11,3 +11,6 @@
 /bin/
 /composer.phar
 /client/
+/web/favicon.ico
+/app/Resources/views/client/
+/web/static/
