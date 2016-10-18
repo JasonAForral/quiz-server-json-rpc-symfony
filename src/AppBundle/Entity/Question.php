@@ -11,7 +11,7 @@ class Question
 
   }
 
-  public function setText($text)
+  public function setText( $text )
   {
     if (is_string($text)) {
       $this->text = $text;
