@@ -2,7 +2,7 @@
 
 namespace AppBundle\Entity;
 
-class Question 
+class Answer
 {
   protected $text;
 
@@ -11,10 +11,10 @@ class Question
 
   }
 
-  public function setText($text)
+  public function setText( $text )
   {
     if (is_string($text)) {
-      $this->text = $text;
+     $this->text = $text;
     } else {
       throw new \TypeError();
     }
@@ -24,4 +24,4 @@ class Question
   {
     return $this->text;
   }
-}
+} 

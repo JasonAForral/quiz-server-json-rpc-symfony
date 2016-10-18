@@ -2,17 +2,17 @@
 
 namespace AppBundle\Tests\Entity;
 
-use AppBundle\Entity\Question;
+use AppBundle\Entity\Answer;
 
-class QuestionTest extends \PHPUnit_Framework_TestCase
+class AnswerTest extends \PHPUnit_Framework_TestCase
 {
   public function testGetIdStartsAsNull()
   {
     $expected = null;
 
-    $question = new Question();
+    $answer = new Answer();
 
-    $actual = $question->getId();
+    $actual = $answer->getId();
 
     $this->assertEquals($expected, $actual);
   }
@@ -21,10 +21,10 @@ class QuestionTest extends \PHPUnit_Framework_TestCase
   {
     $expected = 'string';
 
-    $question = new Question();
-    $question->setText('string');
+    $answer = new Answer();
+    $answer->setText('string');
 
-    $actual = $question->getText();
+    $actual = $answer->getText();
 
     $this->assertEquals($expected, $actual);
   }
@@ -33,10 +33,10 @@ class QuestionTest extends \PHPUnit_Framework_TestCase
   {
     $expected = 'string also';
 
-    $question = new Question();
-    $question->setText('string also');
+    $answer = new Answer();
+    $answer->setText('string also');
 
-    $actual = $question->getText();
+    $actual = $answer->getText();
 
     $this->assertEquals($expected, $actual);
   }
@@ -48,10 +48,10 @@ class QuestionTest extends \PHPUnit_Framework_TestCase
   {
     $expected = array();
 
-    $question = new Question();
-    $question->setText(array());
+    $answer = new Answer();
+    $answer->setText(array());
 
-    $actual = $question->getText();
+    $actual = $answer->getText();
 
     $this->assertEquals($expected, $actual);
   }
@@ -63,10 +63,10 @@ class QuestionTest extends \PHPUnit_Framework_TestCase
   {
     $expected = 4;
 
-    $question = new Question();
-    $question->setText(4);
+    $answer = new Answer();
+    $answer->setText(4);
 
-    $actual = $question->getText();
+    $actual = $answer->getText();
 
     $this->assertEquals($expected, $actual);
   }
