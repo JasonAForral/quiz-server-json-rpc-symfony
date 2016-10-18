@@ -3,6 +3,7 @@
 namespace AppBundle\Tests\Entity;
 
 use AppBundle\Entity\Question;
+use AppBundle\Entity\Answer;
 
 class QuestionTest extends \PHPUnit_Framework_TestCase
 {
@@ -70,4 +71,35 @@ class QuestionTest extends \PHPUnit_Framework_TestCase
 
     $this->assertEquals($expected, $actual);
   }
+
+    public function testSetAnswerAndGetAnswer()
+    {
+      $answer = new Answer();
+      $answer->setText('some text');
+      $expected = $answer->getText();
+
+      $question = new Question();
+      $question->setAnswer($answer);
+
+      $actual = $question->getAnswer()->getText();
+
+      $this->assertEquals($expected, $actual);
+   }
+
+    /**
+    * @expectedException TypeError
+    */
+    public function testSetAnswerAndGetAnswerTypeError()
+    {
+      $answer = new Question();
+      $answer->setText('some text');
+      $expected = $answer->getText();
+
+      $question = new Question();
+      $question->setAnswer($answer);
+
+      $actual = $question->getAnswer()->getText();
+
+      $this->assertEquals($expected, $actual);
+   }
 }

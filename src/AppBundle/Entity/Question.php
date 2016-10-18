@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 class Question 
 {
   protected $text;
+  protected $answer;
 
   public function getId()
   {
@@ -24,4 +25,14 @@ class Question
   {
     return $this->text;
   }
+
+    public function setAnswer(Answer $answer)
+    {
+        $this->answer = $answer;
+    }
+
+    public function getAnswer()
+    {
+        return $this->answer;
+    }
 }
