@@ -24,7 +24,7 @@ class JsonRpcLinter
 
       $responseValid = $resultValid || $errorValid;
 
-      $valid = $versionValid && $idValid && ($methodValid || $errorValid);
+      $valid = $versionValid && $idValid && ($methodValid || $responseValid);
 
       $jsonRpcLintResult->setValid($valid);
 

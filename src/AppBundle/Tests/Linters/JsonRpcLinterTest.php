@@ -108,5 +108,22 @@ class JsonRpcLinterTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($expected, $actual);
     }
+
+    public function testGetResultChecksJsonRpcResultValid()
+    {
+        $expected = true;
+
+        $json = [
+            'jsonrpc' => '2.0',
+            'result' => 'something',
+            'id' => '1',
+        ];
+
+        $jsonRpcLintResult = JsonRpcLinter::getResult($json);
+
+        $actual = $jsonRpcLintResult->getValid();
+
+        $this->assertEquals($expected, $actual);
+    }
 }
 
