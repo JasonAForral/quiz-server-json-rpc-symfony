@@ -25,7 +25,7 @@ class Answer
 
     public function getId()
     {
-
+        return $this->id;
     }
 
     public function setText( $text )

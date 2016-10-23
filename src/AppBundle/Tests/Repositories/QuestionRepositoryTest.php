@@ -2,14 +2,14 @@
 
 namespace AppBundle\Tests\Transformers;
 
-use AppBundle\Repositories\QuestionRepository;
-use AppBundle\Entity\Question;
 use AppBundle\Entity\Answer;
+use AppBundle\Entity\Question;
+use AppBundle\Repositories\QuestionRepository;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 class QuestionRepositoryTest extends WebTestCase
 {
-    private $entityManager;
+    protected $entityManager;
 
     protected function setUp()
     {
@@ -20,7 +20,13 @@ class QuestionRepositoryTest extends WebTestCase
         ;
 
         $this->loadFixtures([]);
+    }
 
+    protected function tearDown()
+    {
+        parent::tearDown();
+        $this->entityManager->close();
+        $this->entityManager = null;
     }
 
     public function testGetNewQuestion()
