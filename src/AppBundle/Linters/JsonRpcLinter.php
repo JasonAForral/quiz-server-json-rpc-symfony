@@ -10,9 +10,21 @@ class JsonRpcLinter
    {
       $jsonRpcLintResult = new JsonRpcLintResult();
 
-      $versionValid = ('2.0' === $json['jsonrpc']);
+      if (!array_key_exists('jsonrpc', $json)) {
+          $versionValid = false;
+      } else {
+          $versionValid = ('2.0' === $json['jsonrpc']);
+      }
 
-      $valid = $versionValid;
+      $idValid = array_key_exists('id', $json);
+
+      $methodValid = array_key_exists('method', $json);
+      $resultValid = array_key_exists('result', $json);
+      $errorValid = array_key_exists('error', $json);
+
+      $responseValid = $resultValid || $errorValid;
+
+      $valid = $versionValid && $idValid && ($methodValid || $errorValid);
 
       $jsonRpcLintResult->setValid($valid);
 
