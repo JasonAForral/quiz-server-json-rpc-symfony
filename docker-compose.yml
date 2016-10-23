@@ -7,3 +7,19 @@ services:
       - .:/code
     ports:
       - "8000:8000"
+    environment:
+      PG_HOST: pgsql
+      PG_DBNAME: php
+      PG_USER: php
+      PG_PASSWORD: php
+  db:
+    image: postgres:9.6.0
+    ports:
+      - "5432:5432"
+    volumes: 
+      - "./.data/db:/var/lib/postgresql/data"
+    restart: always
+    environment:
+      POSTGRES_DB: php
+      POSTGRES_USER: php
+      POSTGRES_PASSWORD: php

@@ -7,3 +7,11 @@ Unit Testing:
 ```bash
 docker-compose run web bin/phpunit --configuration app
 ```
+
+
+build:
+
+```bash
+docker-compose build
+docker-compose run web composer install
+```
