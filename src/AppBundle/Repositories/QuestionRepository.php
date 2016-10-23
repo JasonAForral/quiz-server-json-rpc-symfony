@@ -3,6 +3,7 @@
 namespace AppBundle\Repositories;
 
 use Doctrine\ORM\EntityRepository;
+use AppBundle\Exceptions\NoQuestionsException;
 
 class QuestionRepository extends EntityRepository
 {
@@ -15,7 +16,7 @@ class QuestionRepository extends EntityRepository
             ->getResult();
         
         if (0 === count($questions)) {
-            throw new \TypeError();
+            throw new NoQuestionsException();
         }
 
         return $questions[mt_rand(0, count($questions) - 1)];

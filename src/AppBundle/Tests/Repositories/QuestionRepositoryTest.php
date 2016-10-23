@@ -2,30 +2,14 @@
 
 namespace AppBundle\Tests\Transformers;
 
-// use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use AppBundle\Repositories\QuestionRepository;
 use AppBundle\Entity\Question;
 use AppBundle\Entity\Answer;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
-// use Doctrine\ORM\Tools\SchemaTool;
 
-class QuestionRepositoryTest extends WebTestCase //KernelTestCase
+class QuestionRepositoryTest extends WebTestCase
 {
     private $entityManager;
-
-    // protected function setUp()
-    // {
-    //     self::bootKernel();
-    //     $this->entityManager = static::$kernel->getContainer()
-    //         ->get('doctrine')
-    //         ->getManager()
-    //     ;
-
-    //     $metadata = $this->entityManager->getMetadataFactory()->getAllMetadata();
-    //     $tool = new SchemaTool($this->entityManager);
-    //     $tool->createSchema($metadata);
-
-    //  }
 
     protected function setUp()
     {
@@ -64,7 +48,7 @@ class QuestionRepositoryTest extends WebTestCase //KernelTestCase
     }
 
     /**
-     * @expectedException TypeError
+     * @expectedException AppBundle\Exceptions\NoQuestionsException
      */
     public function testGetNewQuestionWhenNoQuestions()
     {
