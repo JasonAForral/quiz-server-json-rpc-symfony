@@ -30,11 +30,10 @@ class Answer
 
     public function setText( $text )
     {
-        if (is_string($text)) {
-            $this->text = $text;
-        } else {
+        if (!is_string($text)) {
             throw new \TypeError();
-        }
+        } 
+        $this->text = $text;
     }
 
     public function getText()

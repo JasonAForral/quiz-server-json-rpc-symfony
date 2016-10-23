@@ -6,8 +6,16 @@ use AppBundle\Results\JsonRpcLintResult;
 
 class JsonRpcLinter
 {
-   static public function getResult()
+   static public function getResult($json)
    {
-      return new JsonRpcLintResult();
+      $jsonRpcLintResult = new JsonRpcLintResult();
+
+      $versionValid = ('2.0' === $json['jsonrpc']);
+
+      $valid = $versionValid;
+
+      $jsonRpcLintResult->setValid($valid);
+
+      return $jsonRpcLintResult;
    }
 }
