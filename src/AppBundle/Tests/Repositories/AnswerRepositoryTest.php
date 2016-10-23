@@ -3,6 +3,7 @@
 namespace AppBundle\Tests\Repositories;
 
 use AppBundle\Entity\Answer;
+use AppBundle\Entity\Question;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 class AnswerRepositoryTest extends WebTestCase
@@ -117,6 +118,67 @@ class AnswerRepositoryTest extends WebTestCase
             $wrongAnswers[0]->getId() !== $wrongAnswers[2]->getId() &&
             $wrongAnswers[1]->getId() !== $wrongAnswers[2]->getId()
         );
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * @expectedException TypeError
+     */
+    public function testGetWrongAnswersTypeError()
+    {
+        $expected = 3;
+
+        $answerRepository = $this->entityManager
+            ->getRepository('AppBundle:Answer')
+        ;
+
+        $rightAnswer = new Question();
+        $this->entityManager->persist($rightAnswer);
+
+        $wrongAnswer1 = new Answer();
+        $this->entityManager->persist($wrongAnswer1);
+
+        $wrongAnswer2 = new Answer();
+        $this->entityManager->persist($wrongAnswer2);
+
+        $wrongAnswer3 = new Answer();
+        $this->entityManager->persist($wrongAnswer3);
+
+        $this->entityManager->flush();
+ 
+        $wrongAnswers = $answerRepository->getWrongAnswers($rightAnswer);
+
+        $actual = count($wrongAnswers);
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * @expectedException AppBundle\Exceptions\TooFewAnswersException
+     */
+    public function testGetWrongAnswersTooFewAnswers()
+    {
+        $expected = 3;
+
+        $answerRepository = $this->entityManager
+            ->getRepository('AppBundle:Answer')
+        ;
+
+        $rightAnswer = new Answer();
+        $this->entityManager->persist($rightAnswer);
+
+        $wrongAnswer1 = new Answer();
+        $this->entityManager->persist($wrongAnswer1);
+
+        $wrongAnswer2 = new Answer();
+        $this->entityManager->persist($wrongAnswer2);
+
+        $this->entityManager->flush();
+ 
+        $wrongAnswers = $answerRepository->getWrongAnswers($rightAnswer);
+
+        $actual = count($wrongAnswers);
 
         $this->assertEquals($expected, $actual);
     }

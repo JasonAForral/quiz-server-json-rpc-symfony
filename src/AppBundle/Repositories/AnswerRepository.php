@@ -3,17 +3,22 @@
 namespace AppBundle\Repositories;
 
 use AppBundle\Entity\Answer;
+use AppBundle\Exceptions\TooFewAnswersException;
 use Doctrine\ORM\EntityRepository;
 
 class AnswerRepository extends EntityRepository
 {
     public function getWrongAnswers(Answer $rightAnswer)
-    {
+    {   
         $allAnswers = $this->getEntityManager()
             ->createQuery(
                 'SELECT answer FROM AppBundle:Answer answer'
             )
             ->getResult();
+
+        if (4 > count($allAnswers)) {
+          throw new TooFewAnswersException();
+        }
 
         $wrongAnswers = [];
 
