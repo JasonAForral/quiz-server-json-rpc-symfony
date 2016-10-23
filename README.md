@@ -27,4 +27,4 @@ docker-compose run web composer install
 * Wrote classes for Questions, Answers, Quizes
 * Set up database
 * Wrote classes for Repositories
-* Writing class for JSON-RPC linting
+* Wrote class for JSON-RPC linting
