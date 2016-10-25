@@ -2,8 +2,7 @@
 
 namespace AppBundle\Tests\Transformers;
 
-use AppBundle\Entity\Answer;
-use AppBundle\Entity\Question;
+use AppBundle\Entity\ {Answer, Question};
 use AppBundle\Repositories\QuestionRepository;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 

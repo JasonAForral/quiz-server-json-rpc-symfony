@@ -2,13 +2,11 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Exceptions\NoQuestionsException;
-use AppBundle\Exceptions\TooFewAnswersException;
+use AppBundle\Exceptions\ {NoQuestionsException, TooFewAnswersException};
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\ {JsonResponse, Request};
 
 class ApiController extends Controller
 {

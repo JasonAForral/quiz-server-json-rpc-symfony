@@ -2,9 +2,7 @@
 
 namespace AppBundle\Tests\Entity;
 
-use AppBundle\Entity\Quiz;
-use AppBundle\Entity\Question;
-use AppBundle\Entity\Answer;
+use AppBundle\Entity\ {Answer, Question, Quiz};
 
 class QuizTest extends \PHPUnit_Framework_TestCase
 {

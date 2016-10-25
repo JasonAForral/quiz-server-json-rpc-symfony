@@ -2,8 +2,7 @@
 
 namespace AppBundle\Tests\Repositories;
 
-use AppBundle\Entity\Answer;
-use AppBundle\Entity\Question;
+use AppBundle\Entity\ {Answer, Question};
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 class AnswerRepositoryTest extends WebTestCase

@@ -2,8 +2,7 @@
 
 namespace AppBundle\Tests\Entity;
 
-use AppBundle\Entity\Question;
-use AppBundle\Entity\Answer;
+use AppBundle\Entity\ {Question, Answer};
 
 class QuestionTest extends \PHPUnit_Framework_TestCase
 {
