@@ -28,9 +28,9 @@ class AnswerRepositoryTest extends WebTestCase
         $this->entityManager = null;
     }
 
-    public function testGetWrongAnswers()
+    public function testGetPossibleAnswers()
     {
-        $expected = 3;
+        $expected = 4;
 
         $answerRepository = $this->entityManager
             ->getRepository('AppBundle:Answer')
@@ -50,14 +50,45 @@ class AnswerRepositoryTest extends WebTestCase
 
         $this->entityManager->flush();
  
-        $wrongAnswers = $answerRepository->getWrongAnswers($rightAnswer);
+        $possibleAnswers = $answerRepository->getPossibleAnswers($rightAnswer);
 
-        $actual = count($wrongAnswers);
+        $actual = count($possibleAnswers);
 
         $this->assertEquals($expected, $actual);
     }
 
-    public function testGetWrongAnswersAreAnswers()
+    public function testGetPossibleAnswersAreAnswers()
+    {
+        $expected = [true, true, true, true];
+
+        $answerRepository = $this->entityManager
+            ->getRepository('AppBundle:Answer')
+        ;
+
+        $rightAnswer = new Answer();
+        $this->entityManager->persist($rightAnswer);
+
+        $wrongAnswer1 = new Answer();
+        $this->entityManager->persist($wrongAnswer1);
+
+        $wrongAnswer2 = new Answer();
+        $this->entityManager->persist($wrongAnswer2);
+
+        $wrongAnswer3 = new Answer();
+        $this->entityManager->persist($wrongAnswer3);
+
+        $this->entityManager->flush();
+ 
+        $possibleAnswers = $answerRepository->getPossibleAnswers($rightAnswer);
+
+        $actual = array_map(function ($answer) {
+            return $answer instanceof Answer;
+        }, $possibleAnswers);
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testGetPossibleAnswersAreDifferentAnswers()
     {
         $expected = true;
 
@@ -79,45 +110,13 @@ class AnswerRepositoryTest extends WebTestCase
 
         $this->entityManager->flush();
  
-        $wrongAnswers = $answerRepository->getWrongAnswers($rightAnswer);
+        $possibleAnswers = $answerRepository->getPossibleAnswers($rightAnswer);
 
-        $actual = ($wrongAnswers[0] instanceof Answer && $wrongAnswers[1] instanceof Answer && $wrongAnswers[2] instanceof Answer);
+        $ids = array_map(function ($answer) {
+            return $answer->getId();
+        }, $possibleAnswers);
 
-        $this->assertEquals($expected, $actual);
-    }
-
-    public function testGetWrongAnswersAreDifferentAnswers()
-    {
-        $expected = true;
-
-        $answerRepository = $this->entityManager
-            ->getRepository('AppBundle:Answer')
-        ;
-
-        $rightAnswer = new Answer();
-        $this->entityManager->persist($rightAnswer);
-
-        $wrongAnswer1 = new Answer();
-        $this->entityManager->persist($wrongAnswer1);
-
-        $wrongAnswer2 = new Answer();
-        $this->entityManager->persist($wrongAnswer2);
-
-        $wrongAnswer3 = new Answer();
-        $this->entityManager->persist($wrongAnswer3);
-
-        $this->entityManager->flush();
- 
-        $wrongAnswers = $answerRepository->getWrongAnswers($rightAnswer);
-
-        $actual = (
-            $rightAnswer->getId() !== $wrongAnswers[0]->getId() &&
-            $rightAnswer->getId() !== $wrongAnswers[1]->getId() &&
-            $rightAnswer->getId() !== $wrongAnswers[2]->getId() &&
-            $wrongAnswers[0]->getId() !== $wrongAnswers[1]->getId() &&
-            $wrongAnswers[0]->getId() !== $wrongAnswers[2]->getId() &&
-            $wrongAnswers[1]->getId() !== $wrongAnswers[2]->getId()
-        );
+        $actual = $ids === array_unique($ids);
 
         $this->assertEquals($expected, $actual);
     }
@@ -125,7 +124,7 @@ class AnswerRepositoryTest extends WebTestCase
     /**
      * @expectedException TypeError
      */
-    public function testGetWrongAnswersTypeError()
+    public function testGetPossibleAnswersTypeError()
     {
         $expected = 3;
 
@@ -147,9 +146,9 @@ class AnswerRepositoryTest extends WebTestCase
 
         $this->entityManager->flush();
  
-        $wrongAnswers = $answerRepository->getWrongAnswers($rightAnswer);
+        $possibleAnswers = $answerRepository->getPossibleAnswers($rightAnswer);
 
-        $actual = count($wrongAnswers);
+        $actual = count($possibleAnswers);
 
         $this->assertEquals($expected, $actual);
     }
@@ -157,7 +156,7 @@ class AnswerRepositoryTest extends WebTestCase
     /**
      * @expectedException AppBundle\Exceptions\TooFewAnswersException
      */
-    public function testGetWrongAnswersTooFewAnswers()
+    public function testGetPossibleAnswersTooFewAnswers()
     {
         $expected = 3;
 
@@ -176,9 +175,9 @@ class AnswerRepositoryTest extends WebTestCase
 
         $this->entityManager->flush();
  
-        $wrongAnswers = $answerRepository->getWrongAnswers($rightAnswer);
+        $possibleAnswers = $answerRepository->getPossibleAnswers($rightAnswer);
 
-        $actual = count($wrongAnswers);
+        $actual = count($possibleAnswers);
 
         $this->assertEquals($expected, $actual);
     }

@@ -6,6 +6,8 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\GeneratedValue;
 
 /**
@@ -24,6 +26,10 @@ class Question
 
     protected $text;
     
+    /**
+     * @ManyToOne(targetEntity="Answer")
+     * @JoinColumn(name="answer_id", referencedColumnName="id")
+     */
     protected $answer;
 
     public function getId()

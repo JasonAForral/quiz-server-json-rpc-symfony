@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityRepository;
 
 class AnswerRepository extends EntityRepository
 {
-    public function getWrongAnswers(Answer $rightAnswer)
+    public function getPossibleAnswers(Answer $rightAnswer)
     {   
         $allAnswers = $this->getEntityManager()
             ->createQuery(
@@ -20,27 +20,29 @@ class AnswerRepository extends EntityRepository
           throw new TooFewAnswersException();
         }
 
-        $wrongAnswers = [];
+        $answers = [$rightAnswer];
 
-        while (3 > count($wrongAnswers)) {
+        while (4 > count($answers)) {
             $randomAnswer = $allAnswers[mt_rand(0, count($allAnswers) - 1)];
 
             if ($randomAnswer->getId() !== $rightAnswer->getId()) {
 
-                $length = count($wrongAnswers);
+                $length = count($answers);
                 $isDifferent = true;
                 for ($i = 0; $length > $i; ++$i) {
-                    if ($randomAnswer->getId() === $wrongAnswers[$i]->getId()){
+                    if ($randomAnswer->getId() === $answers[$i]->getId()){
                       $isDifferent = false;
                     }
                 }
 
                 if ($isDifferent) {
-                    $wrongAnswers[] = $randomAnswer;
+                    $answers[] = $randomAnswer;
                 }
             }
         }
 
-        return $wrongAnswers;
+        
+
+        return $answers;
     }
 }

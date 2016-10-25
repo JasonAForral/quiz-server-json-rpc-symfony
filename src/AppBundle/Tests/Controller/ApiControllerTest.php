@@ -3,6 +3,7 @@
 namespace AppBundle\Tests\Controller;
 
 use AppBundle\Entity\Answer;
+use AppBundle\Entity\Question;
 use AppBundle\Linters\JsonRpcLinter;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 
@@ -76,6 +77,86 @@ class ApiControllerTest extends WebTestCase
         );
 
         $actual = $client->getResponse()->getStatusCode();
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testApiReturnsJsonRpcErrorNoQuestionsException() 
+    {
+        $expected = [
+            'jsonrpc' => '2.0',
+            'error' => [
+                'code' => 1,
+                'message' => 'No Questions Exception'
+            ],
+            'id' => 1,
+        ];
+
+        $request = [
+            'jsonrpc' => '2.0',
+            'method' => 'newQuestion',
+            'id' => 1,
+        ];
+
+        $client = static::createClient();
+
+        $client->request(
+            'POST',
+            '/api/',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
+
+        $content = $client->getResponse()->getContent();
+
+        $actual = json_decode($content, true);
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testApiReturnsJsonRpcErrorTooFewAnswersException() 
+    {
+        $expected = [
+            'jsonrpc' => '2.0',
+            'error' => [
+                'code' => 2,
+                'message' => 'Too Few Answers Exception'
+            ],
+            'id' => 1,
+        ];
+
+        $question = new Question();
+
+        $answer = new Answer();
+        $question->setAnswer($answer);
+
+        $this->entityManager->persist($question);
+        $this->entityManager->persist($answer);
+
+        $this->entityManager->flush();
+
+        $request = [
+            'jsonrpc' => '2.0',
+            'method' => 'newQuestion',
+            'id' => 1,
+        ];
+
+        $client = static::createClient();
+
+        $client->request(
+            'POST',
+            '/api/',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
+
+        $content = $client->getResponse()->getContent();
+
+        $actual = json_decode($content, true);
 
         $this->assertEquals($expected, $actual);
     }
@@ -174,6 +255,24 @@ class ApiControllerTest extends WebTestCase
     {
         $expected = true;
 
+        $question = new Question();
+        $this->entityManager->persist($question);
+
+        $answer = new Answer();
+        $question->setAnswer($answer);
+        $this->entityManager->persist($answer);
+
+        $answer2 = new Answer();
+        $this->entityManager->persist($answer2);
+
+        $answer3 = new Answer();
+        $this->entityManager->persist($answer3);
+
+        $answer4 = new Answer();
+        $this->entityManager->persist($answer4);
+
+        $this->entityManager->flush();
+
         $request = [
             'jsonrpc' => '2.0',
             'method' => 'newQuestion',
@@ -210,7 +309,11 @@ class ApiControllerTest extends WebTestCase
 
         $expected = [1, 3, 4, 2];
 
+        $question = new Question();
+        $this->entityManager->persist($question);
+
         $rightAnswer = new Answer();
+        $question->setAnswer($rightAnswer);
         $this->entityManager->persist($rightAnswer);
 
         $wrongAnswer1 = new Answer();
@@ -252,53 +355,57 @@ class ApiControllerTest extends WebTestCase
         $this->assertEquals($expected, $actual);
     }
 
-    // public function testPullQuestionAndAnswersFromRepository2()
-    // {
-    //     mt_srand(2);
+    public function testPullQuestionAndAnswersFromRepository2()
+    {
+        mt_srand(2);
 
-    //     $expected = [1, 2, 3, 4];
+        $expected = [1, 4, 3, 2];
 
-    //     $rightAnswer = new Answer();
-    //     $this->entityManager->persist($rightAnswer);
+        $question = new Question();
+        $this->entityManager->persist($question);
 
-    //     $wrongAnswer1 = new Answer();
-    //     $this->entityManager->persist($wrongAnswer1);
+        $rightAnswer = new Answer();
+        $question->setAnswer($rightAnswer);
+        $this->entityManager->persist($rightAnswer);
 
-    //     $wrongAnswer2 = new Answer();
-    //     $this->entityManager->persist($wrongAnswer2);
+        $wrongAnswer1 = new Answer();
+        $this->entityManager->persist($wrongAnswer1);
 
-    //     $wrongAnswer3 = new Answer();
-    //     $this->entityManager->persist($wrongAnswer3);
+        $wrongAnswer2 = new Answer();
+        $this->entityManager->persist($wrongAnswer2);
 
-    //     $this->entityManager->flush();
+        $wrongAnswer3 = new Answer();
+        $this->entityManager->persist($wrongAnswer3);
 
-    //     $request = [
-    //         'jsonrpc' => '2.0',
-    //         'method' => 'newQuestion',
-    //         'id' => '1',
-    //     ];
+        $this->entityManager->flush();
 
-    //     $client = static::createClient();
+        $request = [
+            'jsonrpc' => '2.0',
+            'method' => 'newQuestion',
+            'id' => '1',
+        ];
 
-    //     $client->request(
-    //         'POST',
-    //         '/api/',
-    //         [],
-    //         [],
-    //         ['CONTENT_TYPE' => 'application/json'],
-    //         json_encode($request)
-    //     );
+        $client = static::createClient();
 
-    //     $content = $client->getResponse()->getContent();
+        $client->request(
+            'POST',
+            '/api/',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
 
-    //     $jsonDecoded = json_decode($content, true);
+        $content = $client->getResponse()->getContent();
 
-    //     $actual = array_map(function ($answer) {
-    //         return $answer['id'];
-    //     }, $jsonDecoded['result']['answers']);
+        $jsonDecoded = json_decode($content, true);
 
-    //     $this->assertEquals($expected, $actual);
-    // }
+        $actual = array_map(function ($answer) {
+            return $answer['id'];
+        }, $jsonDecoded['result']['answers']);
+
+        $this->assertEquals($expected, $actual);
+    }
 
     
 }
