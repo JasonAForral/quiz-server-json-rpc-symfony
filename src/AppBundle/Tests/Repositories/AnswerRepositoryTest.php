@@ -126,14 +126,45 @@ class AnswerRepositoryTest extends WebTestCase
      */
     public function testGetPossibleAnswersTypeError()
     {
-        $expected = 3;
+        $expected = 4;
 
         $answerRepository = $this->entityManager
             ->getRepository('AppBundle:Answer')
         ;
 
-        $rightAnswer = new Question();
-        $this->entityManager->persist($rightAnswer);
+        $question = new Question();
+        
+        $wrongAnswer1 = new Answer();
+        $this->entityManager->persist($wrongAnswer1);
+
+        $wrongAnswer2 = new Answer();
+        $this->entityManager->persist($wrongAnswer2);
+
+        $wrongAnswer3 = new Answer();
+        $this->entityManager->persist($wrongAnswer3);
+
+        $this->entityManager->flush();
+ 
+        $possibleAnswers = $answerRepository->getPossibleAnswers($question);
+
+        $actual = count($possibleAnswers);
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * @expectedException Doctrine\DBAL\Exception\NotNullConstraintViolationException
+     */
+    public function testGetPossibleAnswersNotNullConstraintViolationException()
+    {
+        $expected = 4;
+
+        $answerRepository = $this->entityManager
+            ->getRepository('AppBundle:Answer')
+        ;
+
+        $question = new Question();
+        $this->entityManager->persist($question);
 
         $wrongAnswer1 = new Answer();
         $this->entityManager->persist($wrongAnswer1);
@@ -146,12 +177,13 @@ class AnswerRepositoryTest extends WebTestCase
 
         $this->entityManager->flush();
  
-        $possibleAnswers = $answerRepository->getPossibleAnswers($rightAnswer);
+        $possibleAnswers = $answerRepository->getPossibleAnswers($question);
 
         $actual = count($possibleAnswers);
 
         $this->assertEquals($expected, $actual);
     }
+
 
     /**
      * @expectedException AppBundle\Exceptions\TooFewAnswersException

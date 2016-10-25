@@ -28,13 +28,13 @@ class Question
     
     /**
      * @ManyToOne(targetEntity="Answer")
-     * @JoinColumn(name="answer_id", referencedColumnName="id")
+     * @JoinColumn(name="answer_id", referencedColumnName="id", nullable=false)
      */
     protected $answer;
 
     public function getId()
     {
-        
+        return $this->id;
     }
 
     public function setText( $text )
