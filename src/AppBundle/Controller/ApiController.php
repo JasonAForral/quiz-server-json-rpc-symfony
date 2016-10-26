@@ -56,14 +56,6 @@ class ApiController extends Controller
             ];
 
             return new JsonResponse($response);
-        } catch (\Exception $exception) {
-            var_dump(get_class($exception));
-            var_dump($exception->getMessage());
-            return;
-        } catch (\Error $error) {
-            var_dump(get_class($error));
-            var_dump( $error->getMessage());
-            return;
         }
 
         $possibleAnswersJson = array_map(function ($answer) {
