@@ -24,6 +24,9 @@ class Question
      */
     protected $id;
 
+    /**
+     * @Column(type="string")
+     */
     protected $text;
     
     /**

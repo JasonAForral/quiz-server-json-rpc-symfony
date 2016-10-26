@@ -32,13 +32,13 @@ class QuestionAnnotationTest extends WebTestCase
         $expected = 1;
         
         $question = new Question();
+        $question->setText('What is my id?');
         $this->entityManager->persist($question);
 
         $answer = new Answer();
         $question->setAnswer($answer);
         $this->entityManager->persist($answer);
 
-     
         $this->entityManager->flush();
 
         $actual = $question->getId();
@@ -59,6 +59,27 @@ class QuestionAnnotationTest extends WebTestCase
         $this->entityManager->flush();
 
         $actual = $question->getAnswer();
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * @expectedException Doctrine\DBAL\Exception\NotNullConstraintViolationException
+     */
+    public function testQuestionHasNoText()
+    {
+        $expected = null;
+        
+        $question = new Question();
+        $this->entityManager->persist($question);
+
+        $answer = new Answer();
+        $question->setAnswer($answer);
+        $this->entityManager->persist($answer);
+     
+        $this->entityManager->flush();
+
+        $actual = $question->getText();
 
         $this->assertEquals($expected, $actual);
     }

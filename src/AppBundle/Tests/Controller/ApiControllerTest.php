@@ -128,6 +128,7 @@ class ApiControllerTest extends WebTestCase
         ];
 
         $question = new Question();
+        $question->setText('Where are my answers?');
 
         $answer = new Answer();
         $question->setAnswer($answer);
@@ -256,6 +257,7 @@ class ApiControllerTest extends WebTestCase
         $expected = true;
 
         $question = new Question();
+        $question->setText('Do I have a question and answer?');
         $this->entityManager->persist($question);
 
         $answer = new Answer();
@@ -310,6 +312,7 @@ class ApiControllerTest extends WebTestCase
         $expected = [1, 3, 4, 2];
 
         $question = new Question();
+        $question->setText('Where is my stuff?');
         $this->entityManager->persist($question);
 
         $rightAnswer = new Answer();
@@ -362,6 +365,7 @@ class ApiControllerTest extends WebTestCase
         $expected = [1, 4, 3, 2];
 
         $question = new Question();
+        $question->setText('Is my stuff still there?');
         $this->entityManager->persist($question);
 
         $rightAnswer = new Answer();
