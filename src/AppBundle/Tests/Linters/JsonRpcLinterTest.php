@@ -109,7 +109,7 @@ class JsonRpcLinterTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    public function testGetResultChecksJsonRpcResultValid()
+    public function testGetResultChecksJsonRpcResultValid1()
     {
         $expected = true;
 
@@ -117,6 +117,91 @@ class JsonRpcLinterTest extends \PHPUnit_Framework_TestCase
             'jsonrpc' => '2.0',
             'result' => 'something',
             'id' => '1',
+        ];
+
+        $jsonRpcLintResult = JsonRpcLinter::getResult($json);
+
+        $actual = $jsonRpcLintResult->getValid();
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testGetResultChecksIdValid1()
+    {
+        $expected = false;
+
+        $json = [
+            'jsonrpc' => '2.0',
+            'result' => 'something',
+            'id' => null,
+        ];
+
+        $jsonRpcLintResult = JsonRpcLinter::getResult($json);
+
+        $actual = $jsonRpcLintResult->getValid();
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testGetResultChecksIdValid2()
+    {
+        $expected = false;
+
+        $json = [
+            'jsonrpc' => '2.0',
+            'result' => 'something',
+            'id' => 2.0,
+        ];
+
+        $jsonRpcLintResult = JsonRpcLinter::getResult($json);
+
+        $actual = $jsonRpcLintResult->getValid();
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testGetResultChecksIdValid3()
+    {
+        $expected = true;
+
+        $json = [
+            'jsonrpc' => '2.0',
+            'result' => 'something',
+            'id' => 'camel',
+        ];
+
+        $jsonRpcLintResult = JsonRpcLinter::getResult($json);
+
+        $actual = $jsonRpcLintResult->getValid();
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testGetResultChecksIdValid4()
+    {
+        $expected = true;
+
+        $json = [
+            'jsonrpc' => '2.0',
+            'result' => 'something',
+            'id' => '-16',
+        ];
+
+        $jsonRpcLintResult = JsonRpcLinter::getResult($json);
+
+        $actual = $jsonRpcLintResult->getValid();
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testGetResultChecksIdValid5()
+    {
+        $expected = false;
+
+        $json = [
+            'jsonrpc' => '2.0',
+            'result' => 'something',
+            'id' => true,
         ];
 
         $jsonRpcLintResult = JsonRpcLinter::getResult($json);

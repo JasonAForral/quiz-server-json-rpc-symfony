@@ -16,7 +16,14 @@ class JsonRpcLinter
           $versionValid = ('2.0' === $json['jsonrpc']);
       }
 
-      $idValid = array_key_exists('id', $json);
+      if (!array_key_exists('id', $json)) {
+          $idValid = false;
+      } else {
+          $id = $json['id'];
+          $idValid = (is_int($id) || is_string($id)) && !is_null($id);
+      }
+
+      
 
       $methodValid = array_key_exists('method', $json);
       $resultValid = array_key_exists('result', $json);
