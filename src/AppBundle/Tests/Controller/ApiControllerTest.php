@@ -424,5 +424,175 @@ class ApiControllerTest extends WebTestCase
         $this->assertEquals($expected, $actual);
     }
 
-    
+    public function testPullQuestionTextFromRepository()
+    {
+        //mt_srand(3);
+
+        $expected = 'Where is my stuff?';
+
+        $question = new Question();
+        $question->setText('Where is my stuff?');
+        $this->entityManager->persist($question);
+
+        $rightAnswer = new Answer();
+        $rightAnswer->setText('X');
+        $question->setAnswer($rightAnswer);
+        $this->entityManager->persist($rightAnswer);
+
+        $wrongAnswer1 = new Answer();
+        $wrongAnswer1->setText('O');
+        $this->entityManager->persist($wrongAnswer1);
+
+        $wrongAnswer2 = new Answer();
+        $wrongAnswer2->setText('Triangle');
+        $this->entityManager->persist($wrongAnswer2);
+
+        $wrongAnswer3 = new Answer();
+        $wrongAnswer3->setText('Square');
+        $this->entityManager->persist($wrongAnswer3);
+
+        $this->entityManager->flush();
+
+        $request = [
+            'jsonrpc' => '2.0',
+            'method' => 'newQuestion',
+            'id' => '1',
+        ];
+
+        $client = static::createClient();
+
+        $client->request(
+            'POST',
+            '/api/',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
+
+        $content = $client->getResponse()->getContent();
+
+        $jsonDecoded = json_decode($content, true);
+
+        $actual = $jsonDecoded['result']['question']['text'];
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testPullQuestionIdFromRepository()
+    {
+        mt_srand(3);
+
+        $expected = 1;
+
+        $question = new Question();
+        $question->setText('Where is my stuff?');
+        $this->entityManager->persist($question);
+
+        $question2 = new Question();
+        $question2->setText('Where is the beef?');
+        $this->entityManager->persist($question2);
+
+        $rightAnswer = new Answer();
+        $rightAnswer->setText('X');
+        $question->setAnswer($rightAnswer);
+        $this->entityManager->persist($rightAnswer);
+
+        $wrongAnswer1 = new Answer();
+        $wrongAnswer1->setText('O');
+        $question2->setAnswer($wrongAnswer1);
+        $this->entityManager->persist($wrongAnswer1);
+
+        $wrongAnswer2 = new Answer();
+        $wrongAnswer2->setText('Triangle');
+        $this->entityManager->persist($wrongAnswer2);
+
+        $wrongAnswer3 = new Answer();
+        $wrongAnswer3->setText('Square');
+        $this->entityManager->persist($wrongAnswer3);
+
+        $this->entityManager->flush();
+
+        $request = [
+            'jsonrpc' => '2.0',
+            'method' => 'newQuestion',
+            'id' => '1',
+        ];
+
+        $client = static::createClient();
+
+        $client->request(
+            'POST',
+            '/api/',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
+
+        $content = $client->getResponse()->getContent();
+
+        $jsonDecoded = json_decode($content, true);
+
+        $actual = $jsonDecoded['result']['question']['id'];
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testPullAnswerTextFromRepository()
+    {
+        mt_srand(4);
+
+        $expected = ['O', 'Triangle', 'Square', 'X'];
+
+        $question = new Question();
+        $question->setText('Where is my stuff?');
+        $this->entityManager->persist($question);
+
+        $rightAnswer = new Answer();
+        $rightAnswer->setText('X');
+        $question->setAnswer($rightAnswer);
+        $this->entityManager->persist($rightAnswer);
+
+        $wrongAnswer1 = new Answer();
+        $wrongAnswer1->setText('O');
+        $this->entityManager->persist($wrongAnswer1);
+
+        $wrongAnswer2 = new Answer();
+        $wrongAnswer2->setText('Triangle');
+        $this->entityManager->persist($wrongAnswer2);
+
+        $wrongAnswer3 = new Answer();
+        $wrongAnswer3->setText('Square');
+        $this->entityManager->persist($wrongAnswer3);
+
+        $this->entityManager->flush();
+
+        $request = [
+            'jsonrpc' => '2.0',
+            'method' => 'newQuestion',
+            'id' => '1',
+        ];
+
+        $client = static::createClient();
+
+        $client->request(
+            'POST',
+            '/api/',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
+
+        $content = $client->getResponse()->getContent();
+
+        $jsonDecoded = json_decode($content, true);
+
+        $actual = array_map(function ($answer) {
+            return $answer['text'];
+        }, $jsonDecoded['result']['answers']);
+
+        $this->assertEquals($expected, $actual);
+    }
 }

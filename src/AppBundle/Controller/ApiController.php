@@ -69,13 +69,17 @@ class ApiController extends Controller
         $possibleAnswersJson = array_map(function ($answer) {
             return [
                 'id' => $answer->getId(),
+                'text' => $answer->getText(),
             ];
         }, $possibleAnswers);
 
         $response = [
             'jsonrpc' => '2.0',
             'result' => [
-                  'question' => '',
+                  'question' => [
+                      'id' => $question->getId(),
+                      'text' => $question->getText(),
+                  ],
                   'answers' => $possibleAnswersJson,
               ],
             'id' => $id,
