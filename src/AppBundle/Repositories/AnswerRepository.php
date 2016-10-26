@@ -4,6 +4,7 @@ namespace AppBundle\Repositories;
 
 use AppBundle\Entity\Answer;
 use AppBundle\Exceptions\TooFewAnswersException;
+use AppBundle\Utilities\Shuffler;
 use Doctrine\ORM\EntityRepository;
 
 class AnswerRepository extends EntityRepository
@@ -41,7 +42,7 @@ class AnswerRepository extends EntityRepository
             }
         }
 
-        
+        $answers = Shuffler::arrayShuffle($answers);
 
         return $answers;
     }

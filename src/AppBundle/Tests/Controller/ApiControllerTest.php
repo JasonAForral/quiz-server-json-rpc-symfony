@@ -314,7 +314,7 @@ class ApiControllerTest extends WebTestCase
     {
         mt_srand(1);
 
-        $expected = [1, 3, 4, 2];
+        $expected = [3, 2, 1, 4];
 
         $question = new Question();
         $question->setText('Where is my stuff?');
@@ -371,7 +371,7 @@ class ApiControllerTest extends WebTestCase
     {
         mt_srand(2);
 
-        $expected = [1, 4, 3, 2];
+        $expected = [4, 3, 1, 2];
 
         $question = new Question();
         $question->setText('Is my stuff still there?');
