@@ -131,6 +131,7 @@ class ApiControllerTest extends WebTestCase
         $question->setText('Where are my answers?');
 
         $answer = new Answer();
+        $answer->setText('In the database');
         $question->setAnswer($answer);
 
         $this->entityManager->persist($question);
@@ -261,16 +262,20 @@ class ApiControllerTest extends WebTestCase
         $this->entityManager->persist($question);
 
         $answer = new Answer();
+        $answer->setText('A');
         $question->setAnswer($answer);
         $this->entityManager->persist($answer);
 
         $answer2 = new Answer();
+        $answer2->setText('B');
         $this->entityManager->persist($answer2);
 
         $answer3 = new Answer();
+        $answer3->setText('C');
         $this->entityManager->persist($answer3);
 
         $answer4 = new Answer();
+        $answer4->setText('D');
         $this->entityManager->persist($answer4);
 
         $this->entityManager->flush();
@@ -316,16 +321,20 @@ class ApiControllerTest extends WebTestCase
         $this->entityManager->persist($question);
 
         $rightAnswer = new Answer();
+        $rightAnswer->setText('X');
         $question->setAnswer($rightAnswer);
         $this->entityManager->persist($rightAnswer);
 
         $wrongAnswer1 = new Answer();
+        $wrongAnswer1->setText('O');
         $this->entityManager->persist($wrongAnswer1);
 
         $wrongAnswer2 = new Answer();
+        $wrongAnswer2->setText('Triangle');
         $this->entityManager->persist($wrongAnswer2);
 
         $wrongAnswer3 = new Answer();
+        $wrongAnswer3->setText('Square');
         $this->entityManager->persist($wrongAnswer3);
 
         $this->entityManager->flush();
@@ -369,16 +378,20 @@ class ApiControllerTest extends WebTestCase
         $this->entityManager->persist($question);
 
         $rightAnswer = new Answer();
+        $rightAnswer->setText('Yes');
         $question->setAnswer($rightAnswer);
         $this->entityManager->persist($rightAnswer);
 
         $wrongAnswer1 = new Answer();
+        $wrongAnswer1->setText('Blue');
         $this->entityManager->persist($wrongAnswer1);
 
         $wrongAnswer2 = new Answer();
+        $wrongAnswer2->setText('Up');
         $this->entityManager->persist($wrongAnswer2);
 
         $wrongAnswer3 = new Answer();
+        $wrongAnswer3->setText('Seven');
         $this->entityManager->persist($wrongAnswer3);
 
         $this->entityManager->flush();

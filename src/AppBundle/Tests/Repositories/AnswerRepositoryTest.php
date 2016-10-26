@@ -36,15 +36,19 @@ class AnswerRepositoryTest extends WebTestCase
         ;
 
         $rightAnswer = new Answer();
+        $rightAnswer->setText('Alpha');
         $this->entityManager->persist($rightAnswer);
 
         $wrongAnswer1 = new Answer();
+        $wrongAnswer1->setText('Beta');
         $this->entityManager->persist($wrongAnswer1);
 
         $wrongAnswer2 = new Answer();
+        $wrongAnswer2->setText('Gamma');
         $this->entityManager->persist($wrongAnswer2);
 
         $wrongAnswer3 = new Answer();
+        $wrongAnswer3->setText('Panda');
         $this->entityManager->persist($wrongAnswer3);
 
         $this->entityManager->flush();
@@ -65,15 +69,19 @@ class AnswerRepositoryTest extends WebTestCase
         ;
 
         $rightAnswer = new Answer();
+        $rightAnswer->setText('Alpha');
         $this->entityManager->persist($rightAnswer);
 
         $wrongAnswer1 = new Answer();
+        $wrongAnswer1->setText('Beta');
         $this->entityManager->persist($wrongAnswer1);
 
         $wrongAnswer2 = new Answer();
+        $wrongAnswer2->setText('Gamma');
         $this->entityManager->persist($wrongAnswer2);
 
         $wrongAnswer3 = new Answer();
+        $wrongAnswer3->setText('Panda');
         $this->entityManager->persist($wrongAnswer3);
 
         $this->entityManager->flush();
@@ -96,15 +104,19 @@ class AnswerRepositoryTest extends WebTestCase
         ;
 
         $rightAnswer = new Answer();
+        $rightAnswer->setText('Alpha');
         $this->entityManager->persist($rightAnswer);
 
         $wrongAnswer1 = new Answer();
+        $wrongAnswer1->setText('Beta');
         $this->entityManager->persist($wrongAnswer1);
 
         $wrongAnswer2 = new Answer();
+        $wrongAnswer2->setText('Gamma');
         $this->entityManager->persist($wrongAnswer2);
 
         $wrongAnswer3 = new Answer();
+        $wrongAnswer3->setText('Panda');
         $this->entityManager->persist($wrongAnswer3);
 
         $this->entityManager->flush();
@@ -134,12 +146,15 @@ class AnswerRepositoryTest extends WebTestCase
         $question = new Question();
         
         $wrongAnswer1 = new Answer();
+        $wrongAnswer1->setText('Seven');
         $this->entityManager->persist($wrongAnswer1);
 
         $wrongAnswer2 = new Answer();
+        $wrongAnswer2->setText('Tomato');
         $this->entityManager->persist($wrongAnswer2);
 
         $wrongAnswer3 = new Answer();
+        $wrongAnswer3->setText('Up');
         $this->entityManager->persist($wrongAnswer3);
 
         $this->entityManager->flush();
@@ -196,12 +211,15 @@ class AnswerRepositoryTest extends WebTestCase
         ;
 
         $rightAnswer = new Answer();
+        $rightAnswer->setText('The greatest');
         $this->entityManager->persist($rightAnswer);
 
         $wrongAnswer1 = new Answer();
+        $wrongAnswer1->setText('Up');
         $this->entityManager->persist($wrongAnswer1);
 
         $wrongAnswer2 = new Answer();
+        $wrongAnswer2->setText('Dynamite');
         $this->entityManager->persist($wrongAnswer2);
 
         $this->entityManager->flush();

@@ -2,11 +2,11 @@
 
 namespace AppBundle\Tests\Annotations;
 
-use AppBundle\Entity\ {Answer, Question};
+use AppBundle\Entity\ {Answer};
 use AppBundle\Repositories\QuestionRepository;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 
-class QuestionAnnotationTest extends WebTestCase
+class AnswerAnnotationTest extends WebTestCase
 {
     protected $entityManager;
 
@@ -28,61 +28,38 @@ class QuestionAnnotationTest extends WebTestCase
         $this->entityManager = null;
     }
 
-    public function testGetId() {
+    public function testGetId()
+    {
 
         $expected = 1;
         
-        $question = new Question();
-        $question->setText('What is my id?');
-        $this->entityManager->persist($question);
-
         $answer = new Answer();
-        $answer->setText('One, I think.');
-        $question->setAnswer($answer);
+        $answer->setText('Yes!');
         $this->entityManager->persist($answer);
 
         $this->entityManager->flush();
 
-        $actual = $question->getId();
+        $actual = $answer->getId();
 
         $this->assertEquals($expected, $actual);
     }
 
-    /**
-     * @expectedException Doctrine\DBAL\Exception\NotNullConstraintViolationException
-     */
-    public function testQuestionHasNoAnswer()
-    {
-        $expected = true;
-        
-        $question = new Question();
-        $this->entityManager->persist($question);
-     
-        $this->entityManager->flush();
-
-        $actual = $question->getAnswer();
-
-        $this->assertEquals($expected, $actual);
-    }
 
     /**
      * @expectedException Doctrine\DBAL\Exception\NotNullConstraintViolationException
      */
-    public function testQuestionHasNoText()
+    public function testAnswerHasNoText()
     {
         $expected = null;
         
-        $question = new Question();
-        $this->entityManager->persist($question);
-
         $answer = new Answer();
-        $question->setAnswer($answer);
         $this->entityManager->persist($answer);
      
         $this->entityManager->flush();
 
-        $actual = $question->getText();
+        $actual = $answer->getText();
 
         $this->assertEquals($expected, $actual);
     }
+
 }

@@ -21,6 +21,9 @@ class Answer
      */
     protected $id;
 
+    /**
+     * @Column(type="string")
+     */
     protected $text;
 
     public function getId()
@@ -28,7 +31,7 @@ class Answer
         return $this->id;
     }
 
-    public function setText( $text )
+    public function setText($text)
     {
         if (!is_string($text)) {
             throw new \TypeError();
