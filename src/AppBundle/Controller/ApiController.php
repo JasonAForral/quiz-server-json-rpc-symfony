@@ -22,6 +22,23 @@ class ApiController extends Controller
 
         $id = $jsonDecoded['id'];
 
+        $method = $jsonDecoded['method'];
+
+        switch($method) {
+            case 'newQuestion':
+                return $this->newQuestion($id);
+            case 'answerQuestion':
+                $answerId = $jsonDecoded['params']['answerId'];
+                $questionId = $jsonDecoded['params']['questionId'];
+                return $this->answerQuestion($answerId, $id, $questionId);
+            default:
+                return 'error';
+        }
+    }
+    
+
+    private function newQuestion($id)
+    {
         $entityManager = $this->getDoctrine()->getManager();
 
         try {
@@ -77,6 +94,24 @@ class ApiController extends Controller
             'id' => $id,
         ];
 
+        return new JsonResponse($response);
+    }
+
+    private function answerQuestion($answerId, $id, $questionId)
+    {
+
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $correctAnswerId = $entityManager->getRepository('AppBundle:Question')->findOneById($questionId)->getAnswer()->getId();
+
+        $response = [
+            'id' => $id,
+            'jsonrpc' => '2.0',
+            'result' => [
+                'answerId' => $correctAnswerId,
+            ],
+        ];
+        
         return new JsonResponse($response);
     }
 }
