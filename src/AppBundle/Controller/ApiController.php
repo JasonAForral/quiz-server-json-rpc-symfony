@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\ {JsonResponse, Request};
 class ApiController extends Controller
 {
     /**
-     * @Route("/api/", name="api")
+     * @Route("/api", name="api")
      * @Method({"POST"})
      */
     public function apiAction(Request $request)
