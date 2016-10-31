@@ -43,7 +43,7 @@ class ApiControllerTest extends WebTestCase
 
         $client->request(
             'POST',
-            '/api/',
+            '/api',
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -69,7 +69,7 @@ class ApiControllerTest extends WebTestCase
 
         $client->request(
             'GET',
-            '/api/',
+            '/api',
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -102,7 +102,7 @@ class ApiControllerTest extends WebTestCase
 
         $client->request(
             'POST',
-            '/api/',
+            '/api',
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -149,7 +149,7 @@ class ApiControllerTest extends WebTestCase
 
         $client->request(
             'POST',
-            '/api/',
+            '/api',
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -177,7 +177,7 @@ class ApiControllerTest extends WebTestCase
 
         $client->request(
             'POST',
-            '/api/',
+            '/api',
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -207,7 +207,7 @@ class ApiControllerTest extends WebTestCase
 
         $client->request(
             'POST',
-            '/api/',
+            '/api',
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -237,7 +237,7 @@ class ApiControllerTest extends WebTestCase
 
         $client->request(
             'POST',
-            '/api/',
+            '/api',
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -290,7 +290,7 @@ class ApiControllerTest extends WebTestCase
 
         $client->request(
             'POST',
-            '/api/',
+            '/api',
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -349,7 +349,7 @@ class ApiControllerTest extends WebTestCase
 
         $client->request(
             'POST',
-            '/api/',
+            '/api',
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -406,7 +406,7 @@ class ApiControllerTest extends WebTestCase
 
         $client->request(
             'POST',
-            '/api/',
+            '/api',
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -463,7 +463,7 @@ class ApiControllerTest extends WebTestCase
 
         $client->request(
             'POST',
-            '/api/',
+            '/api',
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -523,7 +523,7 @@ class ApiControllerTest extends WebTestCase
 
         $client->request(
             'POST',
-            '/api/',
+            '/api',
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -578,7 +578,7 @@ class ApiControllerTest extends WebTestCase
 
         $client->request(
             'POST',
-            '/api/',
+            '/api',
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -595,4 +595,5 @@ class ApiControllerTest extends WebTestCase
 
         $this->assertEquals($expected, $actual);
     }
+
 }
