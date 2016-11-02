@@ -42,7 +42,7 @@ class ApiController extends Controller
                     'code' => -32600,
                     'message' => 'Invalid Request',
                 ],
-                'id' => null,
+                'id' => $id,
             ];
             return new JsonResponse($response);
         }
@@ -52,12 +52,31 @@ class ApiController extends Controller
         switch($method) {
             case 'newQuestion':
                 return $this->newQuestion($id);
+
             case 'answerQuestion':
+                if (!array_key_exists('params', $jsonDecoded)) {
+                    return $this->invalidParams($id, 'Missing params');
+                } else if (!array_key_exists('questionId', $jsonDecoded['params'])) {
+                    return $this->invalidParams($id, 'Missing question');
+                } else if (!array_key_exists('answerId', $jsonDecoded['params'])) {
+                    return $this->invalidParams($id, 'Missing answer');
+                }
+                
                 $answerId = $jsonDecoded['params']['answerId'];
                 $questionId = $jsonDecoded['params']['questionId'];
                 return $this->answerQuestion($answerId, $id, $questionId);
+
             default:
-                return 'error';
+                $response = [
+                    'jsonrpc' => '2.0',
+                    'error' => [
+                        'code' => -32601,
+                        'data' => $method . ' not found',
+                        'message' => 'Method not found',
+                    ],
+                    'id' => $id,
+                ];
+                return new JsonResponse($response);
         }
     }
     
@@ -124,6 +143,9 @@ class ApiController extends Controller
 
     private function answerQuestion($answerId, $id, $questionId)
     {
+        if (!is_int($answerId)) {
+            return $this->invalidParams($id);
+        }
 
         $entityManager = $this->getDoctrine()->getManager();
 
@@ -137,6 +159,21 @@ class ApiController extends Controller
             ],
         ];
         
+        return new JsonResponse($response);
+    }
+
+    private function invalidParams($id, $data)
+    {
+        $response = [
+            'id' => $id,
+            'jsonrpc' => '2.0',
+            'error' => [
+                'code' => -32602,
+                'data' => $data,
+                'message' => 'Invalid params',
+            ],
+        ];
+
         return new JsonResponse($response);
     }
 }

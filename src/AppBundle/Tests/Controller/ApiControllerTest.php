@@ -749,7 +749,7 @@ class ApiControllerTest extends WebTestCase
             'jsonrpc' => '2.0',
             'error' => [
                 'code' => -32600,
-                'message' => 'Invalid Request'
+                'message' => 'Invalid Request',
             ],
             'id' => null,
         ];
@@ -784,15 +784,15 @@ class ApiControllerTest extends WebTestCase
             'jsonrpc' => '2.0',
             'error' => [
                 'code' => -32600,
-                'message' => 'Invalid Request'
+                'message' => 'Invalid Request',
             ],
-            'id' => null,
+            'id' => 1,
         ];
 
         $request = [
             'jsonrpc' => '2.0',
             'question' => 'newQuestion',
-            'id' => null,
+            'id' => 1,
         ];
 
         $client = static::createClient();
@@ -819,15 +819,166 @@ class ApiControllerTest extends WebTestCase
             'jsonrpc' => '2.0',
             'error' => [
                 'code' => -32600,
-                'message' => 'Invalid Request'
+                'message' => 'Invalid Request',
             ],
-            'id' => null,
+            'id' => 1,
         ];
 
         $request = [
             'jsonrpc' => '2.1',
             'method' => 'newQuestion',
-            'id' => null,
+            'id' => 1,
+        ];
+
+        $client = static::createClient();
+
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
+
+        $content = $client->getResponse()->getContent();
+
+        $actual = json_decode($content, true);
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testApiReturnsMethodNotFound() 
+    {
+        $expected = [
+            'jsonrpc' => '2.0',
+            'error' => [
+                'code' => -32601,
+                'data' => 'doABarrelRoll not found',
+                'message' => 'Method not found',
+            ],
+            'id' => 1,
+        ];
+
+        $request = [
+            'jsonrpc' => '2.0',
+            'method' => 'doABarrelRoll',
+            'id' => 1,
+        ];
+
+        $client = static::createClient();
+
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
+
+        $content = $client->getResponse()->getContent();
+
+        $actual = json_decode($content, true);
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testApiReturnsInvalidParamsNoParams() 
+    {
+        $expected = [
+            'jsonrpc' => '2.0',
+            'error' => [
+                'code' => -32602,
+                'data' => 'Missing params',
+                'message' => 'Invalid params',
+            ],
+            'id' => 1,
+        ];
+
+        $request = [
+            'jsonrpc' => '2.0',
+            'method' => 'answerQuestion',
+            
+            'id' => 1,
+        ];
+
+        $client = static::createClient();
+
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
+
+        $content = $client->getResponse()->getContent();
+
+        $actual = json_decode($content, true);
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testApiReturnsInvalidParamsNoQuestion() 
+    {
+        $expected = [
+            'jsonrpc' => '2.0',
+            'error' => [
+                'code' => -32602,
+                'data' => 'Missing question',
+                'message' => 'Invalid params',
+            ],
+            'id' => 1,
+        ];
+
+        $request = [
+            'jsonrpc' => '2.0',
+            'method' => 'answerQuestion',
+            'params' => [
+                'answerId' => 1,
+            ],
+            'id' => 1,
+        ];
+
+        $client = static::createClient();
+
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
+
+        $content = $client->getResponse()->getContent();
+
+        $actual = json_decode($content, true);
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testApiReturnsInvalidParamsNoAnswer() 
+    {
+        $expected = [
+            'jsonrpc' => '2.0',
+            'error' => [
+                'code' => -32602,
+                'data' => 'Missing answer',
+                'message' => 'Invalid params',
+            ],
+            'id' => 1,
+        ];
+
+        $request = [
+            'jsonrpc' => '2.0',
+            'method' => 'answerQuestion',
+            'params' => [
+                'questionId' => 1,
+            ],
+            'id' => 1,
         ];
 
         $client = static::createClient();
