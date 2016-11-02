@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Exceptions\ {NoQuestionsException, TooFewAnswersException};
+use AppBundle\Linters\JsonRpcLinter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\ {Controller};
@@ -20,7 +21,31 @@ class ApiController extends Controller
 
         $jsonDecoded = json_decode($content, true);
 
+        if (null === $jsonDecoded) {
+            $response = [
+                'jsonrpc' => '2.0',
+                'error' => [
+                    'code' => -32700,
+                    'message' => 'Parse error',
+                ],
+                'id' => null,
+            ];
+            return new JsonResponse($response);
+        }
+
         $id = $jsonDecoded['id'];
+
+        if (!JsonRpcLinter::getResult($jsonDecoded)->getValid()) {
+            $response = [
+                'jsonrpc' => '2.0',
+                'error' => [
+                    'code' => -32600,
+                    'message' => 'Invalid Request',
+                ],
+                'id' => null,
+            ];
+            return new JsonResponse($response);
+        }
 
         $method = $jsonDecoded['method'];
 
