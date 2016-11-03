@@ -627,7 +627,7 @@ class ApiControllerTest extends WebTestCase
         $this->assertEquals($expected, $actual);
     }
 
-    public function testAnswerQuestionHasAnswerId()
+    public function testAnswerQuestionHasCorrectId()
     {
         $expected = true;
 
@@ -659,7 +659,7 @@ class ApiControllerTest extends WebTestCase
             'jsonrpc' => '2.0',
             'method' => 'answerQuestion',
             'params' => [
-                'answerId' => 1,
+                'guessId' => 1,
                 'questionId' => 1,
             ],
         ];
@@ -679,9 +679,9 @@ class ApiControllerTest extends WebTestCase
 
         $jsonDecoded = json_decode($content, true);
 
-        $answerIdExists = array_key_exists('answerId', $jsonDecoded['result']);
+        $correctIdExists = array_key_exists('correctId', $jsonDecoded['result']);
 
-        $actual = $answerIdExists;
+        $actual = $correctIdExists;
 
         $this->assertEquals($expected, $actual);
     }
@@ -718,7 +718,7 @@ class ApiControllerTest extends WebTestCase
             'jsonrpc' => '2.0',
             'method' => 'answerQuestion',
             'params' => [
-                'answerId' => 3,
+                'guessId' => 3,
                 'questionId' => 1,
             ],
         ];
@@ -738,7 +738,7 @@ class ApiControllerTest extends WebTestCase
 
         $jsonDecoded = json_decode($content, true);
 
-        $actual = $jsonDecoded['result']['answerId'];
+        $actual = $jsonDecoded['result']['correctId'];
 
         $this->assertEquals($expected, $actual);
     }
@@ -937,7 +937,7 @@ class ApiControllerTest extends WebTestCase
             'jsonrpc' => '2.0',
             'method' => 'answerQuestion',
             'params' => [
-                'answerId' => 1,
+                'guessId' => 1,
             ],
             'id' => 1,
         ];

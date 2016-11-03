@@ -58,13 +58,13 @@ class ApiController extends Controller
                     return $this->invalidParams($id, 'Missing params');
                 } else if (!array_key_exists('questionId', $jsonDecoded['params'])) {
                     return $this->invalidParams($id, 'Missing question');
-                } else if (!array_key_exists('answerId', $jsonDecoded['params'])) {
+                } else if (!array_key_exists('guessId', $jsonDecoded['params'])) {
                     return $this->invalidParams($id, 'Missing answer');
                 }
                 
-                $answerId = $jsonDecoded['params']['answerId'];
+                $guessId = $jsonDecoded['params']['guessId'];
                 $questionId = $jsonDecoded['params']['questionId'];
-                return $this->answerQuestion($answerId, $id, $questionId);
+                return $this->answerQuestion($guessId, $id, $questionId);
 
             default:
                 $response = [
@@ -141,21 +141,21 @@ class ApiController extends Controller
         return new JsonResponse($response);
     }
 
-    private function answerQuestion($answerId, $id, $questionId)
+    private function answerQuestion($guessId, $id, $questionId)
     {
-        if (!is_int($answerId)) {
+        if (!is_int($guessId)) {
             return $this->invalidParams($id);
         }
 
         $entityManager = $this->getDoctrine()->getManager();
 
-        $correctAnswerId = $entityManager->getRepository('AppBundle:Question')->findOneById($questionId)->getAnswer()->getId();
+        $correctId = $entityManager->getRepository('AppBundle:Question')->findOneById($questionId)->getAnswer()->getId();
 
         $response = [
             'id' => $id,
             'jsonrpc' => '2.0',
             'result' => [
-                'answerId' => $correctAnswerId,
+                'correctId' => $correctId,
             ],
         ];
         

@@ -17,12 +17,12 @@ docker-compose run web composer install
 
 #### Objective:
 
-* Create quiz server that pulls questions and answers from database
-* Stores user records
+[ ] Create quiz server that pulls questions and answers from database
+[ ] Stores user records
 
 #### Steps Taken:
 
-* Set up Symfony framework
+[*] Set up Symfony framework
 * Set up unit tests
 * Wrote classes for Questions, Answers, Quizes
 * Set up database
