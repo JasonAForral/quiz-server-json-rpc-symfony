@@ -8,7 +8,7 @@ Unit Testing:
 docker-compose run web bin/phpunit --configuration app
 ```
 
-build:
+Build:
 
 ```bash
 docker-compose build
@@ -17,14 +17,14 @@ docker-compose run web composer install
 
 #### Objective:
 
-[ ] Create quiz server that pulls questions and answers from database
-[ ] Stores user records
+- [ ] Create quiz server that pulls questions and answers from database
+- [ ] Stores user records
 
 #### Steps Taken:
 
-[*] Set up Symfony framework
-* Set up unit tests
-* Wrote classes for Questions, Answers, Quizes
-* Set up database
-* Wrote classes for Repositories
-* Wrote class for JSON-RPC linting
+- [x] Set up Symfony framework
+- [x] Set up unit tests
+- [x] Write classes for Questions, Answers, Quizes
+- [x] Set up database
+- [x] Write classes for Repositories
+- [x] Write class for JSON-RPC linting
