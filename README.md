@@ -24,7 +24,7 @@ docker-compose run web composer install
 
 - [x] Set up Symfony framework
 - [x] Set up unit tests
-- [x] Write classes for Questions, Answers, Quizes
+- [x] Write classes for Questions, Answers, Quizzes
 - [x] Set up database
 - [x] Write classes for Repositories
 - [x] Write class for JSON-RPC linting
