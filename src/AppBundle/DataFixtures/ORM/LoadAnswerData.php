@@ -15,20 +15,208 @@ class LoadAnswerData extends AbstractFixture implements OrderedFixtureInterface
     {
         $answers = [
             [
-                'text' => 'Salem',
-                'reference' => 'salem',
+                'text' => 'Albany',
+                'reference' => 'albany',
+            ],
+            [
+                'text' => 'Annapolis',
+                'reference' => 'annapolis',
+            ],
+            [
+                'text' => 'Atlanta',
+                'reference' => 'atlanta',
+            ],
+            [
+                'text' => 'Augusta',
+                'reference' => 'augusta',
+            ],
+            [
+                'text' => 'Austin',
+                'reference' => 'austin',
+            ],
+            [
+                'text' => 'Baton Rouge',
+                'reference' => 'baton-rouge',
+            ],
+            [
+                'text' => 'Bismarck',
+                'reference' => 'bismarck',
+            ],
+            [
+                'text' => 'Boise',
+                'reference' => 'boise',
+            ],
+            [
+                'text' => 'Boston',
+                'reference' => 'boston',
+            ],
+            [
+                'text' => 'Carson City',
+                'reference' => 'carson-city',
+            ],
+            [
+                'text' => 'Charleston',
+                'reference' => 'charleston',
+            ],
+            [
+                'text' => 'Cheyenne',
+                'reference' => 'cheyenne',
+            ],
+            [
+                'text' => 'Columbia',
+                'reference' => 'columbia',
+            ],
+            [
+                'text' => 'Columbus',
+                'reference' => 'columbus',
+            ],
+            [
+                'text' => 'Concord',
+                'reference' => 'concord',
+            ],
+            [
+                'text' => 'Denver',
+                'reference' => 'denver',
+            ],
+            [
+                'text' => 'Des Moines',
+                'reference' => 'des-moines',
+            ],
+            [
+                'text' => 'Dover',
+                'reference' => 'dover',
+            ],
+            [
+                'text' => 'Frankfort',
+                'reference' => 'frankfort',
+            ],
+            [
+                'text' => 'Harrisburg',
+                'reference' => 'harrisburg',
+            ],
+            [
+                'text' => 'Hartford',
+                'reference' => 'hartford',
+            ],
+            [
+                'text' => 'Helena',
+                'reference' => 'helena',
+            ],
+            [
+                'text' => 'Honolulu',
+                'reference' => 'honolulu',
+            ],
+            [
+                'text' => 'Indianapolis',
+                'reference' => 'indianapolis',
+            ],
+            [
+                'text' => 'Jackson',
+                'reference' => 'jackson',
+            ],
+            [
+                'text' => 'Jefferson City',
+                'reference' => 'jefferson-city',
+            ],
+            [
+                'text' => 'Juneau',
+                'reference' => 'juneau',
+            ],
+            [
+                'text' => 'Lansing',
+                'reference' => 'lansing',
+            ],
+            [
+                'text' => 'Lincoln',
+                'reference' => 'lincoln',
+            ],
+            [
+                'text' => 'Little Rock',
+                'reference' => 'little-rock',
+            ],
+            [
+                'text' => 'Madison',
+                'reference' => 'madison',
+            ],
+            [
+                'text' => 'Montgomery',
+                'reference' => 'montgomery',
+            ],
+            [
+                'text' => 'Montpelier',
+                'reference' => 'montpelier',
+            ],
+            [
+                'text' => 'Nashville',
+                'reference' => 'nashville',
+            ],
+            [
+                'text' => 'Oklahoma City',
+                'reference' => 'oklahoma-city',
             ],
             [
                 'text' => 'Olympia',
                 'reference' => 'olympia',
             ],
             [
+                'text' => 'Phoenix',
+                'reference' => 'phoenix',
+            ],
+            [
+                'text' => 'Pierre',
+                'reference' => 'pierre',
+            ],
+            [
+                'text' => 'Providence',
+                'reference' => 'providence',
+            ],
+            [
+                'text' => 'Raleigh',
+                'reference' => 'raleigh',
+            ],
+            [
+                'text' => 'Richmond',
+                'reference' => 'richmond',
+            ],
+            [
                 'text' => 'Sacramento',
                 'reference' => 'sacramento',
             ],
             [
-                'text' => 'Honolulu',
-                'reference' => 'honolulu',
+                'text' => 'Saint Paul',
+                'reference' => 'saint-paul',
+            ],
+            [
+                'text' => 'Salem',
+                'reference' => 'salem',
+            ],
+            [
+                'text' => 'Salt Lake City',
+                'reference' => 'salt-lake-city',
+            ],
+            [
+                'text' => 'Santa Fe',
+                'reference' => 'santa-fe',
+            ],
+            [
+                'text' => 'Springfield',
+                'reference' => 'springfield',
+            ],
+            [
+                'text' => 'Tallahassee',
+                'reference' => 'tallahassee',
+            ],
+            [
+                'text' => 'Topeka',
+                'reference' => 'topeka',
+            ],
+            [
+                'text' => 'Trenton',
+                'reference' => 'trenton',
+            ],
+            [
+                'text' => 'Washington',
+                'reference' => 'washington',
             ],
         ];
 

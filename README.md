@@ -15,6 +15,12 @@ docker-compose build
 docker-compose run web composer install
 ```
 
+Load Fixtures:
+
+```bash
+docker-compose run web app/console doctrine:fixtures:load --purge-with-truncate
+```
+
 #### Objective:
 
 - [ ] Create quiz server that pulls questions and answers from database
