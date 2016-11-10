@@ -66,6 +66,9 @@ class ApiController extends Controller
                 $questionId = $jsonDecoded['params']['questionId'];
                 return $this->answerQuestion($guessId, $id, $questionId);
 
+            case 'getQuizzes':
+                return $this->getQuizzes($id);
+
             default:
                 $response = [
                     'jsonrpc' => '2.0',
@@ -175,5 +178,36 @@ class ApiController extends Controller
         ];
 
         return new JsonResponse($response);
+    }
+
+    private function getQuizzes($id)
+    {
+
+        $entityManager = $this->getDoctrine()->getManager();
+
+        try {
+        } catch (\Exception $exception) {
+            return [];
+        }
+
+        $response = [
+            'jsonrpc' => '2.0',
+            'result' => [
+                'quizzes' => [
+                    [
+                        'id' => 1,
+                        'text' => 'State Capitals'
+                    ],
+                    [
+                        'id' => 2,
+                        'text' => 'Atomic Numbers'
+                    ],
+                ],
+            ],
+            'id' => $id,
+        ];
+
+        return new JsonResponse($response); 
+
     }
 }

@@ -17,3 +17,4 @@
 /.data/
 /app/sqlite.db
 /.vscode
+npm-debug.log

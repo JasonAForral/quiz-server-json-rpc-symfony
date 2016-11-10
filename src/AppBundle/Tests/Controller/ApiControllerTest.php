@@ -998,4 +998,72 @@ class ApiControllerTest extends WebTestCase
 
         $this->assertEquals($expected, $actual);
     }
+
+    public function testGetQuizzesReturnsQuizzes()
+    {
+        $expected = [
+            'jsonrpc' => '2.0',
+            'result' => [
+                'quizzes' => [
+                    [
+                        'id' => 1,
+                        'text' => 'State Capitals'
+                    ],
+                    [
+                        'id' => 2,
+                        'text' => 'Atomic Numbers'
+                    ],
+                ],
+            ],
+            'id' => 1,
+        ];
+
+        // $question = new Question();
+        // $question->setText('Do I have a question and answer?');
+        // $this->entityManager->persist($question);
+
+        // $answer = new Answer();
+        // $answer->setText('A');
+        // $question->setAnswer($answer);
+        // $this->entityManager->persist($answer);
+
+        // $answer2 = new Answer();
+        // $answer2->setText('B');
+        // $this->entityManager->persist($answer2);
+
+        // $answer3 = new Answer();
+        // $answer3->setText('C');
+        // $this->entityManager->persist($answer3);
+
+        // $answer4 = new Answer();
+        // $answer4->setText('D');
+        // $this->entityManager->persist($answer4);
+
+        $this->entityManager->flush();
+
+        $request = [
+            'id' => 1,
+            'jsonrpc' => '2.0',
+            'method' => 'getQuizzes',
+        ];
+
+        $client = static::createClient();
+
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
+
+        $content = $client->getResponse()->getContent();
+
+        $jsonDecoded = json_decode($content, true);
+
+        $actual = $jsonDecoded;
+
+        $this->assertEquals($expected, $actual);
+    }
 }
