@@ -30,9 +30,6 @@ class LoadQuizData extends AbstractFixture implements OrderedFixtureInterface
             $quizText = $quizData['text'];
             $quiz->setText($quizText);
 
-            // $reference = 'question-' . $quizData['question'];
-            // $quiz->setQuestion($this->getReference($reference));
-
             $manager->persist($quiz);
             $manager->flush();
 

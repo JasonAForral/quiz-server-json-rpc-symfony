@@ -225,8 +225,8 @@ class LoadQuestionData extends AbstractFixture implements OrderedFixtureInterfac
             $reference = 'answer-' . $questionData['capital'];
             $question->setAnswer($this->getReference($reference));
 
-            // $reference = 'quiz-state-capitals';
-            // $question->setAnswer($this->getReference($reference));
+            $reference2 = 'quiz-state-capitals';
+            $question->setQuiz($this->getReference($reference2));
             
             $manager->persist($question);
             $manager->flush();

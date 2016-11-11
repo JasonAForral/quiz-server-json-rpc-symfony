@@ -35,6 +35,12 @@ class Question
      */
     protected $answer;
 
+    /**
+     * @ManyToOne(targetEntity="Quiz")
+     * @JoinColumn(name="quiz_id", referencedColumnName="id", nullable=false)
+     */
+    protected $quiz;
+
     public function getId()
     {
         return $this->id;
@@ -62,5 +68,13 @@ class Question
     public function getAnswer()
     {
         return $this->answer;
+    }
+
+    public function setQuiz(Quiz $quiz){
+        $this->quiz = $quiz;
+    }
+
+    public function getQuiz(){
+        return $this->quiz;
     }
 }

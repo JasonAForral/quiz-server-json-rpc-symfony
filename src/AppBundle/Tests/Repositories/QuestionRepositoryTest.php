@@ -2,7 +2,7 @@
 
 namespace AppBundle\Tests\Transformers;
 
-use AppBundle\Entity\ {Answer, Question};
+use AppBundle\Entity\ {Answer, Question, Quiz};
 use AppBundle\Repositories\QuestionRepository;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 
@@ -38,7 +38,12 @@ class QuestionRepositoryTest extends WebTestCase
         $answer = new Answer();
         $answer->setText('tested!');
         $question->setAnswer($answer);
-        
+
+        $quiz = new Quiz();
+        $quiz->setText('Test Quiz');
+        $question->setQuiz($quiz);
+        $this->entityManager->persist($quiz);
+
         $this->entityManager->persist($question);
         $this->entityManager->persist($answer);
         $this->entityManager->flush();

@@ -169,6 +169,11 @@ class ApiControllerTest extends WebTestCase
         $answer->setText('In the database');
         $question->setAnswer($answer);
 
+        $quiz = new Quiz();
+        $quiz->setText('Test Quiz');
+        $question->setQuiz($quiz);
+        $this->entityManager->persist($quiz);
+
         $this->entityManager->persist($question);
         $this->entityManager->persist($answer);
 
@@ -313,6 +318,11 @@ class ApiControllerTest extends WebTestCase
         $answer4->setText('D');
         $this->entityManager->persist($answer4);
 
+        $quiz = new Quiz();
+        $quiz->setText('Test Quiz');
+        $question->setQuiz($quiz);
+        $this->entityManager->persist($quiz);
+
         $this->entityManager->flush();
 
         $request = [
@@ -372,6 +382,11 @@ class ApiControllerTest extends WebTestCase
         $wrongAnswer3->setText('Square');
         $this->entityManager->persist($wrongAnswer3);
 
+        $quiz = new Quiz();
+        $quiz->setText('Test Quiz');
+        $question->setQuiz($quiz);
+        $this->entityManager->persist($quiz);
+
         $this->entityManager->flush();
 
         $request = [
@@ -429,6 +444,11 @@ class ApiControllerTest extends WebTestCase
         $wrongAnswer3->setText('Seven');
         $this->entityManager->persist($wrongAnswer3);
 
+        $quiz = new Quiz();
+        $quiz->setText('Test Quiz');
+        $question->setQuiz($quiz);
+        $this->entityManager->persist($quiz);
+
         $this->entityManager->flush();
 
         $request = [
@@ -485,6 +505,11 @@ class ApiControllerTest extends WebTestCase
         $wrongAnswer3 = new Answer();
         $wrongAnswer3->setText('Square');
         $this->entityManager->persist($wrongAnswer3);
+
+        $quiz = new Quiz();
+        $quiz->setText('Test Quiz');
+        $question->setQuiz($quiz);
+        $this->entityManager->persist($quiz);
 
         $this->entityManager->flush();
 
@@ -546,6 +571,12 @@ class ApiControllerTest extends WebTestCase
         $wrongAnswer3->setText('Square');
         $this->entityManager->persist($wrongAnswer3);
 
+        $quiz = new Quiz();
+        $quiz->setText('Test Quiz');
+        $question->setQuiz($quiz);
+        $question2->setQuiz($quiz);
+        $this->entityManager->persist($quiz);
+
         $this->entityManager->flush();
 
         $request = [
@@ -600,6 +631,11 @@ class ApiControllerTest extends WebTestCase
         $wrongAnswer3 = new Answer();
         $wrongAnswer3->setText('Square');
         $this->entityManager->persist($wrongAnswer3);
+
+        $quiz = new Quiz();
+        $quiz->setText('Test Quiz');
+        $question->setQuiz($quiz);
+        $this->entityManager->persist($quiz);
 
         $this->entityManager->flush();
 
@@ -656,6 +692,11 @@ class ApiControllerTest extends WebTestCase
         $answer4->setText('D');
         $this->entityManager->persist($answer4);
 
+        $quiz = new Quiz();
+        $quiz->setText('Test Quiz');
+        $question->setQuiz($quiz);
+        $this->entityManager->persist($quiz);
+
         $this->entityManager->flush();
 
         $request = [
@@ -697,6 +738,11 @@ class ApiControllerTest extends WebTestCase
         $question = new Question();
         $question->setText('Do I have a question and answer?');
         $this->entityManager->persist($question);
+
+        $quiz = new Quiz();
+        $quiz->setText('Test Quiz');
+        $question->setQuiz($quiz);
+        $this->entityManager->persist($quiz);
 
         $answer = new Answer();
         $answer->setText('A');
