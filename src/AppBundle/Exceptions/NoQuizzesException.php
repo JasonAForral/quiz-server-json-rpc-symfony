@@ -2,6 +2,6 @@
 
 namespace AppBundle\Exceptions;
 
-class NoQuestionsException extends \Exception
+class NoQuizzesException extends \Exception
 {
 }

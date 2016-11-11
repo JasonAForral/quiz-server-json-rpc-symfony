@@ -115,5 +115,28 @@ class QuizTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($expected, $actual);
     }
-    
+
+    public function testSetTextAndGetText()
+    {
+        $expected = 'string';
+
+        $quiz = new Quiz();
+        $quiz->setText('string');
+
+        $actual = $quiz->getText();
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testSetTextAndGetText2()
+    {
+        $expected = 'string also';
+
+        $quiz = new Quiz();
+        $quiz->setText('string also');
+
+        $actual = $quiz->getText();
+
+        $this->assertEquals($expected, $actual);
+    }
 }

@@ -2,7 +2,11 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Exceptions\ {NoQuestionsException, TooFewAnswersException};
+use AppBundle\Exceptions\ {
+        NoQuestionsException, 
+        NoQuizzesException,
+        TooFewAnswersException
+    };
 use AppBundle\Linters\JsonRpcLinter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -97,7 +101,7 @@ class ApiController extends Controller
             $possibleAnswers = $entityManager->getRepository('AppBundle:Answer')->getPossibleAnswers($rightAnswer);
 
         } catch (NoQuestionsException $noQuestionsException) {
-            
+
             $response = [
                 'jsonrpc' => '2.0',
                 'error' => [
@@ -108,15 +112,16 @@ class ApiController extends Controller
             ];
 
             return new JsonResponse($response);
+
         } catch (TooFewAnswersException $tooFewAnswersException) {
 
             $response = [
+                'id' => $id,
                 'jsonrpc' => '2.0',
                 'error' => [
                     'code' => 2,
                     'message' => 'Too Few Answers Exception'
                 ],
-                'id' => $id,
             ];
 
             return new JsonResponse($response);
@@ -130,6 +135,7 @@ class ApiController extends Controller
         }, $possibleAnswers);
 
         $response = [
+            'id' => $id,
             'jsonrpc' => '2.0',
             'result' => [
                   'question' => [
@@ -138,7 +144,6 @@ class ApiController extends Controller
                   ],
                   'answers' => $possibleAnswersJson,
               ],
-            'id' => $id,
         ];
 
         return new JsonResponse($response);
@@ -186,25 +191,34 @@ class ApiController extends Controller
         $entityManager = $this->getDoctrine()->getManager();
 
         try {
-        } catch (\Exception $exception) {
-            return [];
+            $quizzes = $entityManager->getRepository('AppBundle:Quiz')->getQuizzes();
+        } catch (NoQuizzesException $noQuizzesException) {
+
+            $response = [
+                'jsonrpc' => '2.0',
+                'error' => [
+                    'code' => 3,
+                    'message' => 'No Quizzes Exception'
+                ],
+                'id' => $id,
+            ];
+
+            return new JsonResponse($response);
         }
 
+        $quizzes = array_map(function ($quiz) {
+            return [
+                'id' => $quiz->getId(),
+                'text' => $quiz->getText(),
+            ];
+        }, $quizzes);
+
         $response = [
+            'id' => $id,
             'jsonrpc' => '2.0',
             'result' => [
-                'quizzes' => [
-                    [
-                        'id' => 1,
-                        'text' => 'State Capitals'
-                    ],
-                    [
-                        'id' => 2,
-                        'text' => 'Atomic Numbers'
-                    ],
-                ],
+                'quizzes' => $quizzes,
             ],
-            'id' => $id,
         ];
 
         return new JsonResponse($response); 

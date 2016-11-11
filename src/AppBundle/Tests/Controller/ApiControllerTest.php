@@ -2,8 +2,12 @@
 
 namespace AppBundle\Tests\Controller;
 
-use AppBundle\Entity\Answer;
-use AppBundle\Entity\Question;
+use AppBundle\Entity\
+    {
+        Answer,
+        Question,
+        Quiz
+    };
 use AppBundle\Linters\JsonRpcLinter;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 
@@ -1018,28 +1022,53 @@ class ApiControllerTest extends WebTestCase
             'id' => 1,
         ];
 
-        // $question = new Question();
-        // $question->setText('Do I have a question and answer?');
-        // $this->entityManager->persist($question);
+        $quiz0 = new Quiz();
+        $quiz0->setText('State Capitals');
+        $this->entityManager->persist($quiz0);
 
-        // $answer = new Answer();
-        // $answer->setText('A');
-        // $question->setAnswer($answer);
-        // $this->entityManager->persist($answer);
-
-        // $answer2 = new Answer();
-        // $answer2->setText('B');
-        // $this->entityManager->persist($answer2);
-
-        // $answer3 = new Answer();
-        // $answer3->setText('C');
-        // $this->entityManager->persist($answer3);
-
-        // $answer4 = new Answer();
-        // $answer4->setText('D');
-        // $this->entityManager->persist($answer4);
+        $quiz1 = new Quiz();
+        $quiz1->setText('Atomic Numbers');
+        $this->entityManager->persist($quiz1);
 
         $this->entityManager->flush();
+
+        $request = [
+            'id' => 1,
+            'jsonrpc' => '2.0',
+            'method' => 'getQuizzes',
+        ];
+
+        $client = static::createClient();
+
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
+
+        $content = $client->getResponse()->getContent();
+
+        $jsonDecoded = json_decode($content, true);
+
+        $actual = $jsonDecoded;
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testGetQuizzesReturnsNoQuizzesException()
+    {
+
+        $expected = [
+            'jsonrpc' => '2.0',
+            'error' => [
+                'code' => 3,
+                'message' => 'No Quizzes Exception',
+            ],
+            'id' => 1,
+        ];
 
         $request = [
             'id' => 1,
