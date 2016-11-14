@@ -7,18 +7,42 @@ use AppBundle\Exceptions\NoQuestionsException;
 
 class QuestionRepository extends EntityRepository
 {
-    public function getRandomQuestion()
+    public function getRandomQuestion($quizId = null)
     {
+
+        $query = 'SELECT question FROM AppBundle:Question question';
+
+    //     if (null !== $quizId) {
+    //         $query .= ' WHERE Quiz = ' . $quizId;
+    //         // var_dump($quizId);
+    //         // var_dump($query);
+    //    }
+
         $questions = $this->getEntityManager()
             ->createQuery(
-                'SELECT question FROM AppBundle:Question question'
+                $query
             )
             ->getResult();
         
-        if (0 === count($questions)) {
+        $filteredQuestions = [];
+
+        if (null !== $quizId) {
+            foreach ($questions as $question) {
+                if ($question->getQuiz()->getId() === $quizId) {
+                    array_push($filteredQuestions, $question);
+                }
+            }
+        } else {
+            $filteredQuestions = array_slice($questions, 0);
+        }
+
+        $count = count($filteredQuestions);
+
+        if (0 === $count) {
             throw new NoQuestionsException();
         }
 
-        return $questions[mt_rand(0, count($questions) - 1)];
+
+        return $filteredQuestions[mt_rand(0, $count - 1)];
     }
 }

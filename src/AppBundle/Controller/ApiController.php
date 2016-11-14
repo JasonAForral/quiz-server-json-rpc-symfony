@@ -55,6 +55,15 @@ class ApiController extends Controller
 
         switch($method) {
             case 'newQuestion':
+                if (array_key_exists('params', $jsonDecoded)) {
+                    if (!array_key_exists('quizId', $jsonDecoded['params'])) {
+                        return $this->invalidParams($id, 'Missing params');
+                    }
+
+                    $quizId = $jsonDecoded['params']['quizId'];
+                    return $this->newQuestion($id, $quizId);
+                }
+
                 return $this->newQuestion($id);
 
             case 'answerQuestion':
@@ -88,13 +97,13 @@ class ApiController extends Controller
     }
     
 
-    private function newQuestion($id)
+    private function newQuestion($id, $quizId = null)
     {
         $entityManager = $this->getDoctrine()->getManager();
 
         try {
 
-            $question = $entityManager->getRepository('AppBundle:Question')->getRandomQuestion();
+            $question = $entityManager->getRepository('AppBundle:Question')->getRandomQuestion($quizId);
             
             $rightAnswer = $question->getAnswer();
 
@@ -223,5 +232,23 @@ class ApiController extends Controller
 
         return new JsonResponse($response); 
 
+    }
+
+    private function errorResponse($id = null, $code, $message, $data = null)
+    {
+        $response = [
+            'id' => $id,
+            'jsonrpc' => '2.0',
+            'error' => [
+                'code' => $code,
+                'message' => $message,
+            ],
+        ];
+
+        if (null !== $data) {
+            $response['error']['data'] = $data;
+        }
+
+        return new JsonResponse($response); ;
     }
 }
