@@ -9,19 +9,18 @@ class QuestionRepository extends EntityRepository
 {
     public function getRandomQuestion($quizId = null)
     {
-
-        $query = 'SELECT question FROM AppBundle:Question question';
+        $queryString = 'SELECT question FROM AppBundle:Question question';
 
         if (null !== $quizId) {
-            $query .= ' JOIN question.quiz quiz';
-            $query .= ' WHERE quiz.id = ' . $quizId;
+            $queryString .= ' JOIN question.quiz quiz';
+            $queryString .= ' WHERE quiz.id = :quizId';
+            $query = $this->getEntityManager()->createQuery($queryString);
+            $query->setParameter('quizId', $quizId);
+        } else {
+            $query = $this->getEntityManager()->createQuery($queryString);
         }
 
-        $questions = $this->getEntityManager()
-            ->createQuery(
-                $query
-            )
-            ->getResult();
+        $questions = $query->getResult();
 
         $count = count($questions);
 

@@ -8,6 +8,7 @@ use AppBundle\Exceptions\ {
         TooFewAnswersException
     };
 use AppBundle\Linters\JsonRpcLinter;
+use AppBundle\Utilities\Responder;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\ {Controller};
@@ -26,28 +27,22 @@ class ApiController extends Controller
         $jsonDecoded = json_decode($content, true);
 
         if (null === $jsonDecoded) {
-            $response = [
-                'jsonrpc' => '2.0',
-                'error' => [
-                    'code' => -32700,
-                    'message' => 'Parse error',
-                ],
-                'id' => null,
-            ];
+            $response = Responder::errorResponse(
+                null,
+                -32700,
+                'Parse error'
+            );
             return new JsonResponse($response);
         }
 
         $id = $jsonDecoded['id'];
 
         if (!JsonRpcLinter::getResult($jsonDecoded)->getValid()) {
-            $response = [
-                'jsonrpc' => '2.0',
-                'error' => [
-                    'code' => -32600,
-                    'message' => 'Invalid Request',
-                ],
-                'id' => $id,
-            ];
+            $response = Responder::errorResponse(
+                $id,
+                -32600,
+                'Invalid Request'
+            );
             return new JsonResponse($response);
         }
 
@@ -83,15 +78,12 @@ class ApiController extends Controller
                 return $this->getQuizzes($id);
 
             default:
-                $response = [
-                    'jsonrpc' => '2.0',
-                    'error' => [
-                        'code' => -32601,
-                        'data' => $method . ' not found',
-                        'message' => 'Method not found',
-                    ],
-                    'id' => $id,
-                ];
+                $response = Responder::errorResponseData(
+                    $id,
+                    -32601,
+                    'Method not found',
+                    $method . ' not found'
+                );
                 return new JsonResponse($response);
         }
     }
@@ -110,28 +102,20 @@ class ApiController extends Controller
 
         } catch (NoQuestionsException $noQuestionsException) {
 
-            $response = [
-                'jsonrpc' => '2.0',
-                'error' => [
-                    'code' => 1,
-                    'message' => 'No Questions Exception'
-                ],
-                'id' => $id,
-            ];
-
+            $response = Responder::errorResponse(
+                $id,
+                1,
+                'No Questions Exception'
+            );
             return new JsonResponse($response);
 
         } catch (TooFewAnswersException $tooFewAnswersException) {
 
-            $response = [
-                'id' => $id,
-                'jsonrpc' => '2.0',
-                'error' => [
-                    'code' => 2,
-                    'message' => 'Too Few Answers Exception'
-                ],
-            ];
-
+            $response = Responder::errorResponse(
+                $id,
+                2,
+                'Too Few Answers Exception'
+            );
             return new JsonResponse($response);
         }
 
@@ -180,16 +164,12 @@ class ApiController extends Controller
 
     private function invalidParams($id, $data)
     {
-        $response = [
-            'id' => $id,
-            'jsonrpc' => '2.0',
-            'error' => [
-                'code' => -32602,
-                'data' => $data,
-                'message' => 'Invalid params',
-            ],
-        ];
-
+        $response = Responder::errorResponseData(
+            $id,
+            -32602,
+            'Invalid params',
+            $data
+        );
         return new JsonResponse($response);
     }
 
@@ -201,16 +181,11 @@ class ApiController extends Controller
         try {
             $quizzes = $entityManager->getRepository('AppBundle:Quiz')->getQuizzes();
         } catch (NoQuizzesException $noQuizzesException) {
-
-            $response = [
-                'jsonrpc' => '2.0',
-                'error' => [
-                    'code' => 3,
-                    'message' => 'No Quizzes Exception'
-                ],
-                'id' => $id,
-            ];
-
+            $response = Responder::errorResponse(
+                $id,
+                3,
+                'No Quizzes Exception'
+            );
             return new JsonResponse($response);
         }
 
@@ -230,24 +205,5 @@ class ApiController extends Controller
         ];
 
         return new JsonResponse($response); 
-
-    }
-
-    private function errorResponse($id = null, $code, $message, $data = null)
-    {
-        $response = [
-            'id' => $id,
-            'jsonrpc' => '2.0',
-            'error' => [
-                'code' => $code,
-                'message' => $message,
-            ],
-        ];
-
-        if (null !== $data) {
-            $response['error']['data'] = $data;
-        }
-
-        return new JsonResponse($response); ;
     }
 }

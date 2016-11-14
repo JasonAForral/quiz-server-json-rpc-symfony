@@ -14,14 +14,15 @@ class AnswerRepository extends EntityRepository
         $rightAnswer = $question->getAnswer();
         $quizId = $question->getQuiz()->getId();
 
-        $query = 'SELECT DISTINCT answer FROM AppBundle:Answer answer';
-        $query .= ' JOIN answer.questions questions';
-        $query .= ' JOIN questions.quiz quiz';
-        $query .= ' WHERE quiz.id = ' . $quizId;
+        $queryString = 'SELECT DISTINCT answer FROM AppBundle:Answer answer';
+        $queryString .= ' JOIN answer.questions questions';
+        $queryString .= ' JOIN questions.quiz quiz';
+        $queryString .= ' WHERE quiz.id = :quizId';
 
-        $allAnswers = $this->getEntityManager()
-            ->createQuery($query)
-            ->getResult();
+        $query = $this->getEntityManager()->createQuery($queryString);
+        $query->setParameter('quizId', $quizId);
+
+        $allAnswers = $query->getResult();
 
         if (4 > count($allAnswers)) {
           throw new TooFewAnswersException();

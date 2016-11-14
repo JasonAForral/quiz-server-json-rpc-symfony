@@ -9,13 +9,11 @@ class QuizRepository extends EntityRepository
 {
     public function getQuizzes()
     {
-        $quizzes = $this->getEntityManager()
-            ->createQuery(
-                'SELECT quiz FROM AppBundle:Quiz quiz'
-            )
-            ->getResult();
-        
-        if (0 === count($quizzes)) {
+        $queryString = 'SELECT quiz FROM AppBundle:Quiz quiz';
+        $query = $this->getEntityManager()->createQuery($queryString);
+        $quizzes = $query->getResult();
+
+        if (0 >= count($quizzes)) {
             throw new NoQuizzesException();
         }
 
