@@ -2,15 +2,17 @@
 
 namespace AppBundle\Repositories;
 
-use AppBundle\Entity\Answer;
+use AppBundle\Entity\Question;
 use AppBundle\Exceptions\TooFewAnswersException;
 use AppBundle\Utilities\Shuffler;
 use Doctrine\ORM\EntityRepository;
 
 class AnswerRepository extends EntityRepository
 {
-    public function getPossibleAnswers(Answer $rightAnswer)
-    {   
+    public function getPossibleAnswers(Question $question)
+    {
+        $rightAnswer = $question->getAnswer();
+
         $allAnswers = $this->getEntityManager()
             ->createQuery(
                 'SELECT answer FROM AppBundle:Answer answer'

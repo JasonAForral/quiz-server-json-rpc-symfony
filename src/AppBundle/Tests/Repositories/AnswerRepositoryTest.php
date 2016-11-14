@@ -2,7 +2,7 @@
 
 namespace AppBundle\Tests\Repositories;
 
-use AppBundle\Entity\ {Answer, Question};
+use AppBundle\Entity\ {Answer, Question, Quiz};
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 class AnswerRepositoryTest extends WebTestCase
@@ -35,9 +35,18 @@ class AnswerRepositoryTest extends WebTestCase
             ->getRepository('AppBundle:Answer')
         ;
 
+        $quiz = new Quiz();
+        $quiz->setText('Test Quiz');
+        $this->entityManager->persist($quiz);
+
         $rightAnswer = new Answer();
         $rightAnswer->setText('Alpha');
         $this->entityManager->persist($rightAnswer);
+
+        $question = new Question();
+        $question->setText('What is the first Greek letter?');
+        $question->setAnswer($rightAnswer);
+        $question->setQuiz($quiz);
 
         $wrongAnswer1 = new Answer();
         $wrongAnswer1->setText('Beta');
@@ -53,7 +62,7 @@ class AnswerRepositoryTest extends WebTestCase
 
         $this->entityManager->flush();
  
-        $possibleAnswers = $answerRepository->getPossibleAnswers($rightAnswer);
+        $possibleAnswers = $answerRepository->getPossibleAnswers($question);
 
         $actual = count($possibleAnswers);
 
@@ -68,9 +77,18 @@ class AnswerRepositoryTest extends WebTestCase
             ->getRepository('AppBundle:Answer')
         ;
 
+        $quiz = new Quiz();
+        $quiz->setText('Test Quiz');
+        $this->entityManager->persist($quiz);
+
         $rightAnswer = new Answer();
         $rightAnswer->setText('Alpha');
         $this->entityManager->persist($rightAnswer);
+
+        $question = new Question();
+        $question->setText('What is the first Greek letter?');
+        $question->setAnswer($rightAnswer);
+        $question->setQuiz($quiz);
 
         $wrongAnswer1 = new Answer();
         $wrongAnswer1->setText('Beta');
@@ -86,7 +104,7 @@ class AnswerRepositoryTest extends WebTestCase
 
         $this->entityManager->flush();
  
-        $possibleAnswers = $answerRepository->getPossibleAnswers($rightAnswer);
+        $possibleAnswers = $answerRepository->getPossibleAnswers($question);
 
         $actual = array_map(function ($answer) {
             return $answer instanceof Answer;
@@ -103,9 +121,18 @@ class AnswerRepositoryTest extends WebTestCase
             ->getRepository('AppBundle:Answer')
         ;
 
+        $quiz = new Quiz();
+        $quiz->setText('Test Quiz');
+        $this->entityManager->persist($quiz);
+
         $rightAnswer = new Answer();
         $rightAnswer->setText('Alpha');
         $this->entityManager->persist($rightAnswer);
+
+        $question = new Question();
+        $question->setText('What is the first Greek letter?');
+        $question->setAnswer($rightAnswer);
+        $question->setQuiz($quiz);
 
         $wrongAnswer1 = new Answer();
         $wrongAnswer1->setText('Beta');
@@ -121,7 +148,7 @@ class AnswerRepositoryTest extends WebTestCase
 
         $this->entityManager->flush();
  
-        $possibleAnswers = $answerRepository->getPossibleAnswers($rightAnswer);
+        $possibleAnswers = $answerRepository->getPossibleAnswers($question);
 
         $ids = array_map(function ($answer) {
             return $answer->getId();
@@ -143,8 +170,19 @@ class AnswerRepositoryTest extends WebTestCase
             ->getRepository('AppBundle:Answer')
         ;
 
+        $quiz = new Quiz();
+        $quiz->setText('Test Quiz');
+        $this->entityManager->persist($quiz);
+
+        $rightAnswer = new Answer();
+        $rightAnswer->setText('Alpha');
+        $this->entityManager->persist($rightAnswer);
+
         $question = new Question();
-        
+        $question->setText('What is the first Greek letter?');
+        $question->setAnswer($rightAnswer);
+        $question->setQuiz($quiz);
+
         $wrongAnswer1 = new Answer();
         $wrongAnswer1->setText('Seven');
         $this->entityManager->persist($wrongAnswer1);
@@ -159,7 +197,7 @@ class AnswerRepositoryTest extends WebTestCase
 
         $this->entityManager->flush();
  
-        $possibleAnswers = $answerRepository->getPossibleAnswers($question);
+        $possibleAnswers = $answerRepository->getPossibleAnswers($rightAnswer);
 
         $actual = count($possibleAnswers);
 
@@ -210,9 +248,18 @@ class AnswerRepositoryTest extends WebTestCase
             ->getRepository('AppBundle:Answer')
         ;
 
+        $quiz = new Quiz();
+        $quiz->setText('Test Quiz');
+        $this->entityManager->persist($quiz);
+
         $rightAnswer = new Answer();
-        $rightAnswer->setText('The greatest');
+        $rightAnswer->setText('Alpha');
         $this->entityManager->persist($rightAnswer);
+
+        $question = new Question();
+        $question->setText('What is the first Greek letter?');
+        $question->setAnswer($rightAnswer);
+        $question->setQuiz($quiz);
 
         $wrongAnswer1 = new Answer();
         $wrongAnswer1->setText('Up');
@@ -224,7 +271,7 @@ class AnswerRepositoryTest extends WebTestCase
 
         $this->entityManager->flush();
  
-        $possibleAnswers = $answerRepository->getPossibleAnswers($rightAnswer);
+        $possibleAnswers = $answerRepository->getPossibleAnswers($question);
 
         $actual = count($possibleAnswers);
 
@@ -241,9 +288,18 @@ class AnswerRepositoryTest extends WebTestCase
             ->getRepository('AppBundle:Answer')
         ;
 
+        $quiz = new Quiz();
+        $quiz->setText('Test Quiz');
+        $this->entityManager->persist($quiz);
+
         $rightAnswer = new Answer();
         $rightAnswer->setText('Alpha');
         $this->entityManager->persist($rightAnswer);
+
+        $question = new Question();
+        $question->setText('What is the first Greek letter?');
+        $question->setAnswer($rightAnswer);
+        $question->setQuiz($quiz);
 
         $wrongAnswer1 = new Answer();
         $wrongAnswer1->setText('Beta');
@@ -259,7 +315,7 @@ class AnswerRepositoryTest extends WebTestCase
 
         $this->entityManager->flush();
  
-        $possibleAnswers = $answerRepository->getPossibleAnswers($rightAnswer);
+        $possibleAnswers = $answerRepository->getPossibleAnswers($question);
 
         $actual = array_map(function ($answer) {
             return $answer->getId();

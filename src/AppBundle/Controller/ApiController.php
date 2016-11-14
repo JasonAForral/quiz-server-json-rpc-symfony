@@ -95,7 +95,6 @@ class ApiController extends Controller
                 return new JsonResponse($response);
         }
     }
-    
 
     private function newQuestion($id, $quizId = null)
     {
@@ -107,7 +106,7 @@ class ApiController extends Controller
             
             $rightAnswer = $question->getAnswer();
 
-            $possibleAnswers = $entityManager->getRepository('AppBundle:Answer')->getPossibleAnswers($rightAnswer);
+            $possibleAnswers = $entityManager->getRepository('AppBundle:Answer')->getPossibleAnswers($question);
 
         } catch (NoQuestionsException $noQuestionsException) {
 
