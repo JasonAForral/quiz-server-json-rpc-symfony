@@ -232,6 +232,40 @@ class LoadQuestionData extends AbstractFixture implements OrderedFixtureInterfac
             $manager->flush();
         }
 
+        $questions2 = [
+            [
+                'element' => 'Hydrogen',
+                'number' => 'one',
+            ],
+            [
+                'element' => 'Helium',
+                'number' => 'two',
+            ],
+            [
+                'element' => 'Lithium',
+                'number' => 'three',
+            ],
+            [
+                'element' => 'Beryllium',
+                'number' => 'four',
+            ],
+        ];
+
+        foreach($questions2 as $questionData) {
+            $question = new Question();
+
+            $questionText = 'What is the atomic number of ' . $questionData['element'] . '?';
+            $question->setText($questionText);
+
+            $reference = 'answer-' . $questionData['number'];
+            $question->setAnswer($this->getReference($reference));
+
+            $reference2 = 'quiz-atomic-numbers';
+            $question->setQuiz($this->getReference($reference2));
+            
+            $manager->persist($question);
+            $manager->flush();
+        }
     }
 
     public function getOrder()

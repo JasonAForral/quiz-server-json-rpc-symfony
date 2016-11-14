@@ -231,6 +231,38 @@ class LoadAnswerData extends AbstractFixture implements OrderedFixtureInterface
 
             $this->addReference($reference, $answer);
         }
+
+        $answers2 = [
+            [
+                'text' => 'One',
+                'reference' => 'one',
+            ],
+            [
+                'text' => 'Two',
+                'reference' => 'two',
+            ],
+            [
+                'text' => 'Three',
+                'reference' => 'three',
+            ],
+            [
+                'text' => 'Four',
+                'reference' => 'four',
+            ],
+        ];
+
+        foreach($answers2 as $answerData) {
+            $answer = new Answer();
+            $answer->setText($answerData['text']);
+            
+            $manager->persist($answer);
+            $manager->flush();
+
+            $reference = 'answer-' . $answerData['reference'];
+
+            $this->addReference($reference, $answer);
+        }
+
     }
 
     public function getOrder()

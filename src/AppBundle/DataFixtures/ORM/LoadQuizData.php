@@ -15,11 +15,11 @@ class LoadQuizData extends AbstractFixture implements OrderedFixtureInterface
     {
         $quizzes = [
             [
-                'text' => 'State Capitals',
+                'title' => 'State Capitals',
                 'reference' => 'state-capitals',
             ],
             [
-                'text' => 'Atomic Numbers',
+                'title' => 'Atomic Numbers',
                 'reference' => 'atomic-numbers',
             ],
         ];
@@ -27,7 +27,7 @@ class LoadQuizData extends AbstractFixture implements OrderedFixtureInterface
         foreach($quizzes as $quizData) {
             $quiz = new Quiz();
 
-            $quizText = $quizData['text'];
+            $quizText = $quizData['title'];
             $quiz->setText($quizText);
 
             $manager->persist($quiz);
