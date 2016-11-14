@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -9,7 +10,6 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
-use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @Entity(repositoryClass="AppBundle\Repositories\QuizRepository")
@@ -28,7 +28,7 @@ class Quiz
      * @Column(type="string")
      */
     protected $text;
-    
+
     protected $questions;
 
     function __construct()

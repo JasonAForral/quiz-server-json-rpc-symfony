@@ -30,7 +30,7 @@ class Question
     protected $text;
     
     /**
-     * @ManyToOne(targetEntity="Answer")
+     * @ManyToOne(targetEntity="Answer", inversedBy="questions")
      * @JoinColumn(name="answer_id", referencedColumnName="id", nullable=false)
      */
     protected $answer;

@@ -12,11 +12,15 @@ class AnswerRepository extends EntityRepository
     public function getPossibleAnswers(Question $question)
     {
         $rightAnswer = $question->getAnswer();
+        $quizId = $question->getQuiz()->getId();
+
+        $query = 'SELECT DISTINCT answer FROM AppBundle:Answer answer';
+        $query .= ' JOIN answer.questions questions';
+        $query .= ' JOIN questions.quiz quiz';
+        $query .= ' WHERE quiz.id = ' . $quizId;
 
         $allAnswers = $this->getEntityManager()
-            ->createQuery(
-                'SELECT answer FROM AppBundle:Answer answer'
-            )
+            ->createQuery($query)
             ->getResult();
 
         if (4 > count($allAnswers)) {

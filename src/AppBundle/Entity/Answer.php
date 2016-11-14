@@ -2,10 +2,12 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
 
 /**
@@ -26,9 +28,34 @@ class Answer
      */
     protected $text;
 
+    /**
+     * @OneToMany(targetEntity="Question", mappedBy="answer")
+     */
+    protected $questions;
+
+    function __construct()
+    {
+        $this->questions = new ArrayCollection();
+    }
+
     public function getId()
     {
         return $this->id;
+    }
+
+    public function getQuestions()
+    {
+        return $this->questions;
+    }
+
+    public function addQuestion(Question $question)
+    {
+        $this->questions->add($question);
+    }
+
+    public function removeQuestion(Question $question)
+    {
+        $this->questions->removeElement($question);
     }
 
     public function setText($text)
