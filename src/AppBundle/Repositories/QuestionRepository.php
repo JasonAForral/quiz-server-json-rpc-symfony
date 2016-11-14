@@ -12,37 +12,23 @@ class QuestionRepository extends EntityRepository
 
         $query = 'SELECT question FROM AppBundle:Question question';
 
-    //     if (null !== $quizId) {
-    //         $query .= ' WHERE Quiz = ' . $quizId;
-    //         // var_dump($quizId);
-    //         // var_dump($query);
-    //    }
+        if (null !== $quizId) {
+            $query .= ' JOIN question.quiz quiz';
+            $query .= ' WHERE quiz.id = ' . $quizId;
+        }
 
         $questions = $this->getEntityManager()
             ->createQuery(
                 $query
             )
             ->getResult();
-        
-        $filteredQuestions = [];
 
-        if (null !== $quizId) {
-            foreach ($questions as $question) {
-                if ($question->getQuiz()->getId() === $quizId) {
-                    array_push($filteredQuestions, $question);
-                }
-            }
-        } else {
-            $filteredQuestions = array_slice($questions, 0);
-        }
-
-        $count = count($filteredQuestions);
+        $count = count($questions);
 
         if (0 === $count) {
             throw new NoQuestionsException();
         }
 
-
-        return $filteredQuestions[mt_rand(0, $count - 1)];
+        return $questions[mt_rand(0, $count - 1)];
     }
 }
