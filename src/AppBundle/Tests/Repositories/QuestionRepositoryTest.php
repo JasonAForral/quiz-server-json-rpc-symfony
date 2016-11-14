@@ -52,7 +52,7 @@ class QuestionRepositoryTest extends WebTestCase
             ->getRepository('AppBundle:Question')
         ;
 
-        $actual = $questionRepository->getRandomQuestion() instanceof Question;
+        $actual = $questionRepository->getRandomQuestion(1) instanceof Question;
 
         $this->assertEquals($expected, $actual);
     }
@@ -68,7 +68,7 @@ class QuestionRepositoryTest extends WebTestCase
             ->getRepository('AppBundle:Question')
         ;
 
-        $actual = $questionRepository->getRandomQuestion() instanceof Question;
+        $actual = $questionRepository->getRandomQuestion(1) instanceof Question;
 
         $this->assertEquals($expected, $actual);
     }

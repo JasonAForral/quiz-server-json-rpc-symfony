@@ -50,26 +50,30 @@ class ApiController extends Controller
 
         switch($method) {
             case 'newQuestion':
-                if (array_key_exists('params', $jsonDecoded)) {
-                    if (!array_key_exists('quizId', $jsonDecoded['params'])) {
-                        return $this->invalidParams($id, 'Missing params');
-                    }
-
-                    $quizId = $jsonDecoded['params']['quizId'];
-                    return $this->newQuestion($id, $quizId);
+                if (!array_key_exists('params', $jsonDecoded)) {
+                    return $this->invalidParams($id, 'Missing params');
                 }
 
-                return $this->newQuestion($id);
+                if (!array_key_exists('quizId', $jsonDecoded['params'])) {
+                    return $this->invalidParams($id, 'Missing quiz');
+                }
+
+                $quizId = $jsonDecoded['params']['quizId'];
+                return $this->newQuestion($id, $quizId);
 
             case 'answerQuestion':
                 if (!array_key_exists('params', $jsonDecoded)) {
                     return $this->invalidParams($id, 'Missing params');
-                } else if (!array_key_exists('questionId', $jsonDecoded['params'])) {
+                }
+
+                if (!array_key_exists('questionId', $jsonDecoded['params'])) {
                     return $this->invalidParams($id, 'Missing question');
-                } else if (!array_key_exists('guessId', $jsonDecoded['params'])) {
+                }
+
+                if (!array_key_exists('guessId', $jsonDecoded['params'])) {
                     return $this->invalidParams($id, 'Missing answer');
                 }
-                
+
                 $guessId = $jsonDecoded['params']['guessId'];
                 $questionId = $jsonDecoded['params']['questionId'];
                 return $this->answerQuestion($guessId, $id, $questionId);

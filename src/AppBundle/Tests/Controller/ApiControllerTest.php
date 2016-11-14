@@ -130,6 +130,83 @@ class ApiControllerTest extends WebTestCase
         $request = [
             'jsonrpc' => '2.0',
             'method' => 'newQuestion',
+            'params' => [
+                'quizId' => 1,
+            ],
+            'id' => 1,
+        ];
+
+        $client = static::createClient();
+
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
+
+        $content = $client->getResponse()->getContent();
+
+        $actual = json_decode($content, true);
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testApiReturnsJsonRpcErrorMissingParams() 
+    {
+        $expected = [
+            'jsonrpc' => '2.0',
+            'error' => [
+                'code' => -32602,
+                'data' => 'Missing params',
+                'message' => 'Invalid params',
+            ],
+            'id' => 1,
+        ];
+
+        $request = [
+            'jsonrpc' => '2.0',
+            'method' => 'newQuestion',
+            'id' => 1,
+        ];
+
+        $client = static::createClient();
+
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
+
+        $content = $client->getResponse()->getContent();
+
+        $actual = json_decode($content, true);
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testApiReturnsJsonRpcErrorMissingQuiz() 
+    {
+        $expected = [
+            'jsonrpc' => '2.0',
+            'error' => [
+                'code' => -32602,
+                'data' => 'Missing quiz',
+                'message' => 'Invalid params',
+            ],
+            'id' => 1,
+        ];
+
+        $request = [
+            'jsonrpc' => '2.0',
+            'method' => 'newQuestion',
+            'params' => [
+            ],
             'id' => 1,
         ];
 
@@ -182,6 +259,9 @@ class ApiControllerTest extends WebTestCase
         $request = [
             'jsonrpc' => '2.0',
             'method' => 'newQuestion',
+            'params' => [
+                'quizId' => 1,
+            ],
             'id' => 1,
         ];
 
@@ -346,6 +426,9 @@ class ApiControllerTest extends WebTestCase
         $request = [
             'jsonrpc' => '2.0',
             'method' => 'newQuestion',
+            'params' => [
+                'quizId' => 1,
+            ],
             'id' => '1',
         ];
 
@@ -428,6 +511,9 @@ class ApiControllerTest extends WebTestCase
         $request = [
             'jsonrpc' => '2.0',
             'method' => 'newQuestion',
+            'params' => [
+                'quizId' => 1,
+            ],
             'id' => '1',
         ];
 
@@ -508,6 +594,9 @@ class ApiControllerTest extends WebTestCase
         $request = [
             'jsonrpc' => '2.0',
             'method' => 'newQuestion',
+            'params' => [
+                'quizId' => 1,
+            ],
             'id' => '1',
         ];
 
@@ -588,6 +677,9 @@ class ApiControllerTest extends WebTestCase
         $request = [
             'jsonrpc' => '2.0',
             'method' => 'newQuestion',
+            'params' => [
+                'quizId' => 1,
+            ],
             'id' => '1',
         ];
 
@@ -666,6 +758,9 @@ class ApiControllerTest extends WebTestCase
         $request = [
             'jsonrpc' => '2.0',
             'method' => 'newQuestion',
+            'params' => [
+                'quizId' => 1,
+            ],
             'id' => '1',
         ];
 
@@ -744,6 +839,9 @@ class ApiControllerTest extends WebTestCase
         $request = [
             'jsonrpc' => '2.0',
             'method' => 'newQuestion',
+            'params' => [
+                'quizId' => 1,
+            ],
             'id' => '1',
         ];
 
