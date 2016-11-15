@@ -2,13 +2,13 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\Column;
-use Doctrine\ORM\Mapping\Id;
-use Doctrine\ORM\Mapping\ManyToOne;
-use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\Table;
 
 /**
  * @Entity(repositoryClass="AppBundle\Repositories\QuestionRepository")
@@ -30,10 +30,16 @@ class Question
     protected $text;
     
     /**
-     * @ManyToOne(targetEntity="Answer")
+     * @ManyToOne(targetEntity="Answer", inversedBy="questions")
      * @JoinColumn(name="answer_id", referencedColumnName="id", nullable=false)
      */
     protected $answer;
+
+    /**
+     * @ManyToOne(targetEntity="Quiz")
+     * @JoinColumn(name="quiz_id", referencedColumnName="id", nullable=false)
+     */
+    protected $quiz;
 
     public function getId()
     {
@@ -62,5 +68,13 @@ class Question
     public function getAnswer()
     {
         return $this->answer;
+    }
+
+    public function setQuiz(Quiz $quiz){
+        $this->quiz = $quiz;
+    }
+
+    public function getQuiz(){
+        return $this->quiz;
     }
 }

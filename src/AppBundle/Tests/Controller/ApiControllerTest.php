@@ -2,8 +2,12 @@
 
 namespace AppBundle\Tests\Controller;
 
-use AppBundle\Entity\Answer;
-use AppBundle\Entity\Question;
+use AppBundle\Entity\
+    {
+        Answer,
+        Question,
+        Quiz
+    };
 use AppBundle\Linters\JsonRpcLinter;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 
@@ -126,6 +130,83 @@ class ApiControllerTest extends WebTestCase
         $request = [
             'jsonrpc' => '2.0',
             'method' => 'newQuestion',
+            'params' => [
+                'quizId' => 1,
+            ],
+            'id' => 1,
+        ];
+
+        $client = static::createClient();
+
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
+
+        $content = $client->getResponse()->getContent();
+
+        $actual = json_decode($content, true);
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testApiReturnsJsonRpcErrorMissingParams() 
+    {
+        $expected = [
+            'jsonrpc' => '2.0',
+            'error' => [
+                'code' => -32602,
+                'data' => 'Missing params',
+                'message' => 'Invalid params',
+            ],
+            'id' => 1,
+        ];
+
+        $request = [
+            'jsonrpc' => '2.0',
+            'method' => 'newQuestion',
+            'id' => 1,
+        ];
+
+        $client = static::createClient();
+
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
+
+        $content = $client->getResponse()->getContent();
+
+        $actual = json_decode($content, true);
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testApiReturnsJsonRpcErrorMissingQuiz() 
+    {
+        $expected = [
+            'jsonrpc' => '2.0',
+            'error' => [
+                'code' => -32602,
+                'data' => 'Missing quiz',
+                'message' => 'Invalid params',
+            ],
+            'id' => 1,
+        ];
+
+        $request = [
+            'jsonrpc' => '2.0',
+            'method' => 'newQuestion',
+            'params' => [
+            ],
             'id' => 1,
         ];
 
@@ -165,6 +246,11 @@ class ApiControllerTest extends WebTestCase
         $answer->setText('In the database');
         $question->setAnswer($answer);
 
+        $quiz = new Quiz();
+        $quiz->setText('Test Quiz');
+        $question->setQuiz($quiz);
+        $this->entityManager->persist($quiz);
+
         $this->entityManager->persist($question);
         $this->entityManager->persist($answer);
 
@@ -173,6 +259,9 @@ class ApiControllerTest extends WebTestCase
         $request = [
             'jsonrpc' => '2.0',
             'method' => 'newQuestion',
+            'params' => [
+                'quizId' => 1,
+            ],
             'id' => 1,
         ];
 
@@ -297,23 +386,49 @@ class ApiControllerTest extends WebTestCase
         $question->setAnswer($answer);
         $this->entityManager->persist($answer);
 
+        $question2 = new Question();
+        $question2->setText('Is it B?');
+        $this->entityManager->persist($question2);
+
         $answer2 = new Answer();
         $answer2->setText('B');
+        $question2->setAnswer($answer2);
         $this->entityManager->persist($answer2);
+
+        $question3 = new Question();
+        $question3->setText('is it D?');
+        $this->entityManager->persist($question3);
 
         $answer3 = new Answer();
         $answer3->setText('C');
+        $question3->setAnswer($answer3);
         $this->entityManager->persist($answer3);
+
+        $question4 = new Question();
+        $question4->setText('Is it giraffe?');
+        $this->entityManager->persist($question4);
 
         $answer4 = new Answer();
         $answer4->setText('D');
+        $question4->setAnswer($answer4);
         $this->entityManager->persist($answer4);
+
+        $quiz = new Quiz();
+        $quiz->setText('Test Quiz');
+        $question->setQuiz($quiz);
+        $question2->setQuiz($quiz);
+        $question3->setQuiz($quiz);
+        $question4->setQuiz($quiz);
+        $this->entityManager->persist($quiz);
 
         $this->entityManager->flush();
 
         $request = [
             'jsonrpc' => '2.0',
             'method' => 'newQuestion',
+            'params' => [
+                'quizId' => 1,
+            ],
             'id' => '1',
         ];
 
@@ -343,9 +458,9 @@ class ApiControllerTest extends WebTestCase
 
     public function testPullQuestionAndAnswersFromRepository()
     {
-        mt_srand(1);
+        mt_srand(3);
 
-        $expected = [3, 2, 1, 4];
+        $expected = [4, 2, 1, 3];
 
         $question = new Question();
         $question->setText('Where is my stuff?');
@@ -356,23 +471,49 @@ class ApiControllerTest extends WebTestCase
         $question->setAnswer($rightAnswer);
         $this->entityManager->persist($rightAnswer);
 
-        $wrongAnswer1 = new Answer();
-        $wrongAnswer1->setText('O');
-        $this->entityManager->persist($wrongAnswer1);
+        $question2 = new Question();
+        $question2->setText('Is it B?');
+        $this->entityManager->persist($question2);
 
-        $wrongAnswer2 = new Answer();
-        $wrongAnswer2->setText('Triangle');
-        $this->entityManager->persist($wrongAnswer2);
+        $answer2 = new Answer();
+        $answer2->setText('B');
+        $question2->setAnswer($answer2);
+        $this->entityManager->persist($answer2);
 
-        $wrongAnswer3 = new Answer();
-        $wrongAnswer3->setText('Square');
-        $this->entityManager->persist($wrongAnswer3);
+        $question3 = new Question();
+        $question3->setText('is it D?');
+        $this->entityManager->persist($question3);
+
+        $answer3 = new Answer();
+        $answer3->setText('C');
+        $question3->setAnswer($answer3);
+        $this->entityManager->persist($answer3);
+
+        $question4 = new Question();
+        $question4->setText('Is it giraffe?');
+        $this->entityManager->persist($question4);
+
+        $answer4 = new Answer();
+        $answer4->setText('D');
+        $question4->setAnswer($answer4);
+        $this->entityManager->persist($answer4);
+
+        $quiz = new Quiz();
+        $quiz->setText('Test Quiz');
+        $question->setQuiz($quiz);
+        $question2->setQuiz($quiz);
+        $question3->setQuiz($quiz);
+        $question4->setQuiz($quiz);
+        $this->entityManager->persist($quiz);
 
         $this->entityManager->flush();
 
         $request = [
             'jsonrpc' => '2.0',
             'method' => 'newQuestion',
+            'params' => [
+                'quizId' => 1,
+            ],
             'id' => '1',
         ];
 
@@ -402,7 +543,7 @@ class ApiControllerTest extends WebTestCase
     {
         mt_srand(2);
 
-        $expected = [4, 3, 1, 2];
+        $expected = [3, 4, 2, 1];
 
         $question = new Question();
         $question->setText('Is my stuff still there?');
@@ -413,23 +554,49 @@ class ApiControllerTest extends WebTestCase
         $question->setAnswer($rightAnswer);
         $this->entityManager->persist($rightAnswer);
 
-        $wrongAnswer1 = new Answer();
-        $wrongAnswer1->setText('Blue');
-        $this->entityManager->persist($wrongAnswer1);
+        $question2 = new Question();
+        $question2->setText('Is it B?');
+        $this->entityManager->persist($question2);
 
-        $wrongAnswer2 = new Answer();
-        $wrongAnswer2->setText('Up');
-        $this->entityManager->persist($wrongAnswer2);
+        $answer2 = new Answer();
+        $answer2->setText('B');
+        $question2->setAnswer($answer2);
+        $this->entityManager->persist($answer2);
 
-        $wrongAnswer3 = new Answer();
-        $wrongAnswer3->setText('Seven');
-        $this->entityManager->persist($wrongAnswer3);
+        $question3 = new Question();
+        $question3->setText('is it D?');
+        $this->entityManager->persist($question3);
+
+        $answer3 = new Answer();
+        $answer3->setText('C');
+        $question3->setAnswer($answer3);
+        $this->entityManager->persist($answer3);
+
+        $question4 = new Question();
+        $question4->setText('Is it giraffe?');
+        $this->entityManager->persist($question4);
+
+        $answer4 = new Answer();
+        $answer4->setText('D');
+        $question4->setAnswer($answer4);
+        $this->entityManager->persist($answer4);
+
+        $quiz = new Quiz();
+        $quiz->setText('Test Quiz');
+        $question->setQuiz($quiz);
+        $question2->setQuiz($quiz);
+        $question3->setQuiz($quiz);
+        $question4->setQuiz($quiz);
+        $this->entityManager->persist($quiz);
 
         $this->entityManager->flush();
 
         $request = [
             'jsonrpc' => '2.0',
             'method' => 'newQuestion',
+            'params' => [
+                'quizId' => 1,
+            ],
             'id' => '1',
         ];
 
@@ -457,9 +624,9 @@ class ApiControllerTest extends WebTestCase
 
     public function testPullQuestionTextFromRepository()
     {
-        //mt_srand(3);
+        mt_srand(3);
 
-        $expected = 'Where is my stuff?';
+        $expected = 'Is it B?';
 
         $question = new Question();
         $question->setText('Where is my stuff?');
@@ -470,23 +637,49 @@ class ApiControllerTest extends WebTestCase
         $question->setAnswer($rightAnswer);
         $this->entityManager->persist($rightAnswer);
 
-        $wrongAnswer1 = new Answer();
-        $wrongAnswer1->setText('O');
-        $this->entityManager->persist($wrongAnswer1);
+        $question2 = new Question();
+        $question2->setText('Is it B?');
+        $this->entityManager->persist($question2);
 
-        $wrongAnswer2 = new Answer();
-        $wrongAnswer2->setText('Triangle');
-        $this->entityManager->persist($wrongAnswer2);
+        $answer2 = new Answer();
+        $answer2->setText('B');
+        $question2->setAnswer($answer2);
+        $this->entityManager->persist($answer2);
 
-        $wrongAnswer3 = new Answer();
-        $wrongAnswer3->setText('Square');
-        $this->entityManager->persist($wrongAnswer3);
+        $question3 = new Question();
+        $question3->setText('is it D?');
+        $this->entityManager->persist($question3);
+
+        $answer3 = new Answer();
+        $answer3->setText('C');
+        $question3->setAnswer($answer3);
+        $this->entityManager->persist($answer3);
+
+        $question4 = new Question();
+        $question4->setText('Is it giraffe?');
+        $this->entityManager->persist($question4);
+
+        $answer4 = new Answer();
+        $answer4->setText('D');
+        $question4->setAnswer($answer4);
+        $this->entityManager->persist($answer4);
+
+        $quiz = new Quiz();
+        $quiz->setText('Test Quiz');
+        $question->setQuiz($quiz);
+        $question2->setQuiz($quiz);
+        $question3->setQuiz($quiz);
+        $question4->setQuiz($quiz);
+        $this->entityManager->persist($quiz);
 
         $this->entityManager->flush();
 
         $request = [
             'jsonrpc' => '2.0',
             'method' => 'newQuestion',
+            'params' => [
+                'quizId' => 1,
+            ],
             'id' => '1',
         ];
 
@@ -514,39 +707,60 @@ class ApiControllerTest extends WebTestCase
     {
         mt_srand(3);
 
-        $expected = 1;
+        $expected = 2;
 
         $question = new Question();
         $question->setText('Where is my stuff?');
         $this->entityManager->persist($question);
-
-        $question2 = new Question();
-        $question2->setText('Where is the beef?');
-        $this->entityManager->persist($question2);
 
         $rightAnswer = new Answer();
         $rightAnswer->setText('X');
         $question->setAnswer($rightAnswer);
         $this->entityManager->persist($rightAnswer);
 
-        $wrongAnswer1 = new Answer();
-        $wrongAnswer1->setText('O');
-        $question2->setAnswer($wrongAnswer1);
-        $this->entityManager->persist($wrongAnswer1);
+        $question2 = new Question();
+        $question2->setText('Is it B?');
+        $this->entityManager->persist($question2);
 
-        $wrongAnswer2 = new Answer();
-        $wrongAnswer2->setText('Triangle');
-        $this->entityManager->persist($wrongAnswer2);
+        $answer2 = new Answer();
+        $answer2->setText('B');
+        $question2->setAnswer($answer2);
+        $this->entityManager->persist($answer2);
 
-        $wrongAnswer3 = new Answer();
-        $wrongAnswer3->setText('Square');
-        $this->entityManager->persist($wrongAnswer3);
+        $question3 = new Question();
+        $question3->setText('is it D?');
+        $this->entityManager->persist($question3);
+
+        $answer3 = new Answer();
+        $answer3->setText('C');
+        $question3->setAnswer($answer3);
+        $this->entityManager->persist($answer3);
+
+        $question4 = new Question();
+        $question4->setText('Is it giraffe?');
+        $this->entityManager->persist($question4);
+
+        $answer4 = new Answer();
+        $answer4->setText('D');
+        $question4->setAnswer($answer4);
+        $this->entityManager->persist($answer4);
+
+        $quiz = new Quiz();
+        $quiz->setText('Test Quiz');
+        $question->setQuiz($quiz);
+        $question2->setQuiz($quiz);
+        $question3->setQuiz($quiz);
+        $question4->setQuiz($quiz);
+        $this->entityManager->persist($quiz);
 
         $this->entityManager->flush();
 
         $request = [
             'jsonrpc' => '2.0',
             'method' => 'newQuestion',
+            'params' => [
+                'quizId' => 1,
+            ],
             'id' => '1',
         ];
 
@@ -574,7 +788,7 @@ class ApiControllerTest extends WebTestCase
     {
         mt_srand(4);
 
-        $expected = ['O', 'Triangle', 'Square', 'X'];
+        $expected = ['B', 'C', 'D', 'X'];
 
         $question = new Question();
         $question->setText('Where is my stuff?');
@@ -585,23 +799,49 @@ class ApiControllerTest extends WebTestCase
         $question->setAnswer($rightAnswer);
         $this->entityManager->persist($rightAnswer);
 
-        $wrongAnswer1 = new Answer();
-        $wrongAnswer1->setText('O');
-        $this->entityManager->persist($wrongAnswer1);
+        $question2 = new Question();
+        $question2->setText('Is it B?');
+        $this->entityManager->persist($question2);
 
-        $wrongAnswer2 = new Answer();
-        $wrongAnswer2->setText('Triangle');
-        $this->entityManager->persist($wrongAnswer2);
+        $answer2 = new Answer();
+        $answer2->setText('B');
+        $question2->setAnswer($answer2);
+        $this->entityManager->persist($answer2);
 
-        $wrongAnswer3 = new Answer();
-        $wrongAnswer3->setText('Square');
-        $this->entityManager->persist($wrongAnswer3);
+        $question3 = new Question();
+        $question3->setText('is it D?');
+        $this->entityManager->persist($question3);
+
+        $answer3 = new Answer();
+        $answer3->setText('C');
+        $question3->setAnswer($answer3);
+        $this->entityManager->persist($answer3);
+
+        $question4 = new Question();
+        $question4->setText('Is it giraffe?');
+        $this->entityManager->persist($question4);
+
+        $answer4 = new Answer();
+        $answer4->setText('D');
+        $question4->setAnswer($answer4);
+        $this->entityManager->persist($answer4);
+
+        $quiz = new Quiz();
+        $quiz->setText('Test Quiz');
+        $question->setQuiz($quiz);
+        $question2->setQuiz($quiz);
+        $question3->setQuiz($quiz);
+        $question4->setQuiz($quiz);
+        $this->entityManager->persist($quiz);
 
         $this->entityManager->flush();
 
         $request = [
             'jsonrpc' => '2.0',
             'method' => 'newQuestion',
+            'params' => [
+                'quizId' => 1,
+            ],
             'id' => '1',
         ];
 
@@ -640,17 +880,40 @@ class ApiControllerTest extends WebTestCase
         $question->setAnswer($answer);
         $this->entityManager->persist($answer);
 
+        $question2 = new Question();
+        $question2->setText('Is it B?');
+        $this->entityManager->persist($question2);
+
         $answer2 = new Answer();
         $answer2->setText('B');
+        $question2->setAnswer($answer2);
         $this->entityManager->persist($answer2);
+
+        $question3 = new Question();
+        $question3->setText('is it D?');
+        $this->entityManager->persist($question3);
 
         $answer3 = new Answer();
         $answer3->setText('C');
+        $question3->setAnswer($answer3);
         $this->entityManager->persist($answer3);
+
+        $question4 = new Question();
+        $question4->setText('Is it giraffe?');
+        $this->entityManager->persist($question4);
 
         $answer4 = new Answer();
         $answer4->setText('D');
+        $question4->setAnswer($answer4);
         $this->entityManager->persist($answer4);
+
+        $quiz = new Quiz();
+        $quiz->setText('Test Quiz');
+        $question->setQuiz($quiz);
+        $question2->setQuiz($quiz);
+        $question3->setQuiz($quiz);
+        $question4->setQuiz($quiz);
+        $this->entityManager->persist($quiz);
 
         $this->entityManager->flush();
 
@@ -693,6 +956,11 @@ class ApiControllerTest extends WebTestCase
         $question = new Question();
         $question->setText('Do I have a question and answer?');
         $this->entityManager->persist($question);
+
+        $quiz = new Quiz();
+        $quiz->setText('Test Quiz');
+        $question->setQuiz($quiz);
+        $this->entityManager->persist($quiz);
 
         $answer = new Answer();
         $answer->setText('A');
@@ -997,5 +1265,227 @@ class ApiControllerTest extends WebTestCase
         $actual = json_decode($content, true);
 
         $this->assertEquals($expected, $actual);
+    }
+
+    public function testGetQuizzesReturnsQuizzes()
+    {
+        $expected = [
+            'jsonrpc' => '2.0',
+            'result' => [
+                'quizzes' => [
+                    [
+                        'id' => 1,
+                        'text' => 'State Capitals'
+                    ],
+                    [
+                        'id' => 2,
+                        'text' => 'Atomic Numbers'
+                    ],
+                ],
+            ],
+            'id' => 1,
+        ];
+
+        $quiz0 = new Quiz();
+        $quiz0->setText('State Capitals');
+        $this->entityManager->persist($quiz0);
+
+        $quiz1 = new Quiz();
+        $quiz1->setText('Atomic Numbers');
+        $this->entityManager->persist($quiz1);
+
+        $this->entityManager->flush();
+
+        $request = [
+            'id' => 1,
+            'jsonrpc' => '2.0',
+            'method' => 'getQuizzes',
+        ];
+
+        $client = static::createClient();
+
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
+
+        $content = $client->getResponse()->getContent();
+
+        $jsonDecoded = json_decode($content, true);
+
+        $actual = $jsonDecoded;
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testGetQuizzesReturnsNoQuizzesException()
+    {
+
+        $expected = [
+            'jsonrpc' => '2.0',
+            'error' => [
+                'code' => 3,
+                'message' => 'No Quizzes Exception',
+            ],
+            'id' => 1,
+        ];
+
+        $request = [
+            'id' => 1,
+            'jsonrpc' => '2.0',
+            'method' => 'getQuizzes',
+        ];
+
+        $client = static::createClient();
+
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
+
+        $content = $client->getResponse()->getContent();
+
+        $jsonDecoded = json_decode($content, true);
+
+        $actual = $jsonDecoded;
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testResultCameFromeSpecificQuiz()
+    {
+        mt_srand(3);
+
+        $expected = [
+            'id' => 6,
+            'text' => 'Which Number Is 2?',
+            ];
+
+        $question1 = new Question();
+        $question1->setText('Which Letter Is A?');
+        $this->entityManager->persist($question1);
+
+        $question2 = new Question();
+        $question2->setText('Which Letter Is B?');
+        $this->entityManager->persist($question2);
+
+        $question3 = new Question();
+        $question3->setText('Which Letter Is C?');
+        $this->entityManager->persist($question3);
+
+        $question4 = new Question();
+        $question4->setText('Which Letter Is D?');
+        $this->entityManager->persist($question4);
+
+        $questionA = new Question();
+        $questionA->setText('Which Number Is 1?');
+        $this->entityManager->persist($questionA);
+
+        $questionB = new Question();
+        $questionB->setText('Which Number Is 2?');
+        $this->entityManager->persist($questionB);
+
+        $questionC = new Question();
+        $questionC->setText('Which Number Is 3?');
+        $this->entityManager->persist($questionC);
+
+        $questionD = new Question();
+        $questionD->setText('Which Number Is 4?');
+        $this->entityManager->persist($questionD);
+
+        $answer1 = new Answer();
+        $answer1->setText('A');
+        $question1->setAnswer($answer1);
+        $this->entityManager->persist($answer1);
+
+        $answer2 = new Answer();
+        $answer2->setText('B');
+        $question2->setAnswer($answer2);
+        $this->entityManager->persist($answer2);
+
+        $answer3 = new Answer();
+        $answer3->setText('C');
+        $question3->setAnswer($answer3);
+        $this->entityManager->persist($answer3);
+
+        $answer4 = new Answer();
+        $answer4->setText('D');
+        $question4->setAnswer($answer4);
+        $this->entityManager->persist($answer4);
+
+        $answerA = new Answer();
+        $answerA->setText('1');
+        $questionA->setAnswer($answerA);
+        $this->entityManager->persist($answerA);
+
+        $answerB = new Answer();
+        $answerB->setText('2');
+        $questionB->setAnswer($answerB);
+        $this->entityManager->persist($answerB);
+
+        $answerC = new Answer();
+        $answerC->setText('3');
+        $questionC->setAnswer($answerC);
+        $this->entityManager->persist($answerC);
+
+        $answerD = new Answer();
+        $answerD->setText('4');
+        $questionD->setAnswer($answerD);
+        $this->entityManager->persist($answerD);
+
+        $quiz1 = new Quiz();
+        $quiz1->setText('Test Quiz 1');
+        $question1->setQuiz($quiz1);
+        $question2->setQuiz($quiz1);
+        $question3->setQuiz($quiz1);
+        $question4->setQuiz($quiz1);
+        $this->entityManager->persist($quiz1);
+
+        $quizA = new Quiz();
+        $quizA->setText('Test Quiz A');
+        $questionA->setQuiz($quizA);
+        $questionB->setQuiz($quizA);
+        $questionC->setQuiz($quizA);
+        $questionD->setQuiz($quizA);
+        $this->entityManager->persist($quizA);
+
+        $this->entityManager->flush();
+
+        $request = [
+            'id' => 1,
+            'jsonrpc' => '2.0',
+            'method' => 'newQuestion',
+            'params' => [
+                'quizId' => 2,
+            ],
+        ];
+
+        $client = static::createClient();
+
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
+
+        $content = $client->getResponse()->getContent();
+
+        $jsonDecoded = json_decode($content, true);
+
+        $actual = $jsonDecoded['result']['question'];
+
+        $this->assertEquals($expected, $actual);
+
     }
 }

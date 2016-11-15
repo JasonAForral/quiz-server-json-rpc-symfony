@@ -2,7 +2,7 @@
 
 namespace AppBundle\Tests\Annotations;
 
-use AppBundle\Entity\ {Answer, Question};
+use AppBundle\Entity\ {Answer, Question, Quiz};
 use AppBundle\Repositories\QuestionRepository;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 
@@ -40,6 +40,11 @@ class QuestionAnnotationTest extends WebTestCase
         $answer->setText('One, I think.');
         $question->setAnswer($answer);
         $this->entityManager->persist($answer);
+
+        $quiz = new Quiz();
+        $quiz->setText('Test Quiz');
+        $question->setQuiz($quiz);
+        $this->entityManager->persist($quiz);
 
         $this->entityManager->flush();
 

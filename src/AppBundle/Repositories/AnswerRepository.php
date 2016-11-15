@@ -2,20 +2,27 @@
 
 namespace AppBundle\Repositories;
 
-use AppBundle\Entity\Answer;
+use AppBundle\Entity\Question;
 use AppBundle\Exceptions\TooFewAnswersException;
 use AppBundle\Utilities\Shuffler;
 use Doctrine\ORM\EntityRepository;
 
 class AnswerRepository extends EntityRepository
 {
-    public function getPossibleAnswers(Answer $rightAnswer)
-    {   
-        $allAnswers = $this->getEntityManager()
-            ->createQuery(
-                'SELECT answer FROM AppBundle:Answer answer'
-            )
-            ->getResult();
+    public function getPossibleAnswers(Question $question)
+    {
+        $rightAnswer = $question->getAnswer();
+        $quizId = $question->getQuiz()->getId();
+
+        $queryString = 'SELECT DISTINCT answer FROM AppBundle:Answer answer';
+        $queryString .= ' JOIN answer.questions questions';
+        $queryString .= ' JOIN questions.quiz quiz';
+        $queryString .= ' WHERE quiz.id = :quizId';
+
+        $query = $this->getEntityManager()->createQuery($queryString);
+        $query->setParameter('quizId', $quizId);
+
+        $allAnswers = $query->getResult();
 
         if (4 > count($allAnswers)) {
           throw new TooFewAnswersException();

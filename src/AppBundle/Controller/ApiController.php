@@ -2,8 +2,13 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Exceptions\ {NoQuestionsException, TooFewAnswersException};
+use AppBundle\Exceptions\ {
+        NoQuestionsException, 
+        NoQuizzesException,
+        TooFewAnswersException
+    };
 use AppBundle\Linters\JsonRpcLinter;
+use AppBundle\Utilities\Responder;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\ {Controller};
@@ -22,28 +27,22 @@ class ApiController extends Controller
         $jsonDecoded = json_decode($content, true);
 
         if (null === $jsonDecoded) {
-            $response = [
-                'jsonrpc' => '2.0',
-                'error' => [
-                    'code' => -32700,
-                    'message' => 'Parse error',
-                ],
-                'id' => null,
-            ];
+            $response = Responder::errorResponse(
+                null,
+                -32700,
+                'Parse error'
+            );
             return new JsonResponse($response);
         }
 
         $id = $jsonDecoded['id'];
 
         if (!JsonRpcLinter::getResult($jsonDecoded)->getValid()) {
-            $response = [
-                'jsonrpc' => '2.0',
-                'error' => [
-                    'code' => -32600,
-                    'message' => 'Invalid Request',
-                ],
-                'id' => $id,
-            ];
+            $response = Responder::errorResponse(
+                $id,
+                -32600,
+                'Invalid Request'
+            );
             return new JsonResponse($response);
         }
 
@@ -51,71 +50,76 @@ class ApiController extends Controller
 
         switch($method) {
             case 'newQuestion':
-                return $this->newQuestion($id);
+                if (!array_key_exists('params', $jsonDecoded)) {
+                    return $this->invalidParams($id, 'Missing params');
+                }
+
+                if (!array_key_exists('quizId', $jsonDecoded['params'])) {
+                    return $this->invalidParams($id, 'Missing quiz');
+                }
+
+                $quizId = $jsonDecoded['params']['quizId'];
+                return $this->newQuestion($id, $quizId);
 
             case 'answerQuestion':
                 if (!array_key_exists('params', $jsonDecoded)) {
                     return $this->invalidParams($id, 'Missing params');
-                } else if (!array_key_exists('questionId', $jsonDecoded['params'])) {
+                }
+
+                if (!array_key_exists('questionId', $jsonDecoded['params'])) {
                     return $this->invalidParams($id, 'Missing question');
-                } else if (!array_key_exists('guessId', $jsonDecoded['params'])) {
+                }
+
+                if (!array_key_exists('guessId', $jsonDecoded['params'])) {
                     return $this->invalidParams($id, 'Missing answer');
                 }
-                
+
                 $guessId = $jsonDecoded['params']['guessId'];
                 $questionId = $jsonDecoded['params']['questionId'];
                 return $this->answerQuestion($guessId, $id, $questionId);
 
+            case 'getQuizzes':
+                return $this->getQuizzes($id);
+
             default:
-                $response = [
-                    'jsonrpc' => '2.0',
-                    'error' => [
-                        'code' => -32601,
-                        'data' => $method . ' not found',
-                        'message' => 'Method not found',
-                    ],
-                    'id' => $id,
-                ];
+                $response = Responder::errorResponseData(
+                    $id,
+                    -32601,
+                    'Method not found',
+                    $method . ' not found'
+                );
                 return new JsonResponse($response);
         }
     }
-    
 
-    private function newQuestion($id)
+    private function newQuestion($id, $quizId = null)
     {
         $entityManager = $this->getDoctrine()->getManager();
 
         try {
 
-            $question = $entityManager->getRepository('AppBundle:Question')->getRandomQuestion();
+            $question = $entityManager->getRepository('AppBundle:Question')->getRandomQuestion($quizId);
             
             $rightAnswer = $question->getAnswer();
 
-            $possibleAnswers = $entityManager->getRepository('AppBundle:Answer')->getPossibleAnswers($rightAnswer);
+            $possibleAnswers = $entityManager->getRepository('AppBundle:Answer')->getPossibleAnswers($question);
 
         } catch (NoQuestionsException $noQuestionsException) {
-            
-            $response = [
-                'jsonrpc' => '2.0',
-                'error' => [
-                    'code' => 1,
-                    'message' => 'No Questions Exception'
-                ],
-                'id' => $id,
-            ];
 
+            $response = Responder::errorResponse(
+                $id,
+                1,
+                'No Questions Exception'
+            );
             return new JsonResponse($response);
+
         } catch (TooFewAnswersException $tooFewAnswersException) {
 
-            $response = [
-                'jsonrpc' => '2.0',
-                'error' => [
-                    'code' => 2,
-                    'message' => 'Too Few Answers Exception'
-                ],
-                'id' => $id,
-            ];
-
+            $response = Responder::errorResponse(
+                $id,
+                2,
+                'Too Few Answers Exception'
+            );
             return new JsonResponse($response);
         }
 
@@ -127,6 +131,7 @@ class ApiController extends Controller
         }, $possibleAnswers);
 
         $response = [
+            'id' => $id,
             'jsonrpc' => '2.0',
             'result' => [
                   'question' => [
@@ -135,7 +140,6 @@ class ApiController extends Controller
                   ],
                   'answers' => $possibleAnswersJson,
               ],
-            'id' => $id,
         ];
 
         return new JsonResponse($response);
@@ -164,16 +168,46 @@ class ApiController extends Controller
 
     private function invalidParams($id, $data)
     {
+        $response = Responder::errorResponseData(
+            $id,
+            -32602,
+            'Invalid params',
+            $data
+        );
+        return new JsonResponse($response);
+    }
+
+    private function getQuizzes($id)
+    {
+
+        $entityManager = $this->getDoctrine()->getManager();
+
+        try {
+            $quizzes = $entityManager->getRepository('AppBundle:Quiz')->getQuizzes();
+        } catch (NoQuizzesException $noQuizzesException) {
+            $response = Responder::errorResponse(
+                $id,
+                3,
+                'No Quizzes Exception'
+            );
+            return new JsonResponse($response);
+        }
+
+        $quizzes = array_map(function ($quiz) {
+            return [
+                'id' => $quiz->getId(),
+                'text' => $quiz->getText(),
+            ];
+        }, $quizzes);
+
         $response = [
             'id' => $id,
             'jsonrpc' => '2.0',
-            'error' => [
-                'code' => -32602,
-                'data' => $data,
-                'message' => 'Invalid params',
+            'result' => [
+                'quizzes' => $quizzes,
             ],
         ];
 
-        return new JsonResponse($response);
+        return new JsonResponse($response); 
     }
 }

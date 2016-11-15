@@ -16,203 +16,203 @@ class LoadQuestionData extends AbstractFixture implements OrderedFixtureInterfac
         $questions = [
             [
                 'state' => 'Alabama',
-                'reference' => 'montgomery',
+                'capital' => 'montgomery',
             ],
             [
                 'state' => 'Alaska',
-                'reference' => 'juneau',
+                'capital' => 'juneau',
             ],
             [
                 'state' => 'Arizona',
-                'reference' => 'phoenix',
+                'capital' => 'phoenix',
             ],
             [
                 'state' => 'Arkansas',
-                'reference' => 'little-rock',
+                'capital' => 'little-rock',
             ],
             [
                 'state' => 'California',
-                'reference' => 'sacramento',
+                'capital' => 'sacramento',
             ],
             [
                 'state' => 'Colorado',
-                'reference' => 'denver',
+                'capital' => 'denver',
             ],
             [
                 'state' => 'Connecticut',
-                'reference' => 'hartford',
+                'capital' => 'hartford',
             ],
             [
                 'state' => 'Delaware',
-                'reference' => 'dover',
+                'capital' => 'dover',
             ],
             [
                 'state' => 'District of Columbia',
-                'reference' => 'washington',
+                'capital' => 'washington',
             ],
             [
                 'state' => 'Florida',
-                'reference' => 'tallahassee',
+                'capital' => 'tallahassee',
             ],
             [
                 'state' => 'Georgia',
-                'reference' => 'atlanta',
+                'capital' => 'atlanta',
             ],
             [
                 'state' => 'Hawaii',
-                'reference' => 'honolulu',
+                'capital' => 'honolulu',
             ],
             [
                 'state' => 'Idaho',
-                'reference' => 'boise',
+                'capital' => 'boise',
             ],
             [
                 'state' => 'Illinois',
-                'reference' => 'springfield',
+                'capital' => 'springfield',
             ],
             [
                 'state' => 'Indiana',
-                'reference' => 'indianapolis',
+                'capital' => 'indianapolis',
             ],
             [
                 'state' => 'Iowa',
-                'reference' => 'des-moines',
+                'capital' => 'des-moines',
             ],
             [
                 'state' => 'Kansas',
-                'reference' => 'topeka',
+                'capital' => 'topeka',
             ],
             [
                 'state' => 'Kentucky',
-                'reference' => 'frankfort',
+                'capital' => 'frankfort',
             ],
             [
                 'state' => 'Louisiana',
-                'reference' => 'baton-rouge',
+                'capital' => 'baton-rouge',
             ],
             [
                 'state' => 'Maine',
-                'reference' => 'augusta',
+                'capital' => 'augusta',
             ],
             [
                 'state' => 'Maryland',
-                'reference' => 'annapolis',
+                'capital' => 'annapolis',
             ],
             [
                 'state' => 'Massachusetts',
-                'reference' => 'boston',
+                'capital' => 'boston',
             ],
             [
                 'state' => 'Michigan',
-                'reference' => 'lansing',
+                'capital' => 'lansing',
             ],
             [
                 'state' => 'Minnesota',
-                'reference' => 'saint-paul',
+                'capital' => 'saint-paul',
             ],
             [
                 'state' => 'Mississippi',
-                'reference' => 'jackson',
+                'capital' => 'jackson',
             ],
             [
                 'state' => 'Missouri',
-                'reference' => 'jefferson-city',
+                'capital' => 'jefferson-city',
             ],
             [
                 'state' => 'Montana',
-                'reference' => 'helena',
+                'capital' => 'helena',
             ],
             [
                 'state' => 'Nebraska',
-                'reference' => 'lincoln',
+                'capital' => 'lincoln',
             ],
             [
                 'state' => 'Nevada',
-                'reference' => 'carson-city',
+                'capital' => 'carson-city',
             ],
             [
                 'state' => 'New Hampshire',
-                'reference' => 'concord',
+                'capital' => 'concord',
             ],
             [
                 'state' => 'New Jersey',
-                'reference' => 'trenton',
+                'capital' => 'trenton',
             ],
             [
                 'state' => 'New Mexico',
-                'reference' => 'santa-fe',
+                'capital' => 'santa-fe',
             ],
             [
                 'state' => 'New York',
-                'reference' => 'albany',
+                'capital' => 'albany',
             ],
             [
                 'state' => 'North Carolina',
-                'reference' => 'raleigh',
+                'capital' => 'raleigh',
             ],
             [
                 'state' => 'North Dakota',
-                'reference' => 'bismarck',
+                'capital' => 'bismarck',
             ],
             [
                 'state' => 'Ohio',
-                'reference' => 'columbus',
+                'capital' => 'columbus',
             ],
             [
                 'state' => 'Oklahoma',
-                'reference' => 'oklahoma-city',
+                'capital' => 'oklahoma-city',
             ],
             [
                 'state' => 'Oregon',
-                'reference' => 'salem',
+                'capital' => 'salem',
             ],
             [
                 'state' => 'Pennsylvania',
-                'reference' => 'harrisburg',
+                'capital' => 'harrisburg',
             ],
             [
                 'state' => 'Rhode Island',
-                'reference' => 'providence',
+                'capital' => 'providence',
             ],
             [
                 'state' => 'South Carolina',
-                'reference' => 'columbia',
+                'capital' => 'columbia',
             ],
             [
                 'state' => 'South Dakota',
-                'reference' => 'pierre',
+                'capital' => 'pierre',
             ],
             [
                 'state' => 'Tennessee',
-                'reference' => 'nashville',
+                'capital' => 'nashville',
             ],
             [
                 'state' => 'Texas',
-                'reference' => 'austin',
+                'capital' => 'austin',
             ],
             [
                 'state' => 'Utah',
-                'reference' => 'salt-lake-city',
+                'capital' => 'salt-lake-city',
             ],
             [
                 'state' => 'Vermont',
-                'reference' => 'montpelier',
+                'capital' => 'montpelier',
             ],
             [
                 'state' => 'Washington',
-                'reference' => 'olympia',
+                'capital' => 'olympia',
             ],
             [
                 'state' => 'West Virginia',
-                'reference' => 'charleston',
+                'capital' => 'charleston',
             ],
             [
                 'state' => 'Wisconsin',
-                'reference' => 'madison',
+                'capital' => 'madison',
             ],
             [
                 'state' => 'Wyoming',
-                'reference' => 'cheyenne',
+                'capital' => 'cheyenne',
             ],
         ];
 
@@ -222,21 +222,50 @@ class LoadQuestionData extends AbstractFixture implements OrderedFixtureInterfac
             $questionText = 'What is the capital of ' . $questionData['state'] . '?';
             $question->setText($questionText);
 
-            $reference = 'answer-' . $questionData['reference'];
+            $reference = 'answer-' . $questionData['capital'];
             $question->setAnswer($this->getReference($reference));
 
+            $reference2 = 'quiz-state-capitals';
+            $question->setQuiz($this->getReference($reference2));
+            
             $manager->persist($question);
             $manager->flush();
         }
 
-        // $question = new Question();
-        // $question->setText('What is the capital of Oregon?');
-        // $question->setAnswer($this->getReference('answer-salem'));
+        $questions2 = [
+            [
+                'element' => 'Hydrogen',
+                'number' => 'one',
+            ],
+            [
+                'element' => 'Helium',
+                'number' => 'two',
+            ],
+            [
+                'element' => 'Lithium',
+                'number' => 'three',
+            ],
+            [
+                'element' => 'Beryllium',
+                'number' => 'four',
+            ],
+        ];
 
-        // $manager->persist($question);
-        // $manager->flush();
+        foreach($questions2 as $questionData) {
+            $question = new Question();
 
-        // $this->addReference('question-oregon-capital', $question);
+            $questionText = 'What is the atomic number of ' . $questionData['element'] . '?';
+            $question->setText($questionText);
+
+            $reference = 'answer-' . $questionData['number'];
+            $question->setAnswer($this->getReference($reference));
+
+            $reference2 = 'quiz-atomic-numbers';
+            $question->setQuiz($this->getReference($reference2));
+            
+            $manager->persist($question);
+            $manager->flush();
+        }
     }
 
     public function getOrder()
