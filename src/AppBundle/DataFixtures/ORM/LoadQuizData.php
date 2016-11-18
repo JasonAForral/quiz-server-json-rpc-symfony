@@ -39,7 +39,7 @@ class LoadQuizData extends AbstractFixture implements OrderedFixtureInterface
         }
     }
 
-        public function getOrder()
+    public function getOrder()
     {
         return 1;
     }
