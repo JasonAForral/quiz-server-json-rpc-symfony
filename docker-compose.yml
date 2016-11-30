@@ -18,7 +18,6 @@ services:
       - "5432:5432"
     volumes: 
       - "./.data/db:/var/lib/postgresql/data"
-    restart: always
     environment:
       POSTGRES_DB: php
       POSTGRES_USER: php

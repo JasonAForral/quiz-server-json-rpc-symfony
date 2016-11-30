@@ -20,6 +20,17 @@ class DefaultController extends Controller
     }
 
     /**
+     * @Route("/{all}", name="catchAll", requirements={"all": "(login|create-account)?"})
+     */
+    public function catchAllAction(Request $request)
+    {
+        // replace this example code with whatever you need
+        return $this->render('client/index.html.twig', array(
+            'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
+        ));
+    }
+
+    /**
      * @Route("/admin")
      */
     public function adminAction()
