@@ -21,9 +21,6 @@ security:
 
         main:
             anonymous: ~
-            guard:
-                authenticators:
-                    - app.form_login_authenticator
             logout:
                 path:   /logout
                 target: /

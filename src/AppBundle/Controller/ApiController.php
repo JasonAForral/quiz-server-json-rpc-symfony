@@ -13,6 +13,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\ {Controller};
 use Symfony\Component\HttpFoundation\ {JsonResponse, Request};
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
 class ApiController extends Controller
 {
@@ -108,7 +110,7 @@ class ApiController extends Controller
 
                 $username = $jsonDecoded['params']['username'];
                 $password = $jsonDecoded['params']['password'];
-                return $this->login($id, $username, $password);
+                return $this->login($id, $username, $password, $request);
 
             case 'newQuestion':
                 if (!array_key_exists('params', $jsonDecoded)) {
@@ -134,7 +136,7 @@ class ApiController extends Controller
         }
     }
 
-    private function login($id, $username, $password)
+    private function login($id, $username, $password, $request)
     {
         $entityManager = $this->getDoctrine()->getManager();
 
@@ -158,6 +160,10 @@ class ApiController extends Controller
             );
             return new JsonResponse($response);
         }
+
+        $token = new UsernamePasswordToken($user, $user->getPassword(), 'main', $user->getRoles());
+
+        $this->get("security.token_storage")->setToken($token);
 
         $response = [
             'id' => $id,
