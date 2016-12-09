@@ -6,18 +6,22 @@ use AppBundle\Entity\
     {
         Answer,
         Question,
-        Quiz
+        Quiz,
+        User
     };
 use AppBundle\Linters\JsonRpcLinter;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 class ApiControllerTest extends WebTestCase
 {
+    protected $passwordEncoder;
     protected $entityManager;
 
     protected function setUp()
     {
         parent::setUp();
+        $this->passwordEncoder = $this->getContainer()
+            ->get('security.password_encoder');
         $this->entityManager = $this->getContainer()
             ->get('doctrine')
             ->getManager()
@@ -1487,5 +1491,163 @@ class ApiControllerTest extends WebTestCase
 
         $this->assertEquals($expected, $actual);
 
+    }
+
+    public function testLoginLogsIn()
+    {
+        $expected = [
+            'id' => 1,
+            'jsonrpc' => '2.0',
+            'result' => [
+                'username' => 'HatTrick',
+            ],
+        ];
+
+        $user = new User();
+        $user->setUsername('HatTrick');
+        
+        $password = $this->passwordEncoder->encodePassword($user, 'hathathat');
+        $user->setPassword($password);
+
+        $user->setEmail('at@at.at');
+
+        $user->setIsActive(true);
+
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+            
+        $request = [
+            'id' => 1,
+            'jsonrpc' => '2.0',
+            'method' => 'login',
+            'params' => [
+                'username' => 'HatTrick',
+                'password' => 'hathathat',
+            ],
+        ];
+
+        $client = static::createClient();
+
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
+
+        $content = $client->getResponse()->getContent();
+
+        $jsonDecoded = json_decode($content, true);
+        $actual = $jsonDecoded;
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testLoginUserNotFound()
+    {
+        $expected = [
+            'id' => 1,
+            'jsonrpc' => '2.0',
+            'error' => [
+                'code' => 101,
+                'message' => "User not found",
+            ],
+        ];
+
+        $user = new User();
+        $user->setUsername('HatTrick');
+        
+        $password = $this->passwordEncoder->encodePassword($user, 'hathathat');
+        $user->setPassword($password);
+
+        $user->setEmail('at@at.at');
+
+        $user->setIsActive(true);
+
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+            
+        $request = [
+            'id' => 1,
+            'jsonrpc' => '2.0',
+            'method' => 'login',
+            'params' => [
+                'username' => 'MadHatter',
+                'password' => 'hathathat',
+            ],
+        ];
+
+        $client = static::createClient();
+
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
+
+        $content = $client->getResponse()->getContent();
+
+        $jsonDecoded = json_decode($content, true);
+        $actual = $jsonDecoded;
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testLoginInvalidPassword()
+    {
+        $expected = [
+            'id' => 1,
+            'jsonrpc' => '2.0',
+            'error' => [
+                'code' => 102,
+                'message' => "Invalid password",
+            ],
+        ];
+
+        $user = new User();
+        $user->setUsername('HatTrick');
+        
+        $password = $this->passwordEncoder->encodePassword($user, 'hathathat');
+        $user->setPassword($password);
+
+        $user->setEmail('at@at.at');
+
+        $user->setIsActive(true);
+
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+            
+        $request = [
+            'id' => 1,
+            'jsonrpc' => '2.0',
+            'method' => 'login',
+            'params' => [
+                'username' => 'HatTrick',
+                'password' => 'hathathathat',
+            ],
+        ];
+
+        $client = static::createClient();
+
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
+
+        $content = $client->getResponse()->getContent();
+
+        $jsonDecoded = json_decode($content, true);
+        $actual = $jsonDecoded;
+
+        $this->assertEquals($expected, $actual);
     }
 }

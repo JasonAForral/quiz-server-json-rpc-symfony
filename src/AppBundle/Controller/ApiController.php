@@ -49,18 +49,30 @@ class ApiController extends Controller
         $method = $jsonDecoded['method'];
 
         switch($method) {
-            case 'newQuestion':
-                if (!array_key_exists('params', $jsonDecoded)) {
-                    return $this->invalidParams($id, 'Missing params');
-                }
+            // case 'createAccount':
+            //     if (!array_key_exists('params', $jsonDecoded)) {
+            //         return $this->invalidParams($id, 'Missing params');
+            //     }
 
-                if (!array_key_exists('quizId', $jsonDecoded['params'])) {
-                    return $this->invalidParams($id, 'Missing quiz');
-                }
+            //     if (!array_key_exists('username', $jsonDecoded['params'])) {
+            //         return $this->invalidParams($id, 'Missing username');
+            //     }
 
-                $quizId = $jsonDecoded['params']['quizId'];
-                return $this->newQuestion($id, $quizId);
+            //     if (!array_key_exists('password', $jsonDecoded['params'])) {
+            //         return $this->invalidParams($id, 'Missing password');
+            //     }
 
+            //     if (!array_key_exists('password2', $jsonDecoded['params'])) {
+            //         return $this->invalidParams($id, 'Missing password2');
+            //     }
+
+            //     if (!array_key_exists('email', $jsonDecoded['params'])) {
+            //         return $this->invalidParams($id, 'Missing email');
+            //     }
+
+            //     // $guessId = $jsonDecoded['params']['guessId'];
+            //     // $questionId = $jsonDecoded['params']['questionId'];
+            //     return;
             case 'answerQuestion':
                 if (!array_key_exists('params', $jsonDecoded)) {
                     return $this->invalidParams($id, 'Missing params');
@@ -81,6 +93,36 @@ class ApiController extends Controller
             case 'getQuizzes':
                 return $this->getQuizzes($id);
 
+            case 'login':
+                if (!array_key_exists('params', $jsonDecoded)) {
+                    return $this->invalidParams($id, 'Missing params');
+                }
+
+                if (!array_key_exists('username', $jsonDecoded['params'])) {
+                    return $this->invalidParams($id, 'Missing username');
+                }
+
+                if (!array_key_exists('password', $jsonDecoded['params'])) {
+                    return $this->invalidParams($id, 'Missing password');
+                }
+
+                $username = $jsonDecoded['params']['username'];
+                $password = $jsonDecoded['params']['password'];
+                return $this->login($id, $username, $password);
+
+            case 'newQuestion':
+                if (!array_key_exists('params', $jsonDecoded)) {
+                    return $this->invalidParams($id, 'Missing params');
+                }
+
+                if (!array_key_exists('quizId', $jsonDecoded['params'])) {
+                    return $this->invalidParams($id, 'Missing quiz');
+                }
+
+                $quizId = $jsonDecoded['params']['quizId'];
+                return $this->newQuestion($id, $quizId);
+
+
             default:
                 $response = Responder::errorResponseData(
                     $id,
@@ -90,6 +132,42 @@ class ApiController extends Controller
                 );
                 return new JsonResponse($response);
         }
+    }
+
+    private function login($id, $username, $password)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $user = $entityManager->getRepository('AppBundle:User')->findOneByUsername($username);
+
+        if (is_null($user)) {
+            $response = Responder::errorResponse(
+                $id,
+                101,
+                'User not found'
+            );
+            return new JsonResponse($response);
+        }
+
+        $encoder = $this->container->get('security.password_encoder');
+        if (!$encoder->isPasswordValid($user, $password)) {
+            $response = Responder::errorResponse(
+                $id,
+                102,
+                'Invalid password'
+            );
+            return new JsonResponse($response);
+        }
+
+        $response = [
+            'id' => $id,
+            'jsonrpc' => '2.0',
+            'result' => [
+                  'username' => $user->getUsername(),
+            ],
+        ];
+
+        return new JsonResponse($response);
     }
 
     private function newQuestion($id, $quizId = null)
