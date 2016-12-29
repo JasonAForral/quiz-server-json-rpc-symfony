@@ -21,4 +21,3 @@ doctrine:
         path: '%kernel.root_dir%/sqlite.db'
         charset: UTF8
 liip_functional_test: ~
-    
