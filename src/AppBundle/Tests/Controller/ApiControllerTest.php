@@ -1126,7 +1126,7 @@ class ApiControllerTest extends WebTestCase
             'jsonrpc' => '2.0',
             'error' => [
                 'code' => -32601,
-                'data' => 'doABarrelRoll not found',
+                'data' => 'Method named "doABarrelRoll" not found',
                 'message' => 'Method not found',
             ],
             'id' => 1,
@@ -1634,6 +1634,70 @@ class ApiControllerTest extends WebTestCase
 
         $client = static::createClient();
 
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
+
+        $content = $client->getResponse()->getContent();
+
+        $jsonDecoded = json_decode($content, true);
+        $actual = $jsonDecoded;
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testLogoutLogsOut()
+    {
+        $expected = [
+            'id' => 1,
+            'jsonrpc' => '2.0',
+            'result' => [],
+        ];
+
+        $user = new User();
+        $user->setUsername('HatTrick');
+        
+        $password = $this->passwordEncoder->encodePassword($user, 'hathathat');
+        $user->setPassword($password);
+
+        $user->setEmail('at@at.at');
+
+        $user->setIsActive(true);
+
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+            
+        $request = [
+            'id' => 1,
+            'jsonrpc' => '2.0',
+            'method' => 'login',
+            'params' => [
+                'username' => 'HatTrick',
+                'password' => 'hathathat',
+            ],
+        ];
+
+        $client = static::createClient();
+
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
+
+        $request = [
+            'id' => 1,
+            'jsonrpc' => '2.0',
+            'method' => 'logout',
+        ];
         $client->request(
             'POST',
             '/api',

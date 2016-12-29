@@ -112,6 +112,9 @@ class ApiController extends Controller
                 $password = $jsonDecoded['params']['password'];
                 return $this->login($id, $username, $password, $request);
 
+            case 'logout':
+                return $this->logout($id);
+
             case 'newQuestion':
                 if (!array_key_exists('params', $jsonDecoded)) {
                     return $this->invalidParams($id, 'Missing params');
@@ -130,7 +133,7 @@ class ApiController extends Controller
                     $id,
                     -32601,
                     'Method not found',
-                    $method . ' not found'
+                    'Method named "' . $method . '" not found'
                 );
                 return new JsonResponse($response);
         }
@@ -171,6 +174,19 @@ class ApiController extends Controller
             'result' => [
                   'username' => $user->getUsername(),
             ],
+        ];
+
+        return new JsonResponse($response);
+    }
+
+    private function logout($id)
+    {
+        $this->get("security.token_storage")->setToken(null);
+        
+        $response = [
+            'id' => $id,
+            'jsonrpc' => '2.0',
+            'result' => [],
         ];
 
         return new JsonResponse($response);
