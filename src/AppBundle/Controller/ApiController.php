@@ -92,6 +92,9 @@ class ApiController extends Controller
                 $questionId = $jsonDecoded['params']['questionId'];
                 return $this->answerQuestion($guessId, $id, $questionId);
 
+            case 'getActiveSession':
+                return $this->getActiveSession($id);
+
             case 'getQuizzes':
                 return $this->getQuizzes($id);
 
@@ -137,6 +140,27 @@ class ApiController extends Controller
                 );
                 return new JsonResponse($response);
         }
+    }
+
+    private function getActiveSession($id)
+    {
+        $user = $this->get("security.token_storage")->getToken()->getUser();
+
+        if ('anon.' == $user) {
+            $result = [];
+        } else {
+            $result = [
+                'username' => $user->getUsername(),
+            ];
+        }
+
+        $response = [
+            'id' => $id,
+            'jsonrpc' => '2.0',
+            'result' => $result,
+        ];
+
+        return new JsonResponse($response);
     }
 
     private function login($id, $username, $password, $request)
