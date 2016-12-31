@@ -20,7 +20,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/{all}", name="catchAll", requirements={"all": "(login|create-account)?"})
+     * @Route("/{all}", name="catchAll", requirements={"all": "(create-account|login|profile)?"})
      */
     public function catchAllAction(Request $request)
     {
