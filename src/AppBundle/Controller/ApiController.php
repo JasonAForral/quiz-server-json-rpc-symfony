@@ -95,6 +95,9 @@ class ApiController extends Controller
             case 'getActiveSession':
                 return $this->getActiveSession($id);
 
+            case 'getSessionInfo':
+                return $this->getSessionInfo($id);
+
             case 'getQuizzes':
                 return $this->getQuizzes($id);
 
@@ -150,6 +153,29 @@ class ApiController extends Controller
             $result = [];
         } else {
             $result = [
+                'username' => $user->getUsername(),
+            ];
+        }
+
+        $response = [
+            'id' => $id,
+            'jsonrpc' => '2.0',
+            'result' => $result,
+        ];
+
+        return new JsonResponse($response);
+    }
+
+    private function getSessionInfo($id)
+    {
+        $user = $this->get("security.token_storage")->getToken()->getUser();
+
+        if ('anon.' == $user) {
+            $result = [];
+        } else {
+            $result = [
+                'email' => $user->getEmail(),
+                'isActive' => $user->getIsActive(),
                 'username' => $user->getUsername(),
             ];
         }

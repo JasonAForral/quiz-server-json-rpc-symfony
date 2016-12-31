@@ -1590,4 +1590,98 @@ class ApiControllerTest extends WebTestCase
 
         $this->assertEquals($expected, $actual);
     }
+
+    public function testGetSessionInfoResponds()
+    {
+        $expected = [
+            'id' => 1,
+            'jsonrpc' => '2.0',
+            'result' => [
+                'email' => 'at@at.at',
+                'isActive' => true,
+                'username' => 'HatTrick',
+            ],
+        ];
+
+        $user = new User();
+        $user->setUsername('HatTrick');
+        
+        $password = $this->passwordEncoder->encodePassword($user, 'hathathat');
+        $user->setPassword($password);
+
+        $user->setEmail('at@at.at');
+
+        $user->setIsActive(true);
+
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+            
+        $request = [
+            'id' => 1,
+            'jsonrpc' => '2.0',
+            'method' => 'login',
+            'params' => [
+                'username' => 'HatTrick',
+                'password' => 'hathathat',
+            ],
+        ];
+
+        $client = static::createClient();
+
+        Requester::clientRequest($client, $request);
+
+        $request = [
+            'id' => 1,
+            'jsonrpc' => '2.0',
+            'method' => 'getSessionInfo',
+        ];
+
+        Requester::clientRequest($client, $request);
+
+        $content = $client->getResponse()->getContent();
+
+        $jsonDecoded = json_decode($content, true);
+        $actual = $jsonDecoded;
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testGetSessionInfoRespondsToNoSession()
+    {
+        $expected = [
+            'id' => 1,
+            'jsonrpc' => '2.0',
+            'result' => [],
+        ];
+
+        $user = new User();
+        $user->setUsername('HatTrick');
+        
+        $password = $this->passwordEncoder->encodePassword($user, 'hathathat');
+        $user->setPassword($password);
+
+        $user->setEmail('at@at.at');
+
+        $user->setIsActive(true);
+
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+
+        $request = [
+            'id' => 1,
+            'jsonrpc' => '2.0',
+            'method' => 'getActiveSession',
+        ];
+
+        $client = static::createClient();
+
+        Requester::clientRequest($client, $request);
+
+        $content = $client->getResponse()->getContent();
+
+        $jsonDecoded = json_decode($content, true);
+        $actual = $jsonDecoded;
+
+        $this->assertEquals($expected, $actual);
+    }
 }
