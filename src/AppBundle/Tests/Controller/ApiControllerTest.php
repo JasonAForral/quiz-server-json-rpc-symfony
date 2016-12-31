@@ -10,6 +10,7 @@ use AppBundle\Entity\
         User
     };
 use AppBundle\Linters\JsonRpcLinter;
+use AppBundle\Utilities\Requester;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 class ApiControllerTest extends WebTestCase
@@ -42,21 +43,14 @@ class ApiControllerTest extends WebTestCase
         $expected = 200;
 
         $request = [
+            'id' => '1',
             'jsonrpc' => '2.0',
             'method' => 'newQuestion',
-            'id' => '1',
         ];
 
         $client = static::createClient();
 
-        $client->request(
-            'POST',
-            '/api',
-            [],
-            [],
-            ['CONTENT_TYPE' => 'application/json'],
-            json_encode($request)
-        );
+        Requester::clientRequest($client, $request);
 
         $actual = $client->getResponse()->getStatusCode();
 
@@ -68,9 +62,9 @@ class ApiControllerTest extends WebTestCase
         $expected = 405;
 
         $request = [
+            'id' => '1',
             'jsonrpc' => '2.0',
             'method' => 'newQuestion',
-            'id' => '1',
         ];
 
         $client = static::createClient();
@@ -92,12 +86,12 @@ class ApiControllerTest extends WebTestCase
     public function testApiReturnsRpcErrorParseError()
     {
         $expected = [
-            'jsonrpc' => '2.0',
             'error' => [
                 'code' => -32700,
                 'message' => 'Parse error',
             ],
             'id' => null,
+            'jsonrpc' => '2.0',
         ];
 
         $request = 'I like turtles!';
@@ -123,33 +117,26 @@ class ApiControllerTest extends WebTestCase
     public function testApiReturnsJsonRpcErrorNoQuestionsException() 
     {
         $expected = [
-            'jsonrpc' => '2.0',
             'error' => [
                 'code' => 1,
                 'message' => 'No Questions Exception'
             ],
             'id' => 1,
+            'jsonrpc' => '2.0',
         ];
 
         $request = [
+            'id' => 1,
             'jsonrpc' => '2.0',
             'method' => 'newQuestion',
             'params' => [
                 'quizId' => 1,
             ],
-            'id' => 1,
         ];
 
         $client = static::createClient();
 
-        $client->request(
-            'POST',
-            '/api',
-            [],
-            [],
-            ['CONTENT_TYPE' => 'application/json'],
-            json_encode($request)
-        );
+        Requester::clientRequest($client, $request);
 
         $content = $client->getResponse()->getContent();
 
@@ -161,31 +148,24 @@ class ApiControllerTest extends WebTestCase
     public function testApiReturnsJsonRpcErrorMissingParams() 
     {
         $expected = [
-            'jsonrpc' => '2.0',
             'error' => [
                 'code' => -32602,
                 'data' => 'Missing params',
                 'message' => 'Invalid params',
             ],
             'id' => 1,
+            'jsonrpc' => '2.0',
         ];
 
         $request = [
+            'id' => 1,
             'jsonrpc' => '2.0',
             'method' => 'newQuestion',
-            'id' => 1,
         ];
 
         $client = static::createClient();
 
-        $client->request(
-            'POST',
-            '/api',
-            [],
-            [],
-            ['CONTENT_TYPE' => 'application/json'],
-            json_encode($request)
-        );
+        Requester::clientRequest($client, $request);
 
         $content = $client->getResponse()->getContent();
 
@@ -197,33 +177,26 @@ class ApiControllerTest extends WebTestCase
     public function testApiReturnsJsonRpcErrorMissingQuiz() 
     {
         $expected = [
-            'jsonrpc' => '2.0',
             'error' => [
                 'code' => -32602,
                 'data' => 'Missing quiz',
                 'message' => 'Invalid params',
             ],
             'id' => 1,
+            'jsonrpc' => '2.0',
         ];
 
         $request = [
+            'id' => 1,
             'jsonrpc' => '2.0',
             'method' => 'newQuestion',
             'params' => [
             ],
-            'id' => 1,
         ];
 
         $client = static::createClient();
 
-        $client->request(
-            'POST',
-            '/api',
-            [],
-            [],
-            ['CONTENT_TYPE' => 'application/json'],
-            json_encode($request)
-        );
+        Requester::clientRequest($client, $request);
 
         $content = $client->getResponse()->getContent();
 
@@ -235,12 +208,12 @@ class ApiControllerTest extends WebTestCase
     public function testApiReturnsJsonRpcErrorTooFewAnswersException() 
     {
         $expected = [
-            'jsonrpc' => '2.0',
             'error' => [
                 'code' => 2,
                 'message' => 'Too Few Answers Exception'
             ],
             'id' => 1,
+            'jsonrpc' => '2.0',
         ];
 
         $question = new Question();
@@ -261,24 +234,17 @@ class ApiControllerTest extends WebTestCase
         $this->entityManager->flush();
 
         $request = [
+            'id' => 1,
             'jsonrpc' => '2.0',
             'method' => 'newQuestion',
             'params' => [
                 'quizId' => 1,
             ],
-            'id' => 1,
         ];
 
         $client = static::createClient();
 
-        $client->request(
-            'POST',
-            '/api',
-            [],
-            [],
-            ['CONTENT_TYPE' => 'application/json'],
-            json_encode($request)
-        );
+        Requester::clientRequest($client, $request);
 
         $content = $client->getResponse()->getContent();
 
@@ -292,21 +258,14 @@ class ApiControllerTest extends WebTestCase
         $expected = true;
 
         $request = [
+            'id' => '1',
             'jsonrpc' => '2.0',
             'method' => 'newQuestion',
-            'id' => '1',
         ];
 
         $client = static::createClient();
 
-        $client->request(
-            'POST',
-            '/api',
-            [],
-            [],
-            ['CONTENT_TYPE' => 'application/json'],
-            json_encode($request)
-        );
+        Requester::clientRequest($client, $request);
 
         $content = $client->getResponse()->getContent();
 
@@ -322,21 +281,14 @@ class ApiControllerTest extends WebTestCase
         $expected = '1';
 
         $request = [
+            'id' => '1',
             'jsonrpc' => '2.0',
             'method' => 'newQuestion',
-            'id' => '1',
         ];
 
         $client = static::createClient();
 
-        $client->request(
-            'POST',
-            '/api',
-            [],
-            [],
-            ['CONTENT_TYPE' => 'application/json'],
-            json_encode($request)
-        );
+        Requester::clientRequest($client, $request);
 
         $content = $client->getResponse()->getContent();
 
@@ -352,21 +304,14 @@ class ApiControllerTest extends WebTestCase
         $expected = '2';
 
         $request = [
+            'id' => '2',
             'jsonrpc' => '2.0',
             'method' => 'newQuestion',
-            'id' => '2',
         ];
 
         $client = static::createClient();
 
-        $client->request(
-            'POST',
-            '/api',
-            [],
-            [],
-            ['CONTENT_TYPE' => 'application/json'],
-            json_encode($request)
-        );
+        Requester::clientRequest($client, $request);
 
         $content = $client->getResponse()->getContent();
 
@@ -428,24 +373,17 @@ class ApiControllerTest extends WebTestCase
         $this->entityManager->flush();
 
         $request = [
+            'id' => '1',
             'jsonrpc' => '2.0',
             'method' => 'newQuestion',
             'params' => [
                 'quizId' => 1,
             ],
-            'id' => '1',
         ];
 
         $client = static::createClient();
 
-        $client->request(
-            'POST',
-            '/api',
-            [],
-            [],
-            ['CONTENT_TYPE' => 'application/json'],
-            json_encode($request)
-        );
+        Requester::clientRequest($client, $request);
 
         $content = $client->getResponse()->getContent();
 
@@ -513,24 +451,17 @@ class ApiControllerTest extends WebTestCase
         $this->entityManager->flush();
 
         $request = [
+            'id' => '1',
             'jsonrpc' => '2.0',
             'method' => 'newQuestion',
             'params' => [
                 'quizId' => 1,
             ],
-            'id' => '1',
         ];
 
         $client = static::createClient();
 
-        $client->request(
-            'POST',
-            '/api',
-            [],
-            [],
-            ['CONTENT_TYPE' => 'application/json'],
-            json_encode($request)
-        );
+        Requester::clientRequest($client, $request);
 
         $content = $client->getResponse()->getContent();
 
@@ -596,24 +527,17 @@ class ApiControllerTest extends WebTestCase
         $this->entityManager->flush();
 
         $request = [
+            'id' => '1',
             'jsonrpc' => '2.0',
             'method' => 'newQuestion',
             'params' => [
                 'quizId' => 1,
             ],
-            'id' => '1',
         ];
 
         $client = static::createClient();
 
-        $client->request(
-            'POST',
-            '/api',
-            [],
-            [],
-            ['CONTENT_TYPE' => 'application/json'],
-            json_encode($request)
-        );
+        Requester::clientRequest($client, $request);
 
         $content = $client->getResponse()->getContent();
 
@@ -679,24 +603,17 @@ class ApiControllerTest extends WebTestCase
         $this->entityManager->flush();
 
         $request = [
+            'id' => '1',
             'jsonrpc' => '2.0',
             'method' => 'newQuestion',
             'params' => [
                 'quizId' => 1,
             ],
-            'id' => '1',
         ];
 
         $client = static::createClient();
 
-        $client->request(
-            'POST',
-            '/api',
-            [],
-            [],
-            ['CONTENT_TYPE' => 'application/json'],
-            json_encode($request)
-        );
+        Requester::clientRequest($client, $request);
 
         $content = $client->getResponse()->getContent();
 
@@ -760,24 +677,17 @@ class ApiControllerTest extends WebTestCase
         $this->entityManager->flush();
 
         $request = [
+            'id' => '1',
             'jsonrpc' => '2.0',
             'method' => 'newQuestion',
             'params' => [
                 'quizId' => 1,
             ],
-            'id' => '1',
         ];
 
         $client = static::createClient();
 
-        $client->request(
-            'POST',
-            '/api',
-            [],
-            [],
-            ['CONTENT_TYPE' => 'application/json'],
-            json_encode($request)
-        );
+        Requester::clientRequest($client, $request);
 
         $content = $client->getResponse()->getContent();
 
@@ -841,24 +751,17 @@ class ApiControllerTest extends WebTestCase
         $this->entityManager->flush();
 
         $request = [
+            'id' => '1',
             'jsonrpc' => '2.0',
             'method' => 'newQuestion',
             'params' => [
                 'quizId' => 1,
             ],
-            'id' => '1',
         ];
 
         $client = static::createClient();
 
-        $client->request(
-            'POST',
-            '/api',
-            [],
-            [],
-            ['CONTENT_TYPE' => 'application/json'],
-            json_encode($request)
-        );
+        Requester::clientRequest($client, $request);
 
         $content = $client->getResponse()->getContent();
 
@@ -933,14 +836,7 @@ class ApiControllerTest extends WebTestCase
 
         $client = static::createClient();
 
-        $client->request(
-            'POST',
-            '/api',
-            [],
-            [],
-            ['CONTENT_TYPE' => 'application/json'],
-            json_encode($request)
-        );
+        Requester::clientRequest($client, $request);
 
         $content = $client->getResponse()->getContent();
 
@@ -997,14 +893,7 @@ class ApiControllerTest extends WebTestCase
 
         $client = static::createClient();
 
-        $client->request(
-            'POST',
-            '/api',
-            [],
-            [],
-            ['CONTENT_TYPE' => 'application/json'],
-            json_encode($request)
-        );
+        Requester::clientRequest($client, $request);
 
         $content = $client->getResponse()->getContent();
 
@@ -1018,30 +907,23 @@ class ApiControllerTest extends WebTestCase
     public function testApiNullIdReturnsInvalidRequest() 
     {
         $expected = [
-            'jsonrpc' => '2.0',
             'error' => [
                 'code' => -32600,
                 'message' => 'Invalid Request',
             ],
             'id' => null,
+            'jsonrpc' => '2.0',
         ];
 
         $request = [
+            'id' => null,
             'jsonrpc' => '2.0',
             'method' => 'newQuestion',
-            'id' => null,
         ];
 
         $client = static::createClient();
 
-        $client->request(
-            'POST',
-            '/api',
-            [],
-            [],
-            ['CONTENT_TYPE' => 'application/json'],
-            json_encode($request)
-        );
+        Requester::clientRequest($client, $request);
 
         $content = $client->getResponse()->getContent();
 
@@ -1053,30 +935,23 @@ class ApiControllerTest extends WebTestCase
     public function testApiNoMethodReturnsInvalidRequest() 
     {
         $expected = [
-            'jsonrpc' => '2.0',
             'error' => [
                 'code' => -32600,
                 'message' => 'Invalid Request',
             ],
             'id' => 1,
+            'jsonrpc' => '2.0',
         ];
 
         $request = [
+            'id' => 1,
             'jsonrpc' => '2.0',
             'question' => 'newQuestion',
-            'id' => 1,
         ];
 
         $client = static::createClient();
 
-        $client->request(
-            'POST',
-            '/api',
-            [],
-            [],
-            ['CONTENT_TYPE' => 'application/json'],
-            json_encode($request)
-        );
+        Requester::clientRequest($client, $request);
 
         $content = $client->getResponse()->getContent();
 
@@ -1088,30 +963,23 @@ class ApiControllerTest extends WebTestCase
     public function testApiNoJsonRpcReturnsInvalidRequest() 
     {
         $expected = [
-            'jsonrpc' => '2.0',
             'error' => [
                 'code' => -32600,
                 'message' => 'Invalid Request',
             ],
             'id' => 1,
+            'jsonrpc' => '2.0',
         ];
 
         $request = [
+            'id' => 1,
             'jsonrpc' => '2.1',
             'method' => 'newQuestion',
-            'id' => 1,
         ];
 
         $client = static::createClient();
 
-        $client->request(
-            'POST',
-            '/api',
-            [],
-            [],
-            ['CONTENT_TYPE' => 'application/json'],
-            json_encode($request)
-        );
+        Requester::clientRequest($client, $request);
 
         $content = $client->getResponse()->getContent();
 
@@ -1123,31 +991,24 @@ class ApiControllerTest extends WebTestCase
     public function testApiReturnsMethodNotFound() 
     {
         $expected = [
-            'jsonrpc' => '2.0',
             'error' => [
                 'code' => -32601,
                 'data' => 'Method named "doABarrelRoll" not found',
                 'message' => 'Method not found',
             ],
             'id' => 1,
+            'jsonrpc' => '2.0',
         ];
 
         $request = [
+            'id' => 1,
             'jsonrpc' => '2.0',
             'method' => 'doABarrelRoll',
-            'id' => 1,
         ];
 
         $client = static::createClient();
 
-        $client->request(
-            'POST',
-            '/api',
-            [],
-            [],
-            ['CONTENT_TYPE' => 'application/json'],
-            json_encode($request)
-        );
+        Requester::clientRequest($client, $request);
 
         $content = $client->getResponse()->getContent();
 
@@ -1159,32 +1020,24 @@ class ApiControllerTest extends WebTestCase
     public function testApiReturnsInvalidParamsNoParams() 
     {
         $expected = [
-            'jsonrpc' => '2.0',
             'error' => [
                 'code' => -32602,
                 'data' => 'Missing params',
                 'message' => 'Invalid params',
             ],
             'id' => 1,
+            'jsonrpc' => '2.0',
         ];
 
         $request = [
+            'id' => 1,
             'jsonrpc' => '2.0',
             'method' => 'answerQuestion',
-            
-            'id' => 1,
         ];
 
         $client = static::createClient();
 
-        $client->request(
-            'POST',
-            '/api',
-            [],
-            [],
-            ['CONTENT_TYPE' => 'application/json'],
-            json_encode($request)
-        );
+        Requester::clientRequest($client, $request);
 
         $content = $client->getResponse()->getContent();
 
@@ -1196,34 +1049,27 @@ class ApiControllerTest extends WebTestCase
     public function testApiReturnsInvalidParamsNoQuestion() 
     {
         $expected = [
-            'jsonrpc' => '2.0',
             'error' => [
                 'code' => -32602,
                 'data' => 'Missing question',
                 'message' => 'Invalid params',
             ],
             'id' => 1,
+            'jsonrpc' => '2.0',
         ];
 
         $request = [
+            'id' => 1,
             'jsonrpc' => '2.0',
             'method' => 'answerQuestion',
             'params' => [
                 'guessId' => 1,
             ],
-            'id' => 1,
         ];
 
         $client = static::createClient();
 
-        $client->request(
-            'POST',
-            '/api',
-            [],
-            [],
-            ['CONTENT_TYPE' => 'application/json'],
-            json_encode($request)
-        );
+        Requester::clientRequest($client, $request);
 
         $content = $client->getResponse()->getContent();
 
@@ -1235,34 +1081,27 @@ class ApiControllerTest extends WebTestCase
     public function testApiReturnsInvalidParamsNoAnswer() 
     {
         $expected = [
-            'jsonrpc' => '2.0',
             'error' => [
                 'code' => -32602,
                 'data' => 'Missing answer',
                 'message' => 'Invalid params',
             ],
             'id' => 1,
+            'jsonrpc' => '2.0',
         ];
 
         $request = [
+            'id' => 1,
             'jsonrpc' => '2.0',
             'method' => 'answerQuestion',
             'params' => [
                 'questionId' => 1,
             ],
-            'id' => 1,
         ];
 
         $client = static::createClient();
 
-        $client->request(
-            'POST',
-            '/api',
-            [],
-            [],
-            ['CONTENT_TYPE' => 'application/json'],
-            json_encode($request)
-        );
+        Requester::clientRequest($client, $request);
 
         $content = $client->getResponse()->getContent();
 
@@ -1274,6 +1113,7 @@ class ApiControllerTest extends WebTestCase
     public function testGetQuizzesReturnsQuizzes()
     {
         $expected = [
+            'id' => 1,
             'jsonrpc' => '2.0',
             'result' => [
                 'quizzes' => [
@@ -1287,7 +1127,6 @@ class ApiControllerTest extends WebTestCase
                     ],
                 ],
             ],
-            'id' => 1,
         ];
 
         $quiz0 = new Quiz();
@@ -1308,14 +1147,7 @@ class ApiControllerTest extends WebTestCase
 
         $client = static::createClient();
 
-        $client->request(
-            'POST',
-            '/api',
-            [],
-            [],
-            ['CONTENT_TYPE' => 'application/json'],
-            json_encode($request)
-        );
+        Requester::clientRequest($client, $request);
 
         $content = $client->getResponse()->getContent();
 
@@ -1330,12 +1162,12 @@ class ApiControllerTest extends WebTestCase
     {
 
         $expected = [
-            'jsonrpc' => '2.0',
             'error' => [
                 'code' => 3,
                 'message' => 'No Quizzes Exception',
             ],
             'id' => 1,
+            'jsonrpc' => '2.0',
         ];
 
         $request = [
@@ -1346,14 +1178,7 @@ class ApiControllerTest extends WebTestCase
 
         $client = static::createClient();
 
-        $client->request(
-            'POST',
-            '/api',
-            [],
-            [],
-            ['CONTENT_TYPE' => 'application/json'],
-            json_encode($request)
-        );
+        Requester::clientRequest($client, $request);
 
         $content = $client->getResponse()->getContent();
 
@@ -1474,14 +1299,7 @@ class ApiControllerTest extends WebTestCase
 
         $client = static::createClient();
 
-        $client->request(
-            'POST',
-            '/api',
-            [],
-            [],
-            ['CONTENT_TYPE' => 'application/json'],
-            json_encode($request)
-        );
+        Requester::clientRequest($client, $request);
 
         $content = $client->getResponse()->getContent();
 
@@ -1528,14 +1346,7 @@ class ApiControllerTest extends WebTestCase
 
         $client = static::createClient();
 
-        $client->request(
-            'POST',
-            '/api',
-            [],
-            [],
-            ['CONTENT_TYPE' => 'application/json'],
-            json_encode($request)
-        );
+        Requester::clientRequest($client, $request);
 
         $content = $client->getResponse()->getContent();
 
@@ -1548,12 +1359,12 @@ class ApiControllerTest extends WebTestCase
     public function testLoginUserNotFound()
     {
         $expected = [
-            'id' => 1,
-            'jsonrpc' => '2.0',
             'error' => [
                 'code' => 101,
                 'message' => "User not found",
             ],
+            'id' => 1,
+            'jsonrpc' => '2.0',
         ];
 
         $user = new User();
@@ -1581,14 +1392,7 @@ class ApiControllerTest extends WebTestCase
 
         $client = static::createClient();
 
-        $client->request(
-            'POST',
-            '/api',
-            [],
-            [],
-            ['CONTENT_TYPE' => 'application/json'],
-            json_encode($request)
-        );
+        Requester::clientRequest($client, $request);
 
         $content = $client->getResponse()->getContent();
 
@@ -1601,12 +1405,12 @@ class ApiControllerTest extends WebTestCase
     public function testLoginInvalidPassword()
     {
         $expected = [
-            'id' => 1,
-            'jsonrpc' => '2.0',
             'error' => [
                 'code' => 102,
                 'message' => "Invalid password",
             ],
+            'id' => 1,
+            'jsonrpc' => '2.0',
         ];
 
         $user = new User();
@@ -1634,14 +1438,7 @@ class ApiControllerTest extends WebTestCase
 
         $client = static::createClient();
 
-        $client->request(
-            'POST',
-            '/api',
-            [],
-            [],
-            ['CONTENT_TYPE' => 'application/json'],
-            json_encode($request)
-        );
+        Requester::clientRequest($client, $request);
 
         $content = $client->getResponse()->getContent();
 
@@ -1684,28 +1481,15 @@ class ApiControllerTest extends WebTestCase
 
         $client = static::createClient();
 
-        $client->request(
-            'POST',
-            '/api',
-            [],
-            [],
-            ['CONTENT_TYPE' => 'application/json'],
-            json_encode($request)
-        );
+        Requester::clientRequest($client, $request);
 
         $request = [
             'id' => 1,
             'jsonrpc' => '2.0',
             'method' => 'logout',
         ];
-        $client->request(
-            'POST',
-            '/api',
-            [],
-            [],
-            ['CONTENT_TYPE' => 'application/json'],
-            json_encode($request)
-        );
+
+        Requester::clientRequest($client, $request);
 
         $content = $client->getResponse()->getContent();
 
@@ -1750,28 +1534,15 @@ class ApiControllerTest extends WebTestCase
 
         $client = static::createClient();
 
-        $client->request(
-            'POST',
-            '/api',
-            [],
-            [],
-            ['CONTENT_TYPE' => 'application/json'],
-            json_encode($request)
-        );
+        Requester::clientRequest($client, $request);
 
         $request = [
             'id' => 1,
             'jsonrpc' => '2.0',
             'method' => 'getActiveSession',
         ];
-        $client->request(
-            'POST',
-            '/api',
-            [],
-            [],
-            ['CONTENT_TYPE' => 'application/json'],
-            json_encode($request)
-        );
+
+        Requester::clientRequest($client, $request);
 
         $content = $client->getResponse()->getContent();
 
@@ -1801,22 +1572,16 @@ class ApiControllerTest extends WebTestCase
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();
-            
-        $client = static::createClient();
 
         $request = [
             'id' => 1,
             'jsonrpc' => '2.0',
             'method' => 'getActiveSession',
         ];
-        $client->request(
-            'POST',
-            '/api',
-            [],
-            [],
-            ['CONTENT_TYPE' => 'application/json'],
-            json_encode($request)
-        );
+
+        $client = static::createClient();
+
+        Requester::clientRequest($client, $request);
 
         $content = $client->getResponse()->getContent();
 
