@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\User;
 use AppBundle\Exceptions\ {
         NoQuestionsException, 
         NoQuizzesException,
@@ -51,30 +52,6 @@ class ApiController extends Controller
         $method = $jsonDecoded['method'];
 
         switch($method) {
-            // case 'createAccount':
-            //     if (!array_key_exists('params', $jsonDecoded)) {
-            //         return $this->invalidParams($id, 'Missing params');
-            //     }
-
-            //     if (!array_key_exists('username', $jsonDecoded['params'])) {
-            //         return $this->invalidParams($id, 'Missing username');
-            //     }
-
-            //     if (!array_key_exists('password', $jsonDecoded['params'])) {
-            //         return $this->invalidParams($id, 'Missing password');
-            //     }
-
-            //     if (!array_key_exists('password2', $jsonDecoded['params'])) {
-            //         return $this->invalidParams($id, 'Missing password2');
-            //     }
-
-            //     if (!array_key_exists('email', $jsonDecoded['params'])) {
-            //         return $this->invalidParams($id, 'Missing email');
-            //     }
-
-            //     // $guessId = $jsonDecoded['params']['guessId'];
-            //     // $questionId = $jsonDecoded['params']['questionId'];
-            //     return;
             case 'answerQuestion':
                 if (!array_key_exists('params', $jsonDecoded)) {
                     return $this->invalidParams($id, 'Missing params');
@@ -91,6 +68,33 @@ class ApiController extends Controller
                 $guessId = $jsonDecoded['params']['guessId'];
                 $questionId = $jsonDecoded['params']['questionId'];
                 return $this->answerQuestion($guessId, $id, $questionId);
+
+            case 'createAccount':
+                if (!array_key_exists('params', $jsonDecoded)) {
+                    return $this->invalidParams($id, 'Missing params');
+                }
+
+                if (!array_key_exists('username', $jsonDecoded['params'])) {
+                    return $this->invalidParams($id, 'Missing username');
+                }
+
+                if (!array_key_exists('password', $jsonDecoded['params'])) {
+                    return $this->invalidParams($id, 'Missing password');
+                }
+
+                if (!array_key_exists('password2', $jsonDecoded['params'])) {
+                    return $this->invalidParams($id, 'Missing password2');
+                }
+
+                if (!array_key_exists('email', $jsonDecoded['params'])) {
+                    return $this->invalidParams($id, 'Missing email');
+                }
+
+                $username = $jsonDecoded['params']['username'];
+                $password = $jsonDecoded['params']['password'];
+                $password2 = $jsonDecoded['params']['password2'];
+                $email = $jsonDecoded['params']['email'];
+                return $this->createAccount($id, $username, $password, $password2, $email);
 
             case 'getActiveSession':
                 return $this->getActiveSession($id);
@@ -116,7 +120,7 @@ class ApiController extends Controller
 
                 $username = $jsonDecoded['params']['username'];
                 $password = $jsonDecoded['params']['password'];
-                return $this->login($id, $username, $password, $request);
+                return $this->login($id, $username, $password);
 
             case 'logout':
                 return $this->logout($id);
@@ -143,6 +147,54 @@ class ApiController extends Controller
                 );
                 return new JsonResponse($response);
         }
+    }
+
+    private function createAccount($id, $username, $password, $password2, $email)
+    {
+        if ($password !== $password2) {
+            $response = Responder::errorResponse(
+                $id,
+                301,
+                'Passwords do not match'
+            );
+            return new JsonResponse($response);
+        }
+
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $user = $entityManager->getRepository('AppBundle:User')->findOneByUsername($username);
+
+        if (!is_null($user)) {
+            $response = Responder::errorResponse(
+                $id,
+                300,
+                'User exists'
+            );
+            return new JsonResponse($response);
+        }
+
+        $user = new User();
+        $user->setUsername($username);
+
+        $encoder = $this->container->get('security.password_encoder');
+
+        $encodedPassword = $encoder->encodePassword($user, $password);
+        $user->setPassword($encodedPassword);
+
+        $user->setEmail($email);
+
+        $user->setIsActive(true);
+
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        $response = [
+            'id' => $id,
+            'jsonrpc' => '2.0',
+            'result' => [],
+        ];
+
+        return new JsonResponse($response);
     }
 
     private function getActiveSession($id)
@@ -175,7 +227,6 @@ class ApiController extends Controller
         } else {
             $result = [
                 'email' => $user->getEmail(),
-                'isActive' => $user->getIsActive(),
                 'username' => $user->getUsername(),
             ];
         }
@@ -189,7 +240,7 @@ class ApiController extends Controller
         return new JsonResponse($response);
     }
 
-    private function login($id, $username, $password, $request)
+    private function login($id, $username, $password)
     {
         $entityManager = $this->getDoctrine()->getManager();
 

@@ -10,7 +10,6 @@ use AppBundle\Entity\
         User
     };
 use AppBundle\Linters\JsonRpcLinter;
-use AppBundle\Utilities\Requester;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 class ApiControllerTest extends WebTestCase
@@ -50,7 +49,14 @@ class ApiControllerTest extends WebTestCase
 
         $client = static::createClient();
 
-        Requester::clientRequest($client, $request);
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
 
         $actual = $client->getResponse()->getStatusCode();
 
@@ -136,7 +142,14 @@ class ApiControllerTest extends WebTestCase
 
         $client = static::createClient();
 
-        Requester::clientRequest($client, $request);
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
 
         $content = $client->getResponse()->getContent();
 
@@ -165,7 +178,23 @@ class ApiControllerTest extends WebTestCase
 
         $client = static::createClient();
 
-        Requester::clientRequest($client, $request);
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
+
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
 
         $content = $client->getResponse()->getContent();
 
@@ -196,7 +225,14 @@ class ApiControllerTest extends WebTestCase
 
         $client = static::createClient();
 
-        Requester::clientRequest($client, $request);
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
 
         $content = $client->getResponse()->getContent();
 
@@ -244,7 +280,14 @@ class ApiControllerTest extends WebTestCase
 
         $client = static::createClient();
 
-        Requester::clientRequest($client, $request);
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
 
         $content = $client->getResponse()->getContent();
 
@@ -265,7 +308,14 @@ class ApiControllerTest extends WebTestCase
 
         $client = static::createClient();
 
-        Requester::clientRequest($client, $request);
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
 
         $content = $client->getResponse()->getContent();
 
@@ -288,7 +338,14 @@ class ApiControllerTest extends WebTestCase
 
         $client = static::createClient();
 
-        Requester::clientRequest($client, $request);
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
 
         $content = $client->getResponse()->getContent();
 
@@ -311,7 +368,14 @@ class ApiControllerTest extends WebTestCase
 
         $client = static::createClient();
 
-        Requester::clientRequest($client, $request);
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
 
         $content = $client->getResponse()->getContent();
 
@@ -383,7 +447,14 @@ class ApiControllerTest extends WebTestCase
 
         $client = static::createClient();
 
-        Requester::clientRequest($client, $request);
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
 
         $content = $client->getResponse()->getContent();
 
@@ -461,7 +532,14 @@ class ApiControllerTest extends WebTestCase
 
         $client = static::createClient();
 
-        Requester::clientRequest($client, $request);
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
 
         $content = $client->getResponse()->getContent();
 
@@ -537,7 +615,14 @@ class ApiControllerTest extends WebTestCase
 
         $client = static::createClient();
 
-        Requester::clientRequest($client, $request);
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
 
         $content = $client->getResponse()->getContent();
 
@@ -613,7 +698,14 @@ class ApiControllerTest extends WebTestCase
 
         $client = static::createClient();
 
-        Requester::clientRequest($client, $request);
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
 
         $content = $client->getResponse()->getContent();
 
@@ -687,7 +779,14 @@ class ApiControllerTest extends WebTestCase
 
         $client = static::createClient();
 
-        Requester::clientRequest($client, $request);
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
 
         $content = $client->getResponse()->getContent();
 
@@ -761,7 +860,14 @@ class ApiControllerTest extends WebTestCase
 
         $client = static::createClient();
 
-        Requester::clientRequest($client, $request);
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
 
         $content = $client->getResponse()->getContent();
 
@@ -836,7 +942,14 @@ class ApiControllerTest extends WebTestCase
 
         $client = static::createClient();
 
-        Requester::clientRequest($client, $request);
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
 
         $content = $client->getResponse()->getContent();
 
@@ -893,7 +1006,14 @@ class ApiControllerTest extends WebTestCase
 
         $client = static::createClient();
 
-        Requester::clientRequest($client, $request);
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
 
         $content = $client->getResponse()->getContent();
 
@@ -923,7 +1043,14 @@ class ApiControllerTest extends WebTestCase
 
         $client = static::createClient();
 
-        Requester::clientRequest($client, $request);
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
 
         $content = $client->getResponse()->getContent();
 
@@ -951,7 +1078,14 @@ class ApiControllerTest extends WebTestCase
 
         $client = static::createClient();
 
-        Requester::clientRequest($client, $request);
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
 
         $content = $client->getResponse()->getContent();
 
@@ -979,7 +1113,14 @@ class ApiControllerTest extends WebTestCase
 
         $client = static::createClient();
 
-        Requester::clientRequest($client, $request);
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
 
         $content = $client->getResponse()->getContent();
 
@@ -1008,7 +1149,14 @@ class ApiControllerTest extends WebTestCase
 
         $client = static::createClient();
 
-        Requester::clientRequest($client, $request);
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
 
         $content = $client->getResponse()->getContent();
 
@@ -1037,7 +1185,14 @@ class ApiControllerTest extends WebTestCase
 
         $client = static::createClient();
 
-        Requester::clientRequest($client, $request);
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
 
         $content = $client->getResponse()->getContent();
 
@@ -1069,7 +1224,14 @@ class ApiControllerTest extends WebTestCase
 
         $client = static::createClient();
 
-        Requester::clientRequest($client, $request);
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
 
         $content = $client->getResponse()->getContent();
 
@@ -1101,7 +1263,14 @@ class ApiControllerTest extends WebTestCase
 
         $client = static::createClient();
 
-        Requester::clientRequest($client, $request);
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
 
         $content = $client->getResponse()->getContent();
 
@@ -1147,7 +1316,14 @@ class ApiControllerTest extends WebTestCase
 
         $client = static::createClient();
 
-        Requester::clientRequest($client, $request);
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
 
         $content = $client->getResponse()->getContent();
 
@@ -1178,7 +1354,14 @@ class ApiControllerTest extends WebTestCase
 
         $client = static::createClient();
 
-        Requester::clientRequest($client, $request);
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
 
         $content = $client->getResponse()->getContent();
 
@@ -1299,7 +1482,14 @@ class ApiControllerTest extends WebTestCase
 
         $client = static::createClient();
 
-        Requester::clientRequest($client, $request);
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
 
         $content = $client->getResponse()->getContent();
 
@@ -1346,7 +1536,14 @@ class ApiControllerTest extends WebTestCase
 
         $client = static::createClient();
 
-        Requester::clientRequest($client, $request);
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
 
         $content = $client->getResponse()->getContent();
 
@@ -1392,7 +1589,14 @@ class ApiControllerTest extends WebTestCase
 
         $client = static::createClient();
 
-        Requester::clientRequest($client, $request);
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
 
         $content = $client->getResponse()->getContent();
 
@@ -1438,7 +1642,14 @@ class ApiControllerTest extends WebTestCase
 
         $client = static::createClient();
 
-        Requester::clientRequest($client, $request);
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
 
         $content = $client->getResponse()->getContent();
 
@@ -1481,7 +1692,14 @@ class ApiControllerTest extends WebTestCase
 
         $client = static::createClient();
 
-        Requester::clientRequest($client, $request);
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
 
         $request = [
             'id' => 1,
@@ -1489,7 +1707,14 @@ class ApiControllerTest extends WebTestCase
             'method' => 'logout',
         ];
 
-        Requester::clientRequest($client, $request);
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
 
         $content = $client->getResponse()->getContent();
 
@@ -1534,7 +1759,14 @@ class ApiControllerTest extends WebTestCase
 
         $client = static::createClient();
 
-        Requester::clientRequest($client, $request);
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
 
         $request = [
             'id' => 1,
@@ -1542,7 +1774,14 @@ class ApiControllerTest extends WebTestCase
             'method' => 'getActiveSession',
         ];
 
-        Requester::clientRequest($client, $request);
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
 
         $content = $client->getResponse()->getContent();
 
@@ -1581,7 +1820,14 @@ class ApiControllerTest extends WebTestCase
 
         $client = static::createClient();
 
-        Requester::clientRequest($client, $request);
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
 
         $content = $client->getResponse()->getContent();
 
@@ -1598,7 +1844,6 @@ class ApiControllerTest extends WebTestCase
             'jsonrpc' => '2.0',
             'result' => [
                 'email' => 'at@at.at',
-                'isActive' => true,
                 'username' => 'HatTrick',
             ],
         ];
@@ -1628,7 +1873,14 @@ class ApiControllerTest extends WebTestCase
 
         $client = static::createClient();
 
-        Requester::clientRequest($client, $request);
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
 
         $request = [
             'id' => 1,
@@ -1636,7 +1888,14 @@ class ApiControllerTest extends WebTestCase
             'method' => 'getSessionInfo',
         ];
 
-        Requester::clientRequest($client, $request);
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
 
         $content = $client->getResponse()->getContent();
 
@@ -1675,7 +1934,268 @@ class ApiControllerTest extends WebTestCase
 
         $client = static::createClient();
 
-        Requester::clientRequest($client, $request);
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
+
+        $content = $client->getResponse()->getContent();
+
+        $jsonDecoded = json_decode($content, true);
+        $actual = $jsonDecoded;
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testCreateAccountCreatesAccount()
+    {
+        $expected = [
+            'id' => 1,
+            'jsonrpc' => '2.0',
+            'result' => [],
+        ];
+
+        $request = [
+            'id' => 1,
+            'jsonrpc' => '2.0',
+            'method' => 'createAccount',
+            'params' => [
+                'username' => 'HatTrick',
+                'password' => 'hathathat',
+                'password2' => 'hathathat',
+                'email' => 'at@at.at'
+            ],
+        ];
+
+        $client = static::createClient();
+
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
+
+        $content = $client->getResponse()->getContent();
+
+        $jsonDecoded = json_decode($content, true);
+        $actual = $jsonDecoded;
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testCreateAccountAddsToDatabase()
+    {
+        $expected = [
+            'id' => 2,
+            'jsonrpc' => '2.0',
+            'result' => [
+                'username' => 'HatTrick',
+            ],
+        ];
+
+        $request = [
+            'id' => 1,
+            'jsonrpc' => '2.0',
+            'method' => 'createAccount',
+            'params' => [
+                'username' => 'HatTrick',
+                'password' => 'hathathat',
+                'password2' => 'hathathat',
+                'email' => 'at@at.at'
+            ],
+        ];
+
+        $client = static::createClient();
+
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
+
+        $request = [
+            'id' => 2,
+            'jsonrpc' => '2.0',
+            'method' => 'login',
+            'params' => [
+                'username' => 'HatTrick',
+                'password' => 'hathathat',
+            ],
+        ];
+
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
+        $content = $client->getResponse()->getContent();
+
+        $jsonDecoded = json_decode($content, true);
+        $actual = $jsonDecoded;
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testCreateAccountAddsToDatabaseMagicTrick()
+    {
+        $expected = [
+            'id' => 2,
+            'jsonrpc' => '2.0',
+            'result' => [
+                'username' => 'MagicTrick',
+            ],
+        ];
+
+        $request = [
+            'id' => 1,
+            'jsonrpc' => '2.0',
+            'method' => 'createAccount',
+            'params' => [
+                'username' => 'MagicTrick',
+                'password' => 'hathathat',
+                'password2' => 'hathathat',
+                'email' => 'at@at.at'
+            ],
+        ];
+
+        $client = static::createClient();
+
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
+
+        $request = [
+            'id' => 2,
+            'jsonrpc' => '2.0',
+            'method' => 'login',
+            'params' => [
+                'username' => 'MagicTrick',
+                'password' => 'hathathat',
+            ],
+        ];
+
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
+        $content = $client->getResponse()->getContent();
+
+        $jsonDecoded = json_decode($content, true);
+        $actual = $jsonDecoded;
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testCreateAccountUserExists()
+    {
+        $expected = [
+            'id' => 1,
+            'jsonrpc' => '2.0',
+            'error' => [
+                'code' => 300,
+                'message' => 'User exists'
+            ],
+        ];
+
+        $user = new User();
+        $user->setUsername('HatTrick');
+        
+        $password = $this->passwordEncoder->encodePassword($user, 'hathathat');
+        $user->setPassword($password);
+
+        $user->setEmail('at@at.at');
+
+        $user->setIsActive(true);
+
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+            
+        $request = [
+            'id' => 1,
+            'jsonrpc' => '2.0',
+            'method' => 'createAccount',
+            'params' => [
+                'username' => 'HatTrick',
+                'password' => 'hathathat',
+                'password2' => 'hathathat',
+                'email' => 'at@at.at'
+            ],
+        ];
+
+        $client = static::createClient();
+
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
+
+        $content = $client->getResponse()->getContent();
+
+        $jsonDecoded = json_decode($content, true);
+        $actual = $jsonDecoded;
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testCreateAccountMismatchPasswordError()
+    {
+        $expected = [
+            'id' => 1,
+            'jsonrpc' => '2.0',
+            'error' => [
+                'code' => 301,
+                'message' => 'Passwords do not match'
+            ],
+        ];
+
+        $request = [
+            'id' => 1,
+            'jsonrpc' => '2.0',
+            'method' => 'createAccount',
+            'params' => [
+                'username' => 'HatTrick',
+                'password' => 'hathathat',
+                'password2' => 'hathathis',
+                'email' => 'at@at.at'
+            ],
+        ];
+
+        $client = static::createClient();
+
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
 
         $content = $client->getResponse()->getContent();
 

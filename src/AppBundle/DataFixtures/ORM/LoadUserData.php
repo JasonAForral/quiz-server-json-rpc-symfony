@@ -10,7 +10,6 @@ use Doctrine\Common\DataFixtures\{
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Security\Core\Encoder\BCryptPasswordEncoder;
 
 class LoadUserData
     extends AbstractFixture
