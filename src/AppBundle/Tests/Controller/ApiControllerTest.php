@@ -2204,4 +2204,111 @@ class ApiControllerTest extends WebTestCase
 
         $this->assertEquals($expected, $actual);
     }
+
+    public function testLoginLogsInCaseInsensitive()
+    {
+        $expected = [
+            'id' => 1,
+            'jsonrpc' => '2.0',
+            'result' => [
+                'username' => 'HatTrick',
+            ],
+        ];
+
+        $user = new User();
+        $user->setUsername('HatTrick');
+        
+        $password = $this->passwordEncoder->encodePassword($user, 'hathathat');
+        $user->setPassword($password);
+
+        $user->setEmail('at@at.at');
+
+        $user->setIsActive(true);
+
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+            
+        $request = [
+            'id' => 1,
+            'jsonrpc' => '2.0',
+            'method' => 'login',
+            'params' => [
+                'username' => 'hattrick',
+                'password' => 'hathathat',
+            ],
+        ];
+
+        $client = static::createClient();
+
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
+
+        $content = $client->getResponse()->getContent();
+
+        $jsonDecoded = json_decode($content, true);
+        $actual = $jsonDecoded;
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testCreateAccountUserExistsCaseInsensitve()
+    {
+        $expected = [
+            'id' => 1,
+            'jsonrpc' => '2.0',
+            'error' => [
+                'code' => 300,
+                'message' => 'User exists'
+            ],
+        ];
+
+        $user = new User();
+        $user->setUsername('HatTrick');
+        
+        $password = $this->passwordEncoder->encodePassword($user, 'hathathat');
+        $user->setPassword($password);
+
+        $user->setEmail('at@at.at');
+
+        $user->setIsActive(true);
+
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+            
+        $request = [
+            'id' => 1,
+            'jsonrpc' => '2.0',
+            'method' => 'createAccount',
+            'params' => [
+                'username' => 'hattrick',
+                'password' => 'hathathat',
+                'password2' => 'hathathat',
+                'email' => 'at@at.at'
+            ],
+        ];
+
+        $client = static::createClient();
+
+        $client->request(
+            'POST',
+            '/api',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($request)
+        );
+
+        $content = $client->getResponse()->getContent();
+
+        $jsonDecoded = json_decode($content, true);
+        $actual = $jsonDecoded;
+
+        $this->assertEquals($expected, $actual);
+    }
 }

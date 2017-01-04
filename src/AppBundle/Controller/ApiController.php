@@ -137,7 +137,6 @@ class ApiController extends Controller
                 $quizId = $jsonDecoded['params']['quizId'];
                 return $this->newQuestion($id, $quizId);
 
-
             default:
                 $response = Responder::errorResponseData(
                     $id,
@@ -162,7 +161,7 @@ class ApiController extends Controller
 
         $entityManager = $this->getDoctrine()->getManager();
 
-        $user = $entityManager->getRepository('AppBundle:User')->findOneByUsername($username);
+        $user = $entityManager->getRepository('AppBundle:User')->getUser($username);
 
         if (!is_null($user)) {
             $response = Responder::errorResponse(
@@ -244,7 +243,7 @@ class ApiController extends Controller
     {
         $entityManager = $this->getDoctrine()->getManager();
 
-        $user = $entityManager->getRepository('AppBundle:User')->findOneByUsername($username);
+        $user = $entityManager->getRepository('AppBundle:User')->getUser($username);
 
         if (is_null($user)) {
             $response = Responder::errorResponse(
@@ -363,7 +362,7 @@ class ApiController extends Controller
                 'correctId' => $correctId,
             ],
         ];
-        
+
         return new JsonResponse($response);
     }
 

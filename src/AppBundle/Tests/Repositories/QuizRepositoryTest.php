@@ -2,7 +2,7 @@
 
 namespace AppBundle\Tests\Repositories;
 
-// use AppBundle\Entity\ {Answer, Question};
+use AppBundle\Entity\Quiz;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 class QuizRepositoryTest extends WebTestCase
@@ -30,7 +30,7 @@ class QuizRepositoryTest extends WebTestCase
     /**
      * @expectedException AppBundle\Exceptions\NoQuizzesException
      */
-    public function testGetQuizzes()
+    public function testGetQuizzesNoQuizzesException()
     {
         $expected = [];
 
@@ -39,6 +39,25 @@ class QuizRepositoryTest extends WebTestCase
         ;
 
         $actual = $quizRepository->getQuizzes();
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testGetQuizzes()
+    {
+        $expected = 1;
+
+        $quiz = new Quiz();
+        $quiz->setText('Test Quiz');
+        $this->entityManager->persist($quiz);
+
+        $this->entityManager->flush();
+
+        $quizRepository = $this->entityManager
+            ->getRepository('AppBundle:Quiz')
+        ;
+
+        $actual = count($quizRepository->getQuizzes());
 
         $this->assertEquals($expected, $actual);
     }
