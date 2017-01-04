@@ -160,14 +160,26 @@ class ApiController extends Controller
         }
 
         $entityManager = $this->getDoctrine()->getManager();
+        $userRepository = $entityManager->getRepository('AppBundle:User');
 
-        $user = $entityManager->getRepository('AppBundle:User')->getUser($username);
+        $user = $userRepository->getUserByUsername($username);
 
         if (!is_null($user)) {
             $response = Responder::errorResponse(
                 $id,
                 300,
                 'User exists'
+            );
+            return new JsonResponse($response);
+        }
+
+        $emailCheck = $userRepository->getUserByEmail($email);
+
+        if (!is_null($emailCheck)) {
+            $response = Responder::errorResponse(
+                $id,
+                302,
+                'Email exists'
             );
             return new JsonResponse($response);
         }
@@ -243,7 +255,7 @@ class ApiController extends Controller
     {
         $entityManager = $this->getDoctrine()->getManager();
 
-        $user = $entityManager->getRepository('AppBundle:User')->getUser($username);
+        $user = $entityManager->getRepository('AppBundle:User')->getUserByUsername($username);
 
         if (is_null($user)) {
             $response = Responder::errorResponse(
