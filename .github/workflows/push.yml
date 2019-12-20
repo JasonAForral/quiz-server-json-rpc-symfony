@@ -13,5 +13,5 @@ jobs:
       run: docker-compose build
     - name: run
       run: docker-compose run web composer install
-    - name: load fictures
-      run: docker-compose run web app/console doctrine:fixtures:load --purge-with-truncate
+#     - name: load fixtures
+#       run: docker-compose run web app/console doctrine:fixtures:load --purge-with-truncate
