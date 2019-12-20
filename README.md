@@ -1,5 +1,6 @@
 # quiz-server-json-rpc-symfony
 
+[![Actions Status](https://github.com/JasonAForral/quiz-server-json-rpc-symfony/workflows/docker-compose/badge.svg)](https://github.com/JasonAForral/quiz-server-json-rpc-symfony/actions?query=workflow%3A"docker-compose")
 [![Build Status](https://travis-ci.org/JasonAForral/quiz-server-json-rpc-symfony.svg?branch=master)](https://travis-ci.org/JasonAForral/quiz-server-json-rpc-symfony)
 
 Unit Testing:
