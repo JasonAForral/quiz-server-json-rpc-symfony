@@ -1,0 +1,17 @@
+name: docker-compose
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: build
+      run: docker-compose build
+    - name: run
+      run: docker-compose run web composer install
+    - name: load fictures
+      run: docker-compose run web app/console doctrine:fixtures:load --purge-with-truncate
